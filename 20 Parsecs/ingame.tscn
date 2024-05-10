@@ -3,7 +3,7 @@
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://space.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ingame.gd" type="Script" id=3]
-[ext_resource path="res://cargo.tscn" type="PackedScene" id=4]
+[ext_resource path="res://cargo_market.tscn" type="PackedScene" id=4]
 [ext_resource path="res://planet-03-off.png" type="Texture" id=5]
 [ext_resource path="res://planet-03-on.png" type="Texture" id=6]
 [ext_resource path="res://planet-02-on.png" type="Texture" id=7]
@@ -381,12 +381,13 @@ custom_styles/panel = SubResource( 2 )
 anchor_bottom = 1.0
 margin_right = 120.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer"]
-margin_right = 120.0
+[node name="Market" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer"]
+unique_name_in_owner = true
+margin_right = 244.0
 margin_bottom = 170.0
 
-[node name="Cargo" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
-margin_right = 120.0
+[node name="MarginContainer" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer/Market" instance=ExtResource( 4 )]
+margin_right = 244.0
 margin_bottom = 170.0
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer3/Panel"]
@@ -396,8 +397,8 @@ anchor_bottom = 1.0
 margin_left = -141.0
 
 [node name="Ship" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer2" instance=ExtResource( 29 )]
-margin_right = 141.0
-margin_bottom = 170.0
+margin_right = 206.0
+margin_bottom = 186.0
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

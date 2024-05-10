@@ -14,7 +14,7 @@ func _ready():
 		if space.space_4 > 0 and space.space_4 < space.id:
 			astar.connect_points(space.id, space.space_4, true)
 	$Player.move_to(1)
-			
+	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
 		for next_id in astar.get_point_connections(id):
