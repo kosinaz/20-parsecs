@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://space.gd" type="Script" id=1]
-[ext_resource path="res://space_off.png" type="Texture" id=2]
-[ext_resource path="res://space_on.png" type="Texture" id=3]
+[ext_resource path="res://navpoint-on.png" type="Texture" id=2]
+[ext_resource path="res://navpoint-off.png" type="Texture" id=3]
 
 [node name="Space" type="Node2D"]
 script = ExtResource( 1 )
@@ -12,12 +12,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -5.0
-margin_top = -5.0
-margin_right = 5.0
-margin_bottom = 5.0
+margin_left = -21.0
+margin_top = -21.0
+margin_right = 21.0
+margin_bottom = 21.0
 disabled = true
-texture_normal = ExtResource( 3 )
-texture_disabled = ExtResource( 2 )
+texture_normal = ExtResource( 2 )
+texture_disabled = ExtResource( 3 )
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

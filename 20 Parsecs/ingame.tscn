@@ -1,14 +1,37 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://space.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ingame.gd" type="Script" id=3]
 [ext_resource path="res://map.png" type="Texture" id=4]
+[ext_resource path="res://planet-03-off.png" type="Texture" id=5]
+[ext_resource path="res://planet-03-on.png" type="Texture" id=6]
+[ext_resource path="res://planet-02-on.png" type="Texture" id=7]
+[ext_resource path="res://planet-02-off.png" type="Texture" id=8]
+[ext_resource path="res://planet-04-off.png" type="Texture" id=9]
+[ext_resource path="res://planet-05-off.png" type="Texture" id=10]
+[ext_resource path="res://planet-06-off.png" type="Texture" id=11]
+[ext_resource path="res://planet-05-on.png" type="Texture" id=12]
+[ext_resource path="res://planet-06-on.png" type="Texture" id=13]
+[ext_resource path="res://planet-07-off.png" type="Texture" id=14]
+[ext_resource path="res://planet-01-on.png" type="Texture" id=15]
+[ext_resource path="res://planet-04-on.png" type="Texture" id=16]
+[ext_resource path="res://planet-01-off.png" type="Texture" id=17]
+[ext_resource path="res://planet-11-on.png" type="Texture" id=18]
+[ext_resource path="res://planet-07-on.png" type="Texture" id=19]
+[ext_resource path="res://planet-10-on.png" type="Texture" id=20]
+[ext_resource path="res://planet-08-on.png" type="Texture" id=21]
+[ext_resource path="res://planet-09-off.png" type="Texture" id=22]
+[ext_resource path="res://planet-08-off.png" type="Texture" id=23]
+[ext_resource path="res://planet-09-on.png" type="Texture" id=24]
+[ext_resource path="res://planet-10-off.png" type="Texture" id=25]
+[ext_resource path="res://planet-11-off.png" type="Texture" id=26]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 modulate = Color( 1, 1, 1, 0.513726 )
 position = Vector2( 529, 301 )
 z_index = -1
@@ -25,9 +48,13 @@ position = Vector2( 236, 436 )
 space_1 = 4
 
 [node name="Space3" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 204, 402 )
+position = Vector2( 202, 399 )
 space_1 = 1
 space_2 = 4
+
+[node name="Button" parent="Spaces/Space3" index="0"]
+texture_normal = ExtResource( 15 )
+texture_disabled = ExtResource( 17 )
 
 [node name="Space4" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 238, 390 )
@@ -40,6 +67,10 @@ space_4 = 6
 position = Vector2( 284, 353 )
 space_1 = 4
 space_2 = 9
+
+[node name="Button" parent="Spaces/Space5" index="0"]
+texture_normal = ExtResource( 7 )
+texture_disabled = ExtResource( 8 )
 
 [node name="Space6" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 251, 327 )
@@ -62,11 +93,19 @@ position = Vector2( 321, 291 )
 space_1 = 5
 space_2 = 8
 
+[node name="Button" parent="Spaces/Space9" index="0"]
+texture_normal = ExtResource( 6 )
+texture_disabled = ExtResource( 5 )
+
 [node name="Space10" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 324, 200 )
+position = Vector2( 324, 198 )
 space_1 = 8
 space_2 = 11
 space_3 = 15
+
+[node name="Button" parent="Spaces/Space10" index="0"]
+texture_normal = ExtResource( 16 )
+texture_disabled = ExtResource( 9 )
 
 [node name="Space11" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 354, 180 )
@@ -88,6 +127,10 @@ space_2 = 14
 position = Vector2( 452, 160 )
 space_1 = 13
 space_2 = 18
+
+[node name="Button" parent="Spaces/Space14" index="0"]
+texture_normal = ExtResource( 12 )
+texture_disabled = ExtResource( 10 )
 
 [node name="Space15" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 365, 211 )
@@ -128,9 +171,13 @@ space_2 = 20
 space_3 = 22
 
 [node name="Space22" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 564, 123 )
+position = Vector2( 563, 124 )
 space_1 = 21
 space_2 = 25
+
+[node name="Button" parent="Spaces/Space22" index="0"]
+texture_normal = ExtResource( 13 )
+texture_disabled = ExtResource( 11 )
 
 [node name="Space23" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 547, 179 )
@@ -160,9 +207,13 @@ space_1 = 24
 space_2 = 28
 
 [node name="Space28" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 644, 199 )
+position = Vector2( 641, 197 )
 space_1 = 27
 space_2 = 33
+
+[node name="Button" parent="Spaces/Space28" index="0"]
+texture_normal = ExtResource( 19 )
+texture_disabled = ExtResource( 14 )
 
 [node name="Space29" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 677, 157 )
@@ -196,10 +247,18 @@ position = Vector2( 740, 282 )
 space_1 = 32
 space_2 = 33
 
+[node name="Button" parent="Spaces/Space34" index="0"]
+texture_normal = ExtResource( 24 )
+texture_disabled = ExtResource( 22 )
+
 [node name="Space35" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 796, 243 )
 space_1 = 32
 space_2 = 36
+
+[node name="Button" parent="Spaces/Space35" index="0"]
+texture_normal = ExtResource( 21 )
+texture_disabled = ExtResource( 23 )
 
 [node name="Space36" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 805, 276 )
@@ -211,6 +270,10 @@ position = Vector2( 844, 320 )
 space_1 = 36
 space_2 = 41
 space_3 = 45
+
+[node name="Button" parent="Spaces/Space37" index="0"]
+texture_normal = ExtResource( 20 )
+texture_disabled = ExtResource( 25 )
 
 [node name="Space38" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 778, 276 )
@@ -234,8 +297,12 @@ space_2 = 40
 space_3 = 42
 
 [node name="Space42" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 801, 415 )
+position = Vector2( 800, 409 )
 space_1 = 41
+
+[node name="Button" parent="Spaces/Space42" index="0"]
+texture_normal = ExtResource( 18 )
+texture_disabled = ExtResource( 26 )
 
 [node name="Space43" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 832, 410 )
@@ -257,3 +324,15 @@ space_1 = 45
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 200, 446 )
+
+[editable path="Spaces/Space3"]
+[editable path="Spaces/Space5"]
+[editable path="Spaces/Space9"]
+[editable path="Spaces/Space10"]
+[editable path="Spaces/Space14"]
+[editable path="Spaces/Space22"]
+[editable path="Spaces/Space28"]
+[editable path="Spaces/Space34"]
+[editable path="Spaces/Space35"]
+[editable path="Spaces/Space37"]
+[editable path="Spaces/Space42"]
