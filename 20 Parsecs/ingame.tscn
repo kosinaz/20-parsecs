@@ -1,9 +1,9 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://space.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ingame.gd" type="Script" id=3]
-[ext_resource path="res://map.png" type="Texture" id=4]
+[ext_resource path="res://cargo.tscn" type="PackedScene" id=4]
 [ext_resource path="res://planet-03-off.png" type="Texture" id=5]
 [ext_resource path="res://planet-03-on.png" type="Texture" id=6]
 [ext_resource path="res://planet-02-on.png" type="Texture" id=7]
@@ -28,29 +28,26 @@
 [ext_resource path="res://planet-11-off.png" type="Texture" id=26]
 [ext_resource path="res://maelstrom-off.png" type="Texture" id=27]
 [ext_resource path="res://maelstrom-on.png" type="Texture" id=28]
+[ext_resource path="res://ship.tscn" type="PackedScene" id=29]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0745098, 0.0745098, 0.0745098, 1 )
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-modulate = Color( 1, 1, 1, 0.513726 )
-position = Vector2( 529, 301 )
-z_index = -1
-texture = ExtResource( 4 )
-
 [node name="Spaces" type="Node2D" parent="."]
 
 [node name="Space1" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 201, 446 )
+position = Vector2( 198, 353 )
 space_1 = 3
 
 [node name="Space2" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 236, 436 )
+position = Vector2( 233, 343 )
 space_1 = 4
 
 [node name="Space3" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 202, 399 )
+position = Vector2( 199, 306 )
 space_1 = 1
 space_2 = 4
 
@@ -58,15 +55,18 @@ space_2 = 4
 texture_normal = ExtResource( 15 )
 texture_disabled = ExtResource( 17 )
 
+[node name="Label" parent="Spaces/Space3" index="1"]
+text = "Acan"
+
 [node name="Space4" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 238, 390 )
+position = Vector2( 235, 297 )
 space_1 = 2
 space_2 = 3
 space_3 = 5
 space_4 = 6
 
 [node name="Space5" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 284, 353 )
+position = Vector2( 281, 260 )
 space_1 = 4
 space_2 = 9
 
@@ -74,24 +74,27 @@ space_2 = 9
 texture_normal = ExtResource( 7 )
 texture_disabled = ExtResource( 8 )
 
+[node name="Label" parent="Spaces/Space5" index="1"]
+text = "Bord"
+
 [node name="Space6" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 251, 327 )
+position = Vector2( 248, 234 )
 space_1 = 4
 space_2 = 7
 
 [node name="Space7" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 261, 275 )
+position = Vector2( 258, 182 )
 space_1 = 6
 space_2 = 8
 
 [node name="Space8" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 288, 281 )
+position = Vector2( 285, 188 )
 space_1 = 7
 space_2 = 9
 space_3 = 10
 
 [node name="Space9" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 321, 291 )
+position = Vector2( 318, 198 )
 space_1 = 5
 space_2 = 8
 
@@ -99,8 +102,11 @@ space_2 = 8
 texture_normal = ExtResource( 6 )
 texture_disabled = ExtResource( 5 )
 
+[node name="Label" parent="Spaces/Space9" index="1"]
+text = "Clot"
+
 [node name="Space10" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 324, 198 )
+position = Vector2( 321, 105 )
 space_1 = 8
 space_2 = 11
 space_3 = 15
@@ -109,19 +115,22 @@ space_3 = 15
 texture_normal = ExtResource( 16 )
 texture_disabled = ExtResource( 9 )
 
+[node name="Label" parent="Spaces/Space10" index="1"]
+text = "Dmon"
+
 [node name="Space11" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 354, 180 )
+position = Vector2( 351, 87 )
 space_1 = 10
 space_2 = 12
 
 [node name="Space12" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 400, 189 )
+position = Vector2( 397, 96 )
 space_1 = 11
 space_2 = 13
 space_3 = 16
 
 [node name="Space13" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 422, 178 )
+position = Vector2( 419, 85 )
 space_1 = 12
 space_2 = 14
 
@@ -129,8 +138,12 @@ space_2 = 14
 texture_normal = ExtResource( 28 )
 texture_disabled = ExtResource( 27 )
 
+[node name="Label" parent="Spaces/Space13" index="1"]
+visible = false
+text = "Planet"
+
 [node name="Space14" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 452, 160 )
+position = Vector2( 449, 67 )
 space_1 = 13
 space_2 = 18
 
@@ -138,46 +151,49 @@ space_2 = 18
 texture_normal = ExtResource( 12 )
 texture_disabled = ExtResource( 10 )
 
+[node name="Label" parent="Spaces/Space14" index="1"]
+text = "Ekes"
+
 [node name="Space15" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 365, 211 )
+position = Vector2( 362, 118 )
 space_1 = 10
 space_2 = 16
 
 [node name="Space16" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 439, 203 )
+position = Vector2( 436, 110 )
 space_1 = 12
 space_2 = 17
 space_3 = 15
 
 [node name="Space17" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 504, 183 )
+position = Vector2( 501, 90 )
 space_1 = 16
 space_2 = 21
 space_3 = 23
 
 [node name="Space18" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 449, 124 )
+position = Vector2( 446, 31 )
 space_1 = 14
 space_2 = 19
 
 [node name="Space19" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 481, 129 )
+position = Vector2( 478, 36 )
 space_1 = 18
 space_2 = 20
 
 [node name="Space20" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 483, 173 )
+position = Vector2( 480, 80 )
 space_1 = 19
 space_2 = 21
 
 [node name="Space21" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 509, 154 )
+position = Vector2( 506, 61 )
 space_1 = 17
 space_2 = 20
 space_3 = 22
 
 [node name="Space22" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 563, 124 )
+position = Vector2( 560, 31 )
 space_1 = 21
 space_2 = 25
 
@@ -185,35 +201,38 @@ space_2 = 25
 texture_normal = ExtResource( 13 )
 texture_disabled = ExtResource( 11 )
 
+[node name="Label" parent="Spaces/Space22" index="1"]
+text = "Fryl"
+
 [node name="Space23" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 547, 179 )
+position = Vector2( 544, 86 )
 space_1 = 17
 space_2 = 24
 
 [node name="Space24" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 574, 164 )
+position = Vector2( 571, 71 )
 space_1 = 23
 space_2 = 25
 space_3 = 27
 
 [node name="Space25" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 600, 156 )
+position = Vector2( 597, 63 )
 space_1 = 22
 space_2 = 24
 space_3 = 26
 
 [node name="Space26" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 647, 163 )
+position = Vector2( 644, 70 )
 space_1 = 25
 space_2 = 29
 
 [node name="Space27" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 615, 176 )
+position = Vector2( 612, 83 )
 space_1 = 24
 space_2 = 28
 
 [node name="Space28" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 641, 197 )
+position = Vector2( 638, 104 )
 space_1 = 27
 space_2 = 33
 
@@ -221,35 +240,38 @@ space_2 = 33
 texture_normal = ExtResource( 19 )
 texture_disabled = ExtResource( 14 )
 
+[node name="Label" parent="Spaces/Space28" index="1"]
+text = "Gnab"
+
 [node name="Space29" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 677, 157 )
+position = Vector2( 674, 64 )
 space_1 = 26
 space_2 = 30
 
 [node name="Space30" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 713, 175 )
+position = Vector2( 710, 82 )
 space_1 = 29
 space_2 = 31
 
 [node name="Space31" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 717, 206 )
+position = Vector2( 714, 113 )
 space_1 = 30
 space_2 = 32
 
 [node name="Space32" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 760, 255 )
+position = Vector2( 757, 162 )
 space_1 = 31
 space_2 = 34
 space_3 = 35
 space_4 = 38
 
 [node name="Space33" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 682, 226 )
+position = Vector2( 679, 133 )
 space_1 = 28
 space_2 = 34
 
 [node name="Space34" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 740, 282 )
+position = Vector2( 737, 189 )
 space_1 = 32
 space_2 = 33
 
@@ -257,8 +279,11 @@ space_2 = 33
 texture_normal = ExtResource( 24 )
 texture_disabled = ExtResource( 22 )
 
+[node name="Label" parent="Spaces/Space34" index="1"]
+text = "Hnal"
+
 [node name="Space35" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 796, 243 )
+position = Vector2( 793, 150 )
 space_1 = 32
 space_2 = 36
 
@@ -266,13 +291,16 @@ space_2 = 36
 texture_normal = ExtResource( 21 )
 texture_disabled = ExtResource( 23 )
 
+[node name="Label" parent="Spaces/Space35" index="1"]
+text = "Itat"
+
 [node name="Space36" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 805, 276 )
+position = Vector2( 802, 183 )
 space_1 = 35
 space_2 = 37
 
 [node name="Space37" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 844, 320 )
+position = Vector2( 841, 227 )
 space_1 = 36
 space_2 = 41
 space_3 = 45
@@ -281,55 +309,95 @@ space_3 = 45
 texture_normal = ExtResource( 20 )
 texture_disabled = ExtResource( 25 )
 
+[node name="Label" parent="Spaces/Space37" index="1"]
+text = "Jkaf"
+
 [node name="Space38" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 778, 276 )
+position = Vector2( 775, 183 )
 space_1 = 32
 space_2 = 39
 
 [node name="Space39" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 766, 302 )
+position = Vector2( 763, 209 )
 space_1 = 38
 space_2 = 40
 
 [node name="Space40" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 808, 320 )
+position = Vector2( 805, 227 )
 space_1 = 39
 space_2 = 41
 
 [node name="Space41" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 820, 369 )
+position = Vector2( 817, 276 )
 space_1 = 37
 space_2 = 40
 space_3 = 42
 
 [node name="Space42" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 800, 409 )
+position = Vector2( 797, 316 )
 space_1 = 41
 
 [node name="Button" parent="Spaces/Space42" index="0"]
 texture_normal = ExtResource( 18 )
 texture_disabled = ExtResource( 26 )
 
+[node name="Label" parent="Spaces/Space42" index="1"]
+text = "Ktak"
+
 [node name="Space43" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 832, 410 )
+position = Vector2( 829, 317 )
 space_1 = 41
 space_2 = 44
 
 [node name="Space44" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 825, 440 )
+position = Vector2( 822, 347 )
 space_1 = 43
 
 [node name="Space45" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 863, 409 )
+position = Vector2( 860, 316 )
 space_1 = 37
 space_2 = 46
 
 [node name="Space46" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 857, 438 )
+position = Vector2( 854, 345 )
 space_1 = 45
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 200, 446 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer"]
+margin_top = 406.0
+margin_right = 1024.0
+margin_bottom = 576.0
+
+[node name="Panel" type="Panel" parent="CanvasLayer/MarginContainer3"]
+margin_right = 1024.0
+margin_bottom = 170.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer3/Panel"]
+anchor_bottom = 1.0
+margin_right = 120.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer"]
+margin_right = 120.0
+margin_bottom = 170.0
+
+[node name="Cargo" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
+margin_right = 120.0
+margin_bottom = 170.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer3/Panel"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -141.0
+
+[node name="Ship" parent="CanvasLayer/MarginContainer3/Panel/MarginContainer2" instance=ExtResource( 29 )]
+margin_right = 141.0
+margin_bottom = 170.0
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

@@ -20,4 +20,13 @@ disabled = true
 texture_normal = ExtResource( 2 )
 texture_disabled = ExtResource( 3 )
 
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -24.0
+margin_top = 21.0
+margin_right = 24.0
+margin_bottom = 35.0
+align = 1
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
