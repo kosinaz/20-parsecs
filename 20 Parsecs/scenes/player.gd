@@ -16,7 +16,6 @@ func move_to(id):
 		get_node("../Spaces/Space13/Button").disabled = true
 	else:
 		get_node("../Spaces/Space13/Button").disabled = false
-			
 
 func _draw():
 	draw_circle(Vector2(), 5, Color.blue)

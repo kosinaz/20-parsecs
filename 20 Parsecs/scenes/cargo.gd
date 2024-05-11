@@ -1,22 +1,19 @@
 extends MarginContainer
 
-var to = ""
-var buy = 0
-var sell = 0
-var rep = ""
-var patrol = ""
-var move = 0
+var _data = {}
 
 func setup(data):
-	to = data.to
-	buy = data.buy
-	sell = data.sell
-	rep = data.rep
-	patrol = data.patrol
-	move = data.move
-	$"%Label".text = "To: " + to + "\n"
-	$"%Label".text += "Buy: " + str(buy) + "\n"
-	$"%Label".text += "Sell: " + str(sell) + "\n"
-	$"%Label".text += "Rep: " + rep + "\n"
-	$"%Label".text += "Patrol: " + patrol + "\n"
-	$"%Label".text += "Move: " + str(move)
+	_data = data
+	$"%Label".text = "To: " + data.to + "\n"
+	$"%Label".text += "Buy: " + str(data.buy) + "\n"
+	$"%Label".text += "Sell: " + str(data.sell) + "\n"
+	$"%Label".text += "Rep: " + data.rep + "\n"
+	$"%Label".text += "Patrol: " + data.patrol + "\n"
+	$"%Label".text += "Move: " + str(data.move)
+
+func get_data():
+	return _data
+
+func clear():
+	_data = {}
+	$"%Label".text = ""

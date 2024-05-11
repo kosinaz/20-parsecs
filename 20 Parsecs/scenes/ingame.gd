@@ -18,7 +18,8 @@ func _ready():
 	market_cargos.append_array(Cargos.new().deck)
 	randomize()
 	market_cargos.shuffle()
-	$"%Cargo".setup(market_cargos[0])
+	$"%MarketCargo".setup(market_cargos[0])
+	$"%Ship".setup(Ships.new().deck[0])
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -26,9 +27,14 @@ func _draw():
 			draw_line(astar.get_point_position(id), astar.get_point_position(next_id), Color.darkslateblue, 2)
 
 func _on_market_cargo_buy_pressed():
+	$"%ShipCargo".setup(market_cargos[0])
 	market_cargos.pop_front()
-	$"%Cargo".setup(market_cargos[0])
+	$"%MarketCargo".setup(market_cargos[0])
 
 func _on_market_cargo_discard_pressed():
 	market_cargos.append(market_cargos.pop_front())
-	$"%Cargo".setup(market_cargos[0])
+	$"%MarketCargo".setup(market_cargos[0])
+
+func _on_ship_cargo_discard_pressed():
+	market_cargos.append($"%ShipCargo".get_data())
+	$"%ShipCargo".clear()
