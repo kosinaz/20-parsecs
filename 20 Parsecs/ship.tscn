@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://cargo.tscn" type="PackedScene" id=1]
+[ext_resource path="res://market.tscn" type="PackedScene" id=1]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.219608, 0.219608, 0.219608, 1 )
@@ -13,31 +13,30 @@ margin_bottom = 102.0
 rect_pivot_offset = Vector2( -208, -24 )
 
 [node name="Panel" type="Panel" parent="."]
-margin_right = 182.0
-margin_bottom = 166.0
+margin_right = 176.0
+margin_bottom = 124.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 182.0
-margin_bottom = 166.0
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 176.0
+margin_bottom = 124.0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+margin_right = 76.0
+margin_bottom = 124.0
 custom_constants/margin_right = 10
 custom_constants/margin_top = 10
 custom_constants/margin_left = 10
 custom_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 172.0
-margin_bottom = 156.0
-custom_constants/separation = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_right = 56.0
-margin_bottom = 146.0
+margin_right = 66.0
+margin_bottom = 114.0
 theme = SubResource( 1 )
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/MarginContainer/VBoxContainer"]
 margin_right = 56.0
 margin_bottom = 82.0
 text = "Ship
@@ -46,58 +45,17 @@ Speed: 5
 Attack: 3
 Armor: 4"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 66.0
-margin_right = 162.0
-margin_bottom = 146.0
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+margin_left = 80.0
+margin_right = 176.0
+margin_bottom = 124.0
 
-[node name="Cargo" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource( 1 )]
-margin_right = 96.0
-margin_bottom = 146.0
-
-[node name="Panel" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo" index="0"]
-margin_right = 96.0
-margin_bottom = 146.0
-
-[node name="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo" index="1"]
-margin_right = 96.0
-margin_bottom = 146.0
-
-[node name="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer" index="0"]
-margin_right = 86.0
-margin_bottom = 136.0
-
-[node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="0"]
-margin_right = 76.0
-
-[node name="HBoxContainer2" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="1"]
-margin_right = 76.0
-
-[node name="HBoxContainer3" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="2"]
-margin_right = 76.0
-
-[node name="HBoxContainer4" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="3"]
-margin_right = 76.0
-
-[node name="HBoxContainer5" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="4"]
-margin_right = 76.0
-
-[node name="HBoxContainer6" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="5"]
-margin_right = 76.0
-
-[node name="HBoxContainer7" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="6"]
-margin_right = 76.0
-
-[node name="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer" index="7"]
-margin_right = 76.0
-margin_bottom = 126.0
-
-[node name="Buy" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
-visible = false
-
-[node name="Discard" parent="MarginContainer/HBoxContainer/VBoxContainer2/Cargo/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
-visible = false
+[node name="CargoSet" parent="HBoxContainer/MarginContainer2" instance=ExtResource( 1 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 0.0
-margin_right = 60.0
-
-[editable path="MarginContainer/HBoxContainer/VBoxContainer2/Cargo"]
+margin_top = 0.0
+margin_right = 96.0
+margin_bottom = 124.0

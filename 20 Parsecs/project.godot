@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "Cargos",
+"language": "GDScript",
+"path": "res://cargos.gd"
+}, {
 "base": "Node2D",
 "class": "Space",
 "language": "GDScript",
 "path": "res://space.gd"
 } ]
 _global_script_class_icons={
+"Cargos": "",
 "Space": ""
 }
 
