@@ -12,12 +12,12 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Cargos",
 "language": "GDScript",
-"path": "res://cargos.gd"
+"path": "res://scenes/cargos.gd"
 }, {
 "base": "Node2D",
 "class": "Space",
 "language": "GDScript",
-"path": "res://space.gd"
+"path": "res://scenes/space.gd"
 } ]
 _global_script_class_icons={
 "Cargos": "",
@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="20 Parsecs"
-run/main_scene="res://ingame.tscn"
+run/main_scene="res://scenes/ingame.tscn"
 config/icon="res://icon.png"
 
 [display]
