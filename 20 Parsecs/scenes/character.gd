@@ -20,7 +20,14 @@ func setup(data):
 func get_data():
 	return _data
 	
-func add_money(amount):
+func get_money():
+	return money
+	
+func increase_money(amount):
 	money += amount
+	setup(_data)
+	
+func decrease_money(amount):
+	money -= amount
 	setup(_data)
 	

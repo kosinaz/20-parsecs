@@ -17,3 +17,8 @@ func get_data():
 func clear():
 	_data = {}
 	$"%Label".text = ""
+	
+func get_to():
+	if _data == {} or not _data.has("to"):
+		return ""
+	return _data.to
