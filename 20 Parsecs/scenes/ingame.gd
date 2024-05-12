@@ -5,6 +5,7 @@ var market_cargos = []
 var turn = 1
 var planets = [3, 5, 9, 10, 14, 22, 28, 34, 35, 37, 42]
 var planet_names = []
+var bought = false
 
 func _ready():
 	for space in $Spaces.get_children():
@@ -26,7 +27,7 @@ func _ready():
 	market_cargos.shuffle()
 	$"%MarketCargo".setup(market_cargos[0])
 	$"%Character".setup(Characters.new().deck[0])
-	$"%Character".increase_money(4000)
+	$"%Player".increase_money(4000)
 	$"%Ship".setup(Ships.new().deck[0])
 	start_planning()
 	
@@ -72,10 +73,21 @@ func start_action():
 	else:
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
 		$"%TurnIndicator".text += "Perform any number or no actions, then press Done!"
-		$"%MarketCargoBuy".disabled = $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to()
-		print($"%MarketCargoBuy".disabled)
+	bought = false
+	update_market_actions()
+	$"%MarketCargoDiscard".disabled = false
+
+func update_market_actions():
+	$"%MarketCargoBuy".disabled = bought
+	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
+		$"%MarketCargoBuy".disabled = true
+	if $"%ShipCargo".get_to() != "":
+		$"%ShipCargoDiscard".disabled = false
+		$"%MarketCargoBuy".disabled = true
 		$"%ShipCargoSell".disabled = $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to()
-		$"%MarketCargoDiscard".disabled = false
+	else:
+		$"%ShipCargoSell".disabled = true
+		$"%ShipCargoDiscard".disabled = true
 
 func start_encounter():
 	start_turn()
@@ -94,27 +106,33 @@ func _on_done_pressed():
 	start_encounter()
 
 func _on_market_cargo_buy_pressed():
-	$"%Character".decrease_money(market_cargos[0].buy)
+	$"%Player".decrease_money(market_cargos[0].buy)
 	$"%ShipCargo".setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
-	$"%MarketCargoBuy".disabled = true
+	bought = true
+	update_market_actions()
 	$"%MarketCargoDiscard".disabled = true
 
 func _on_market_cargo_discard_pressed():
 	market_cargos.append(market_cargos.pop_front())
 	$"%MarketCargo".setup(market_cargos[0])
+	update_market_actions()
 	$"%MarketCargoDiscard".disabled = true
 
 func _on_ship_cargo_sell_pressed():
-	$"%Character".increase_money($"%ShipCargo".get_data().sell)
+	$"%Player".increase_money($"%ShipCargo".get_data().sell)
+	print($"%ShipCargo".get_data().rep)
+	$"%Player".increase_reputation($"%ShipCargo".get_data().rep)
 	_on_ship_cargo_discard_pressed()
 	$"%ShipCargoSell".disabled = true
+	update_market_actions()
 	
 func _on_ship_cargo_discard_pressed():
 	market_cargos.append($"%ShipCargo".get_data())
 	$"%ShipCargo".clear()
+	update_market_actions()
 
 func _on_work_pressed():
-	$"%Character".increase_money(2000)
+	$"%Player".increase_money(2000)
 	start_action()

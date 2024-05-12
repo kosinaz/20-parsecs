@@ -2,7 +2,6 @@ extends MarginContainer
 
 var _data = {}
 var damage = 0
-var money = 0
 
 func setup(data):
 	_data = data
@@ -14,20 +13,8 @@ func setup(data):
 		$"%Label".text += "Skill: " + str(_data.skill2) + "\n"
 	if _data.has("skill3"):
 		$"%Label".text += "Skill: " + str(_data.skill3) + "\n"
-	$"%Label".text += "Damage: " + str(damage) + "\n"
-	$"%Label".text += "Money: " + str(money) + ""
+	$"%Label".text += "Damage: " + str(damage)
 
 func get_data():
 	return _data
-	
-func get_money():
-	return money
-	
-func increase_money(amount):
-	money += amount
-	setup(_data)
-	
-func decrease_money(amount):
-	money -= amount
-	setup(_data)
 	

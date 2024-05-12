@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -32,6 +32,7 @@
 [ext_resource path="res://scenes/ship.tscn" type="PackedScene" id=30]
 [ext_resource path="res://scenes/character.tscn" type="PackedScene" id=31]
 [ext_resource path="res://images/hud-top.png" type="Texture" id=32]
+[ext_resource path="res://images/hud-center.png" type="Texture" id=33]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 3 )
@@ -401,6 +402,41 @@ margin_right = 46.0
 margin_bottom = 72.0
 text = "Done"
 
+[node name="HudCenter" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -512.0
+margin_top = -204.0
+margin_right = 512.0
+margin_bottom = -174.0
+texture = ExtResource( 33 )
+
+[node name="Fame" type="Label" parent="CanvasLayer/HudCenter"]
+unique_name_in_owner = true
+margin_left = 2.0
+margin_top = 8.0
+margin_right = 53.0
+margin_bottom = 22.0
+text = "Fame: 0"
+
+[node name="Money" type="Label" parent="CanvasLayer/HudCenter"]
+unique_name_in_owner = true
+margin_left = 74.0
+margin_top = 8.0
+margin_right = 133.0
+margin_bottom = 22.0
+text = "Money: 0"
+
+[node name="Reputation" type="Label" parent="CanvasLayer/HudCenter"]
+unique_name_in_owner = true
+margin_left = 186.0
+margin_top = 8.0
+margin_right = 255.0
+margin_bottom = 22.0
+text = "Reputation: Ahut: 0   Bsyn: 0   Cimp: 0   Dreb: 0"
+
 [node name="Hud" type="TextureRect" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -617,7 +653,7 @@ margin_bottom = 20.0
 disabled = true
 text = "Sell"
 
-[node name="ShipCargoDiscard2" type="Button" parent="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer"]
+[node name="ShipCargoDiscard" type="Button" parent="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 37.0
 margin_right = 97.0
@@ -630,7 +666,7 @@ text = "Discard"
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoSell" to="." method="_on_ship_cargo_sell_pressed"]
-[connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoDiscard2" to="." method="_on_ship_cargo_discard_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoDiscard" to="." method="_on_ship_cargo_discard_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]
