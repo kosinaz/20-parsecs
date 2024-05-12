@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -30,6 +30,7 @@
 [ext_resource path="res://images/maelstrom-on.png" type="Texture" id=28]
 [ext_resource path="res://images/hud.png" type="Texture" id=29]
 [ext_resource path="res://scenes/ship.tscn" type="PackedScene" id=30]
+[ext_resource path="res://scenes/character.tscn" type="PackedScene" id=31]
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 3 )
@@ -389,38 +390,33 @@ margin_bottom = 176.0
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Market/HBoxContainer"]
 margin_right = 100.0
 margin_bottom = 176.0
-custom_constants/separation = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Market/HBoxContainer/VBoxContainer"]
 margin_right = 100.0
-margin_bottom = 18.0
-custom_constants/margin_right = 2
+margin_bottom = 16.0
 custom_constants/margin_top = 2
-custom_constants/margin_left = 2
-custom_constants/margin_bottom = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Market/HBoxContainer/VBoxContainer/MarginContainer"]
-margin_left = 2.0
 margin_top = 2.0
-margin_right = 98.0
+margin_right = 100.0
 margin_bottom = 16.0
 text = "Cargo"
 align = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Market/HBoxContainer/VBoxContainer"]
-margin_top = 18.0
+margin_top = 20.0
 margin_right = 100.0
-margin_bottom = 148.0
+margin_bottom = 140.0
 
 [node name="MarketCargo" parent="CanvasLayer/Market/HBoxContainer/VBoxContainer/MarginContainer2" instance=ExtResource( 4 )]
 unique_name_in_owner = true
 margin_right = 100.0
-margin_bottom = 130.0
+margin_bottom = 120.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Market/HBoxContainer/VBoxContainer"]
-margin_top = 148.0
+margin_top = 144.0
 margin_right = 100.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 custom_constants/separation = 0
 alignment = 1
 
@@ -436,106 +432,143 @@ margin_right = 98.0
 margin_bottom = 20.0
 text = "Discard"
 
-[node name="Ship" type="MarginContainer" parent="CanvasLayer"]
+[node name="Character" type="MarginContainer" parent="CanvasLayer"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -208.0
+margin_left = -312.0
 margin_top = -168.0
 custom_constants/margin_right = 2
 custom_constants/margin_left = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Ship"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character"]
 margin_left = 2.0
-margin_right = 206.0
+margin_right = 310.0
 margin_bottom = 168.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Ship/HBoxContainer"]
+[node name="CharacterContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
 margin_right = 100.0
 margin_bottom = 168.0
-custom_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer"]
 margin_right = 100.0
-margin_bottom = 18.0
-custom_constants/margin_right = 2
+margin_bottom = 16.0
 custom_constants/margin_top = 2
-custom_constants/margin_left = 2
-custom_constants/margin_bottom = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer/MarginContainer"]
-margin_left = 2.0
+[node name="Label" type="Label" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer/MarginContainer"]
 margin_top = 2.0
-margin_right = 98.0
+margin_right = 100.0
+margin_bottom = 16.0
+text = "Character"
+align = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer"]
+margin_top = 20.0
+margin_right = 100.0
+margin_bottom = 140.0
+
+[node name="Character" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer/MarginContainer2" instance=ExtResource( 31 )]
+unique_name_in_owner = true
+margin_right = 100.0
+margin_bottom = 120.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer"]
+margin_top = 144.0
+margin_right = 100.0
+margin_bottom = 164.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="Work" type="Button" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer"]
+margin_left = 7.0
+margin_right = 52.0
+margin_bottom = 20.0
+text = "Work"
+
+[node name="Heal" type="Button" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer"]
+margin_left = 52.0
+margin_right = 93.0
+margin_bottom = 20.0
+disabled = true
+text = "Heal"
+
+[node name="ShipContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
+margin_left = 104.0
+margin_right = 204.0
+margin_bottom = 168.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/ShipContainer"]
+margin_right = 100.0
+margin_bottom = 16.0
+custom_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Character/HBoxContainer/ShipContainer/MarginContainer"]
+margin_top = 2.0
+margin_right = 100.0
 margin_bottom = 16.0
 text = "Ship"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer"]
-margin_top = 18.0
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/ShipContainer"]
+margin_top = 20.0
 margin_right = 100.0
-margin_bottom = 148.0
+margin_bottom = 140.0
 
-[node name="Ship" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer/MarginContainer2" instance=ExtResource( 30 )]
+[node name="Ship" parent="CanvasLayer/Character/HBoxContainer/ShipContainer/MarginContainer2" instance=ExtResource( 30 )]
 unique_name_in_owner = true
 margin_right = 100.0
-margin_bottom = 130.0
+margin_bottom = 120.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer"]
-margin_top = 148.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character/HBoxContainer/ShipContainer"]
+margin_top = 144.0
 margin_right = 100.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="ShipRepair" type="Button" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ShipRepair" type="Button" parent="CanvasLayer/Character/HBoxContainer/ShipContainer/HBoxContainer"]
 margin_left = 24.0
 margin_right = 76.0
 margin_bottom = 20.0
 disabled = true
 text = "Repair"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Ship/HBoxContainer"]
-margin_left = 104.0
-margin_right = 204.0
+[node name="CargoContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
+margin_left = 208.0
+margin_right = 308.0
 margin_bottom = 168.0
-custom_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/CargoContainer"]
 margin_right = 100.0
-margin_bottom = 18.0
-custom_constants/margin_right = 2
+margin_bottom = 16.0
 custom_constants/margin_top = 2
-custom_constants/margin_left = 2
-custom_constants/margin_bottom = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer2/MarginContainer"]
-margin_left = 2.0
+[node name="Label" type="Label" parent="CanvasLayer/Character/HBoxContainer/CargoContainer/MarginContainer"]
 margin_top = 2.0
-margin_right = 98.0
+margin_right = 100.0
 margin_bottom = 16.0
 text = "Cargo"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer2"]
-margin_top = 18.0
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/CargoContainer"]
+margin_top = 20.0
 margin_right = 100.0
-margin_bottom = 148.0
+margin_bottom = 140.0
 
-[node name="ShipCargo" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer2/MarginContainer2" instance=ExtResource( 4 )]
+[node name="ShipCargo" parent="CanvasLayer/Character/HBoxContainer/CargoContainer/MarginContainer2" instance=ExtResource( 4 )]
 unique_name_in_owner = true
 margin_right = 100.0
-margin_bottom = 130.0
+margin_bottom = 120.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer2"]
-margin_top = 148.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character/HBoxContainer/CargoContainer"]
+margin_top = 144.0
 margin_right = 100.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="ShipCargoDiscard" type="Button" parent="CanvasLayer/Ship/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="ShipCargoDiscard" type="Button" parent="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer"]
 margin_left = 20.0
 margin_right = 80.0
 margin_bottom = 20.0
@@ -543,7 +576,7 @@ text = "Discard"
 
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/Ship/HBoxContainer/VBoxContainer2/HBoxContainer/ShipCargoDiscard" to="." method="_on_ship_cargo_discard_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoDiscard" to="." method="_on_ship_cargo_discard_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

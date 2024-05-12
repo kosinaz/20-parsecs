@@ -9,7 +9,7 @@ func setup(data):
 	$"%Label".text += "Speed: " + str(_data.speed) + "\n"
 	$"%Label".text += "Attack: " + str(_data.attack) + "\n"
 	$"%Label".text += "Armor: " + str(_data.armor) + "\n"
-	$"%Label".text += "Damage: 0"
+	$"%Label".text += "Damage: " + str(damage)
 
 func get_data():
 	return _data

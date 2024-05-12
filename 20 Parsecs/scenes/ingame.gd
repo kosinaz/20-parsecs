@@ -19,6 +19,8 @@ func _ready():
 	randomize()
 	market_cargos.shuffle()
 	$"%MarketCargo".setup(market_cargos[0])
+	$"%Character".setup(Characters.new().deck[0])
+	$"%Character".add_money(4000)
 	$"%Ship".setup(Ships.new().deck[0])
 	
 func _draw():
