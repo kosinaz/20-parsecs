@@ -510,23 +510,23 @@ disabled = true
 text = "Discard"
 
 [node name="Character" type="MarginContainer" parent="CanvasLayer"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -312.0
-margin_top = -168.0
+margin_left = 712.0
+margin_top = 412.0
+margin_right = 1024.0
+margin_bottom = 576.0
+grow_horizontal = 0
+grow_vertical = 0
 custom_constants/margin_right = 2
 custom_constants/margin_left = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character"]
 margin_left = 2.0
 margin_right = 310.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 
 [node name="CharacterContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
 margin_right = 100.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer"]
 margin_right = 100.0
@@ -574,7 +574,7 @@ text = "Heal"
 [node name="ShipContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
 margin_left = 104.0
 margin_right = 204.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/ShipContainer"]
 margin_right = 100.0
@@ -615,7 +615,7 @@ text = "Repair"
 [node name="CargoContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
 margin_left = 208.0
 margin_right = 308.0
-margin_bottom = 168.0
+margin_bottom = 164.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/CargoContainer"]
 margin_right = 100.0
@@ -662,12 +662,66 @@ margin_bottom = 20.0
 disabled = true
 text = "Discard"
 
+[node name="HiddenCargoContainer" type="VBoxContainer" parent="CanvasLayer/Character/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_left = 312.0
+margin_right = 412.0
+margin_bottom = 164.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer"]
+margin_right = 100.0
+margin_bottom = 16.0
+custom_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/MarginContainer"]
+margin_top = 2.0
+margin_right = 100.0
+margin_bottom = 16.0
+text = "Hidden Cargo"
+align = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer"]
+margin_top = 20.0
+margin_right = 100.0
+margin_bottom = 140.0
+
+[node name="HiddenCargo" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/MarginContainer2" instance=ExtResource( 4 )]
+unique_name_in_owner = true
+margin_right = 100.0
+margin_bottom = 120.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer"]
+margin_top = 144.0
+margin_right = 100.0
+margin_bottom = 164.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="HiddenCargoSell" type="Button" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 2.0
+margin_right = 37.0
+margin_bottom = 20.0
+disabled = true
+text = "Sell"
+
+[node name="HiddenCargoDiscard" type="Button" parent="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 37.0
+margin_right = 97.0
+margin_bottom = 20.0
+disabled = true
+text = "Discard"
+
 [connection signal="pressed" from="CanvasLayer/HudCenter/Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoSell" to="." method="_on_ship_cargo_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoDiscard" to="." method="_on_ship_cargo_discard_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer/HiddenCargoSell" to="." method="_on_hidden_cargo_sell_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer/HiddenCargoDiscard" to="." method="_on_hidden_cargo_discard_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

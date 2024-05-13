@@ -1,10 +1,15 @@
 extends MarginContainer
 
 var _data = {}
+var has_cargo = false
 
 func setup(data):
+	has_cargo = true
 	_data = data
 	$"%Label".text = ""
+	if data.has("smuggling compartment"):
+		$"%Label".text += "Smuggling\nCompartment\n+25% success\nBuy: 2000"
+		return
 	if data.has("illegal"):
 		$"%Label".text += "Illegal\n"
 	$"%Label".text += "To: " + data.to + "\n"
@@ -23,6 +28,7 @@ func get_data():
 	return _data
 
 func clear():
+	has_cargo = false
 	_data = {}
 	$"%Label".text = ""
 	

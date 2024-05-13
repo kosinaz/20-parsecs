@@ -78,6 +78,8 @@ func stop_action():
 	$"%MarketCargoDiscard".disabled = true
 	$"%ShipCargoSell".disabled = true
 	$"%ShipCargoDiscard".disabled = true
+	$"%HiddenCargoSell".disabled = true
+	$"%HiddenCargoDiscard".disabled = true
 	$"%Done".disabled = true
 	start_encounter()
 
@@ -85,19 +87,44 @@ func update_market_actions():
 	$"%MarketCargoBuy".disabled = bought
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
 		$"%MarketCargoBuy".disabled = true
-	if $"%ShipCargo".get_to() != "":
-		$"%ShipCargoDiscard".disabled = false
+	if $"%ShipCargo".has_cargo and not $"%HiddenCargoContainer".visible:
 		$"%MarketCargoBuy".disabled = true
+	if $"%ShipCargo".has_cargo and $"%HiddenCargoContainer".visible and $"%HiddenCargo".has_cargo:
+		$"%MarketCargoBuy".disabled = true
+	if $"%ShipCargo".has_cargo:
 		$"%ShipCargoSell".disabled = $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to()
+		$"%ShipCargoDiscard".disabled = false
+		$"%HiddenCargoContainer".visible = $"%ShipCargo".get_data().has("smuggling compartment")
 	else:
 		$"%ShipCargoSell".disabled = true
 		$"%ShipCargoDiscard".disabled = true
+	if $"%HiddenCargo".has_cargo:
+		$"%HiddenCargoSell".disabled = $"%Player".current_space.get_node("Label").text != $"%HiddenCargo".get_to()
+		$"%HiddenCargoDiscard".disabled = false
+	else:
+		$"%HiddenCargoSell".disabled = true
+		$"%HiddenCargoDiscard".disabled = true
 
-func remove_ship_cargo():
-	market_cargos.append($"%ShipCargo".get_data())
-	$"%ShipCargo".clear()
-	$"%ShipCargoSell".disabled = true
-	$"%ShipCargoDiscard".disabled = true
+func sell_cargo(cargo):
+	if cargo.get_data().has("illegal"):
+		var target = 3
+		if $"%HiddenCargo".visible:
+			target += 2
+		if randi() % 8 < target:
+			$"%Player".increase_fame(cargo.get_data().fame)
+			$"%Player".increase_money(cargo.get_data().sell)
+			remove_cargo(cargo)
+		else:
+			stop_action()
+	else:
+		$"%Player".increase_money(cargo.get_data().sell)
+		if cargo.get_data().has("rep"):
+			$"%Player".increase_reputation(cargo.get_data().rep)
+		remove_cargo(cargo)
+
+func remove_cargo(cargo):
+	market_cargos.append(cargo.get_data())
+	cargo.clear()
 	update_market_actions()
 
 func start_encounter():
@@ -111,12 +138,19 @@ func _on_space_pressed(space):
 	move_to(space)
 	start_action()
 
+func _on_work_pressed():
+	$"%Player".increase_money(2000)
+	start_action()
+
 func _on_done_pressed():
 	stop_action()
 
 func _on_market_cargo_buy_pressed():
 	$"%Player".decrease_money(market_cargos[0].buy)
-	$"%ShipCargo".setup(market_cargos[0])
+	if not $"%ShipCargo".has_cargo:
+		$"%ShipCargo".setup(market_cargos[0])
+	else:
+		$"%HiddenCargo".setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
 	bought = true
@@ -130,22 +164,13 @@ func _on_market_cargo_discard_pressed():
 	$"%MarketCargoDiscard".disabled = true
 
 func _on_ship_cargo_sell_pressed():
-	if $"%ShipCargo".get_data().has("illegal"):
-		if randi() % 8 < 3:
-			$"%Player".increase_fame($"%ShipCargo".get_data().fame)
-			$"%Player".increase_money($"%ShipCargo".get_data().sell)
-			remove_ship_cargo()
-		else:
-			stop_action()
-	else:
-		$"%Player".increase_money($"%ShipCargo".get_data().sell)
-		if $"%ShipCargo".get_data().has("rep"):
-			$"%Player".increase_reputation($"%ShipCargo".get_data().rep)
-		remove_ship_cargo()
+	sell_cargo($"%ShipCargo")
 	
 func _on_ship_cargo_discard_pressed():
-	remove_ship_cargo()
+	remove_cargo($"%ShipCargo")
 
-func _on_work_pressed():
-	$"%Player".increase_money(2000)
-	start_action()
+func _on_hidden_cargo_sell_pressed():
+	sell_cargo($"%HiddenCargo")
+
+func _on_hidden_cargo_discard_pressed():
+	remove_cargo($"%HiddenCargo")

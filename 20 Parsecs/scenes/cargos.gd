@@ -75,4 +75,8 @@ var deck = [
 		"patrol": "Dreb",
 		"move": 3,
 	},
+	{
+		"smuggling compartment": true,
+		"buy": 2000,
+	},
 ]
