@@ -394,14 +394,6 @@ margin_bottom = 40.0
 text = "Turn 1, Planning Step
 Move to a highlighted space or Work for 2000 credits!"
 
-[node name="Done" type="Button" parent="CanvasLayer"]
-unique_name_in_owner = true
-visible = false
-margin_top = 52.0
-margin_right = 46.0
-margin_bottom = 72.0
-text = "Done"
-
 [node name="HudCenter" type="TextureRect" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -436,6 +428,15 @@ margin_top = 8.0
 margin_right = 255.0
 margin_bottom = 22.0
 text = "Reputation: Ahut: 0   Bsyn: 0   Cimp: 0   Dreb: 0"
+
+[node name="Done" type="Button" parent="CanvasLayer/HudCenter"]
+unique_name_in_owner = true
+margin_left = 973.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 25.0
+disabled = true
+text = "Done"
 
 [node name="Hud" type="TextureRect" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -661,7 +662,7 @@ margin_bottom = 20.0
 disabled = true
 text = "Discard"
 
-[connection signal="pressed" from="CanvasLayer/Done" to="." method="_on_done_pressed"]
+[connection signal="pressed" from="CanvasLayer/HudCenter/Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]

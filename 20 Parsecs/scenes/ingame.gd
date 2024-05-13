@@ -36,19 +36,14 @@ func _draw():
 		for next_id in astar.get_point_connections(id):
 			draw_line(astar.get_point_position(id), astar.get_point_position(next_id), Color.darkslateblue, 2)
 
-
 func move_to(space):
 	$"%Player".current_space = space
 	$"%Player".position = space.position
-
 
 func start_planning():
 	$"%TurnIndicator".text = "Turn " + str(turn) + ", Planning Step\n"
 	$"%TurnIndicator".text += "Move to a highlighted space or Work for 2000 credits!"
 	$"%Work".disabled = false
-	enable_spaces_in_range()
-
-func enable_spaces_in_range():
 	astar.set_point_disabled(13)
 	for to_id in astar.get_points():
 		if astar.get_id_path($"%Player".current_space.id, to_id).size() > $"%Ship".get_data().speed + 1:
@@ -61,21 +56,30 @@ func enable_spaces_in_range():
 	else:
 		get_node("Spaces/Space13/Button").disabled = false
 
-func disable_spaces():
+func stop_planning():
 	for space in $Spaces.get_children():
 		space.get_node("Button").disabled = true
+	$"%Work".disabled = true
 
 func start_action():
-	$"%Done".show()
-	$"%Work".disabled = true
+	stop_planning()
 	if not planets.has($"%Player".current_space.id):
-		start_turn()
+		stop_action()
 	else:
+		$"%Done".disabled = false
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
 		$"%TurnIndicator".text += "Perform any number or no actions, then press Done!"
-	bought = false
-	update_market_actions()
-	$"%MarketCargoDiscard".disabled = false
+		bought = false
+		update_market_actions()
+		$"%MarketCargoDiscard".disabled = false
+
+func stop_action():
+	$"%MarketCargoBuy".disabled = true
+	$"%MarketCargoDiscard".disabled = true
+	$"%ShipCargoSell".disabled = true
+	$"%ShipCargoDiscard".disabled = true
+	$"%Done".disabled = true
+	start_encounter()
 
 func update_market_actions():
 	$"%MarketCargoBuy".disabled = bought
@@ -98,12 +102,10 @@ func start_turn():
 
 func _on_space_pressed(space):
 	move_to(space)
-	disable_spaces()
 	start_action()
 
 func _on_done_pressed():
-	$"%Done".hide()
-	start_encounter()
+	stop_action()
 
 func _on_market_cargo_buy_pressed():
 	$"%Player".decrease_money(market_cargos[0].buy)
@@ -122,8 +124,8 @@ func _on_market_cargo_discard_pressed():
 
 func _on_ship_cargo_sell_pressed():
 	$"%Player".increase_money($"%ShipCargo".get_data().sell)
-	print($"%ShipCargo".get_data().rep)
-	$"%Player".increase_reputation($"%ShipCargo".get_data().rep)
+	if $"%ShipCargo".get_data().has("rep"):
+		$"%Player".increase_reputation($"%ShipCargo".get_data().rep)
 	_on_ship_cargo_discard_pressed()
 	$"%ShipCargoSell".disabled = true
 	update_market_actions()
