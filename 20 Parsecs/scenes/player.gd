@@ -21,6 +21,14 @@ func increase_money(amount):
 func decrease_money(amount):
 	money -= amount
 	$"%Money".text = "Money: " + str(money)
+	
+func increase_fame(amount):
+	fame += amount
+	$"%Fame".text = "Fame: " + str(fame)
+	
+func decrease_fame(amount):
+	fame -= amount
+	$"%Fame".text = "Fame: " + str(fame)
 
 func increase_reputation(reputation):
 	if reputation == "Ahut" and ahut < 1:

@@ -14,8 +14,10 @@ func setup(data):
 		$"%Label".text += "Rep: " + data.rep + "\n"
 	if data.has("fame"):
 		$"%Label".text += "Fame: " + str(data.fame) + "\n"
-	$"%Label".text += "Patrol: " + data.patrol + "\n"
-	$"%Label".text += "Move: " + str(data.move)
+	if data.has("patrol"):
+		$"%Label".text += "Patrol: " + data.patrol + "\n"
+	if data.has("move"):
+		$"%Label".text += "Move: " + str(data.move)
 
 func get_data():
 	return _data

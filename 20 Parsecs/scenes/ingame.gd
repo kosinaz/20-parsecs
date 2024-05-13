@@ -93,6 +93,13 @@ func update_market_actions():
 		$"%ShipCargoSell".disabled = true
 		$"%ShipCargoDiscard".disabled = true
 
+func remove_ship_cargo():
+	market_cargos.append($"%ShipCargo".get_data())
+	$"%ShipCargo".clear()
+	$"%ShipCargoSell".disabled = true
+	$"%ShipCargoDiscard".disabled = true
+	update_market_actions()
+
 func start_encounter():
 	start_turn()
 
@@ -123,17 +130,21 @@ func _on_market_cargo_discard_pressed():
 	$"%MarketCargoDiscard".disabled = true
 
 func _on_ship_cargo_sell_pressed():
-	$"%Player".increase_money($"%ShipCargo".get_data().sell)
-	if $"%ShipCargo".get_data().has("rep"):
-		$"%Player".increase_reputation($"%ShipCargo".get_data().rep)
-	_on_ship_cargo_discard_pressed()
-	$"%ShipCargoSell".disabled = true
-	update_market_actions()
+	if $"%ShipCargo".get_data().has("illegal"):
+		if randi() % 8 < 3:
+			$"%Player".increase_fame($"%ShipCargo".get_data().fame)
+			$"%Player".increase_money($"%ShipCargo".get_data().sell)
+			remove_ship_cargo()
+		else:
+			stop_action()
+	else:
+		$"%Player".increase_money($"%ShipCargo".get_data().sell)
+		if $"%ShipCargo".get_data().has("rep"):
+			$"%Player".increase_reputation($"%ShipCargo".get_data().rep)
+		remove_ship_cargo()
 	
 func _on_ship_cargo_discard_pressed():
-	market_cargos.append($"%ShipCargo".get_data())
-	$"%ShipCargo".clear()
-	update_market_actions()
+	remove_ship_cargo()
 
 func _on_work_pressed():
 	$"%Player".increase_money(2000)
