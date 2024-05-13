@@ -7,7 +7,6 @@ var planets = [3, 5, 9, 10, 14, 22, 28, 34, 35, 37, 42]
 var planet_names = []
 var bought = false
 var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
-var fake_dice = ["crit", "crit", "crit", "crit", "crit", "crit", "crit", "crit"]
 var failed_cargo = null
 var failed_card = 0
 
@@ -49,10 +48,23 @@ func start_planning():
 	if $"%Character".defeated:
 		$"%TurnIndicator".text += "You are defeated! Heal yourself!"
 		$"%Heal".disabled = false
+		$"%Player".decrease_money(3000)
+		return
+	if $"%Ship".defeated:
+		$"%TurnIndicator".text += "Your ship is defeated! Repair it!"
+		$"%Repair".disabled = false
+		$"%Player".decrease_money(3000)
 		return
 	elif $"%Character".get_damage() > 0:
 		$"%TurnIndicator".text += "Move or Work for 2000 credits or Heal yourself!"
 		$"%Heal".disabled = false
+		if $"%Ship".get_damage() > 0:
+			$"%Repair".disabled = false
+	elif $"%Ship".get_damage() > 0:
+		$"%TurnIndicator".text += "Move or Work for 2000 credits or Repair your ship!"
+		$"%Repair".disabled = false
+		if $"%Character".get_damage() > 0:
+			$"%Heal".disabled = false
 	else:
 		$"%TurnIndicator".text += "Move or Work for 2000 credits!"
 	$"%Work".disabled = false
@@ -73,6 +85,7 @@ func stop_planning():
 		space.get_node("Button").disabled = true
 	$"%Work".disabled = true
 	$"%Heal".disabled = true
+	$"%Repair".disabled = true
 	start_action()
 
 func start_action():
@@ -122,7 +135,8 @@ func sell_cargo(cargo):
 	if cargo.get_data().has("illegal"):
 		failed_cargo = cargo
 		var result = roll()
-		failed_card = randi() % 3
+		failed_card = randi() % 4
+		failed_card = 3
 		if result == "hit" or (result == "blank" and $"%HiddenCargoContainer".visible):
 			$"%Player".increase_fame(cargo.get_data().fame)
 			$"%Player".increase_money(cargo.get_data().sell)
@@ -142,6 +156,9 @@ func sell_cargo(cargo):
 				if failed_card == 2:
 					$"%FailedSell".text = "Sell Cargo (Ground Combat vs 3 Attack)"
 					$"%FailedSell2".text = "Discard Cargo"
+				if failed_card == 3:
+					$"%FailedSell".text = "Sell Cargo (Ship Combat vs 3 Attack)"
+					$"%FailedSell2".hide()
 			elif result == "focus":
 				if failed_card == 0:
 					$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
@@ -161,6 +178,15 @@ func sell_cargo(cargo):
 							$"%FailedSell".text = "Keep Cargo"
 						else:
 							$"%FailedSell".text = "Keep Cargo (-1 " + faction + ")"
+						$"%FailedSell2".hide()
+				if failed_card == 3:
+					if skill_test("influence"):
+						$"%FailedLabel".text += "\nInfluence Test passed!"
+						$"%FailedSell".text = "Sell Cargo"
+						$"%FailedSell2".hide()
+					else:
+						$"%FailedLabel".text += "\nInfluence Test failed!"
+						$"%FailedSell".text = "Keep Cargo (-1 Cimp)"
 						$"%FailedSell2".hide()
 			elif result == "blank":
 				if failed_card == 0:
@@ -182,6 +208,20 @@ func sell_cargo(cargo):
 						else:
 							$"%FailedSell".text = "Keep Cargo (-1 " + faction + ")"
 						$"%FailedSell2".hide()
+				if failed_card == 3:
+					if $"%Player".cimp == 1:
+						$"%FailedLabel".text += "\nYour Cimp reputation saved you!"
+						$"%FailedSell".text = "Sell Cargo"
+						$"%FailedSell2".hide()
+					else:
+						if skill_test("stealth"):
+							$"%FailedLabel".text += "\nStealth Test passed!"
+							$"%FailedSell".text = "Sell Cargo"
+							$"%FailedSell2".hide()
+						else:
+							$"%FailedLabel".text += "\nStealth Test failed!"
+							$"%FailedSell".text = "Keep Cargo (-1 Cimp)"
+							$"%FailedSell2".hide()
 	else:
 		$"%Player".increase_money(cargo.get_data().sell)
 		if cargo.get_data().has("rep"):
@@ -195,9 +235,6 @@ func remove_cargo(cargo):
 
 func roll():
 	return dice[randi() % 8]
-	
-func fake_roll():
-	return fake_dice[randi() % 8]
 
 func skill_test(skill):
 	var results = [roll(), roll()]
@@ -226,7 +263,7 @@ func is_highly_skilled(skill):
 # todo crew
 	return count > 1
 
-func ground_combat(attack1, attack2):
+func combat(attack1, attack2):
 	var result1 = 0
 	for _i in range(attack1):
 		var result = roll()
@@ -264,6 +301,12 @@ func _on_work_pressed():
 
 func _on_heal_pressed():
 	$"%Character".heal()
+	$"%Ship".repair()
+	stop_planning()
+
+func _on_repair_pressed():
+	$"%Character".heal()
+	$"%Ship".repair()
 	stop_planning()
 
 func _on_done_pressed():
@@ -301,28 +344,55 @@ func _on_hidden_cargo_discard_pressed():
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Sell Cargo (Ground Combat vs 3 Attack)":
-		var combat = ground_combat($"%Character".get_data().attack, 3)
+		var combat = combat($"%Character".get_data().attack, 3)
 		$"%Character".damage(combat.attacker_damage)
 		if combat.attacker_won: 
 			if $"%Character".defeated:
 				$"%FailedLabel".text = "You would have won the combat,\nbut suffered too much damage.\nYou are defeated!"
 				$"%FailedSell".hide()
+				$"%FailedSell2".show()
 				$"%FailedSell2".text = "End turn"
 				return
 			else:
 				$"%FailedLabel".text = "You won the combat!"
+				$"%FailedSell".show()
 				$"%FailedSell".text = "Sell Cargo"
 				$"%FailedSell2".hide()
 				return
 		else:
 			$"%FailedLabel".text = "You failed the combat!"
 			$"%FailedSell".hide()
+			$"%FailedSell2".show()
+			$"%FailedSell2".text = "End turn"
+			return
+	elif $"%FailedSell".text == "Sell Cargo (Ship Combat vs 3 Attack)":
+		var combat = combat($"%Ship".get_data().attack, 3)
+		$"%Ship".damage(combat.attacker_damage)
+		if combat.attacker_won: 
+			if $"%Ship".defeated:
+				$"%FailedLabel".text = "You would have won the combat,\nbut suffered too much damage.\nYou are defeated!"
+				$"%FailedSell".hide()
+				$"%FailedSell2".show()
+				$"%FailedSell2".text = "End turn"
+				return
+			else:
+				$"%FailedLabel".text = "You won the combat!"
+				$"%FailedSell".show()
+				$"%FailedSell".text = "Sell Cargo"
+				$"%FailedSell2".hide()
+				return
+		else:
+			$"%FailedLabel".text = "You failed the combat!"
+			$"%FailedSell".hide()
+			$"%FailedSell2".show()
 			$"%FailedSell2".text = "End turn"
 			return
 	elif $"%FailedSell".text == "Keep Cargo (-1 Ahut)":
 		$"%Player".decrease_reputation("Ahut")
 	elif $"%FailedSell".text == "Keep Cargo (-1 Bsyn)":
 		$"%Player".decrease_reputation("Bsyn")
+	elif $"%FailedSell".text == "Keep Cargo (-1 Cimp)":
+		$"%Player".decrease_reputation("Cimp")
 	elif $"%FailedSell".text != "Keep Cargo":
 		if $"%FailedSell".text == "Sell Cargo (-1 Ahut)":
 			$"%Player".decrease_reputation("Ahut")
