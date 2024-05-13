@@ -79,6 +79,9 @@ texture_disabled = ExtResource( 8 )
 [node name="Label" parent="Spaces/Space5" index="1"]
 text = "Bord"
 
+[node name="Faction" parent="Spaces/Space5" index="2"]
+text = "(Bsyn)"
+
 [node name="Space6" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 248, 234 )
 space_1 = 4
@@ -107,6 +110,9 @@ texture_disabled = ExtResource( 5 )
 [node name="Label" parent="Spaces/Space9" index="1"]
 text = "Clot"
 
+[node name="Faction" parent="Spaces/Space9" index="2"]
+text = "(Cimp)"
+
 [node name="Space10" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 321, 105 )
 space_1 = 8
@@ -119,6 +125,9 @@ texture_disabled = ExtResource( 9 )
 
 [node name="Label" parent="Spaces/Space10" index="1"]
 text = "Dmon"
+
+[node name="Faction" parent="Spaces/Space10" index="2"]
+text = "(Dreb)"
 
 [node name="Space11" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 351, 87 )
@@ -155,6 +164,9 @@ texture_disabled = ExtResource( 10 )
 
 [node name="Label" parent="Spaces/Space14" index="1"]
 text = "Ekes"
+
+[node name="Faction" parent="Spaces/Space14" index="2"]
+text = "(Bsyn)"
 
 [node name="Space15" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 362, 118 )
@@ -206,6 +218,9 @@ texture_disabled = ExtResource( 11 )
 [node name="Label" parent="Spaces/Space22" index="1"]
 text = "Fryl"
 
+[node name="Faction" parent="Spaces/Space22" index="2"]
+text = "(Dreb)"
+
 [node name="Space23" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 544, 86 )
 space_1 = 17
@@ -244,6 +259,9 @@ texture_disabled = ExtResource( 14 )
 
 [node name="Label" parent="Spaces/Space28" index="1"]
 text = "Gnab"
+
+[node name="Faction" parent="Spaces/Space28" index="2"]
+text = "(Cimp)"
 
 [node name="Space29" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 674, 64 )
@@ -284,6 +302,9 @@ texture_disabled = ExtResource( 22 )
 [node name="Label" parent="Spaces/Space34" index="1"]
 text = "Hnal"
 
+[node name="Faction" parent="Spaces/Space34" index="2"]
+text = "(Ahut)"
+
 [node name="Space35" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 793, 150 )
 space_1 = 32
@@ -295,6 +316,9 @@ texture_disabled = ExtResource( 23 )
 
 [node name="Label" parent="Spaces/Space35" index="1"]
 text = "Itat"
+
+[node name="Faction" parent="Spaces/Space35" index="2"]
+text = "(Ahut)"
 
 [node name="Space36" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 802, 183 )
@@ -566,6 +590,7 @@ margin_bottom = 20.0
 text = "Work"
 
 [node name="Heal" type="Button" parent="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer"]
+unique_name_in_owner = true
 margin_left = 52.0
 margin_right = 93.0
 margin_bottom = 20.0
@@ -722,9 +747,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -75.0
+margin_left = -150.0
 margin_top = -50.0
-margin_right = 75.0
+margin_right = 150.0
 margin_bottom = 50.0
 texture = ExtResource( 34 )
 
@@ -733,41 +758,42 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -66.5
+margin_left = -130.0
 margin_top = -48.0
-margin_right = 66.5
+margin_right = 130.0
 margin_bottom = 48.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PromptContainer/MarginContainer"]
-margin_right = 133.0
+margin_right = 260.0
 margin_bottom = 96.0
 
-[node name="Label" type="Label" parent="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer"]
-margin_right = 133.0
-margin_bottom = 48.0
+[node name="FailedLabel" type="Label" parent="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 260.0
+margin_bottom = 31.0
 text = "Smuggling failed!
-Encounter step
-will be skipped!"
+Encounter step will be skipped!"
 align = 1
 
 [node name="FailedSell" type="Button" parent="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 52.0
-margin_right = 133.0
-margin_bottom = 72.0
-text = "Sell Cargo (-1 Ahut)"
+margin_top = 35.0
+margin_right = 260.0
+margin_bottom = 55.0
+text = "Sell Cargo (Ground Combat vs 3 Attack)"
 
 [node name="FailedSell2" type="Button" parent="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 76.0
-margin_right = 133.0
-margin_bottom = 96.0
+margin_top = 59.0
+margin_right = 260.0
+margin_bottom = 79.0
 text = "Keep Cargo"
 
 [connection signal="pressed" from="CanvasLayer/HudCenter/Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/HBoxContainer/VBoxContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CharacterContainer/HBoxContainer/Heal" to="." method="_on_heal_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoSell" to="." method="_on_ship_cargo_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/CargoContainer/HBoxContainer/ShipCargoDiscard" to="." method="_on_ship_cargo_discard_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer/HiddenCargoSell" to="." method="_on_hidden_cargo_sell_pressed"]
