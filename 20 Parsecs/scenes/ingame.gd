@@ -8,6 +8,7 @@ var planet_names = []
 var bought = false
 var dice = ["hit", "hit", "hit", "critical", "miss", "miss", "chance", "chance"]
 var failed_cargo = null
+var failed_card = 0
 
 func _ready():
 	for space in $Spaces.get_children():
@@ -111,21 +112,33 @@ func sell_cargo(cargo):
 	if cargo.get_data().has("illegal"):
 		failed_cargo = cargo
 		var result = dice[randi() % 8]
-		var card = randi() % 4
-		card = 1
+		failed_card = randi() % 2
 		if result == "hit" or (result == "miss" and $"%HiddenCargo".visible):
 			$"%Player".increase_fame(cargo.get_data().fame)
 			$"%Player".increase_money(cargo.get_data().sell)
 			remove_cargo(cargo)
 		elif result == "critical":
 			$"%PromptContainer".show()
-			$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
+			if failed_card == 0:
+				$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
+				$"%FailedSell2".text = "Keep Cargo"
+			if failed_card == 1:
+				$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
+				$"%FailedSell2".text = "Sell Cargo (-6000)"
 		elif result == "chance":
-			$"%PromptContainer".show()
-			$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
+			if failed_card == 0:
+				$"%PromptContainer".show()
+				$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
+			if failed_card == 1:
+				$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
+				$"%FailedSell2".text = "Sell Cargo (-6000)"
 		elif result == "miss":
-			$"%PromptContainer".show()
-			$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
+			if failed_card == 0:
+				$"%PromptContainer".show()
+				$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
+			if failed_card == 1:
+				$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
+				$"%FailedSell2".text = "Sell Cargo (-6000)"
 	else:
 		$"%Player".increase_money(cargo.get_data().sell)
 		if cargo.get_data().has("rep"):
@@ -198,6 +211,10 @@ func _on_failed_sell_pressed():
 	$"%PromptContainer".hide()
 	stop_action()
 
-func _on_failed_keep_pressed():
+func _on_failed_sell2_pressed():
+	if failed_card == 1:
+		$"%Player".increase_fame(failed_cargo.get_data().fame)
+		$"%Player".increase_money(failed_cargo.get_data().sell - 6000)
+		remove_cargo(failed_cargo)
 	$"%PromptContainer".hide()
 	stop_action()

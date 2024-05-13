@@ -757,7 +757,8 @@ margin_right = 133.0
 margin_bottom = 72.0
 text = "Sell Cargo (-1 Ahut)"
 
-[node name="FailedKeep" type="Button" parent="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer"]
+[node name="FailedSell2" type="Button" parent="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 margin_top = 76.0
 margin_right = 133.0
 margin_bottom = 96.0
@@ -772,7 +773,7 @@ text = "Keep Cargo"
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer/HiddenCargoSell" to="." method="_on_hidden_cargo_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Character/HBoxContainer/HiddenCargoContainer/HBoxContainer/HiddenCargoDiscard" to="." method="_on_hidden_cargo_discard_pressed"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
-[connection signal="pressed" from="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer/FailedKeep" to="." method="_on_failed_keep_pressed"]
+[connection signal="pressed" from="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]
