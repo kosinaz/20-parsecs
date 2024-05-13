@@ -6,6 +6,8 @@ var turn = 1
 var planets = [3, 5, 9, 10, 14, 22, 28, 34, 35, 37, 42]
 var planet_names = []
 var bought = false
+var dice = ["hit", "hit", "hit", "critical", "miss", "miss", "chance", "chance"]
+var failed_cargo = null
 
 func _ready():
 	for space in $Spaces.get_children():
@@ -107,15 +109,23 @@ func update_market_actions():
 
 func sell_cargo(cargo):
 	if cargo.get_data().has("illegal"):
-		var target = 3
-		if $"%HiddenCargo".visible:
-			target += 2
-		if randi() % 8 < target:
+		failed_cargo = cargo
+		var result = dice[randi() % 8]
+		var card = randi() % 4
+		card = 1
+		if result == "hit" or (result == "miss" and $"%HiddenCargo".visible):
 			$"%Player".increase_fame(cargo.get_data().fame)
 			$"%Player".increase_money(cargo.get_data().sell)
 			remove_cargo(cargo)
-		else:
-			stop_action()
+		elif result == "critical":
+			$"%PromptContainer".show()
+			$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
+		elif result == "chance":
+			$"%PromptContainer".show()
+			$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
+		elif result == "miss":
+			$"%PromptContainer".show()
+			$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
 	else:
 		$"%Player".increase_money(cargo.get_data().sell)
 		if cargo.get_data().has("rep"):
@@ -174,3 +184,20 @@ func _on_hidden_cargo_sell_pressed():
 
 func _on_hidden_cargo_discard_pressed():
 	remove_cargo($"%HiddenCargo")
+
+func _on_failed_sell_pressed():
+	if $"%FailedSell".text == "Sell Cargo (-1 Ahut)":
+		$"%Player".decrease_reputation("Ahut")
+	if $"%FailedSell".text == "Sell Cargo (-1 Bsyn)":
+		$"%Player".decrease_reputation("Bsyn")
+	if $"%FailedSell".text == "Sell Cargo (-1 Dreb)":
+		$"%Player".decrease_reputation("Dreb")
+	$"%Player".increase_fame(failed_cargo.get_data().fame)
+	$"%Player".increase_money(failed_cargo.get_data().sell)
+	remove_cargo(failed_cargo)
+	$"%PromptContainer".hide()
+	stop_action()
+
+func _on_failed_keep_pressed():
+	$"%PromptContainer".hide()
+	stop_action()
