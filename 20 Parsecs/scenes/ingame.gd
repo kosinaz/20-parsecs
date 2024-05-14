@@ -15,7 +15,10 @@ func _ready():
 		space.connect("pressed", self, "_on_space_pressed")
 		if space.get_node("Label").text != "":
 			planet_names.append(space.get_node("Label").text)
-		astar.add_point(space.id, space.position)
+		if space.id == 28 or space.id == 25:
+			astar.add_point(space.id, space.position, 0.5)
+		else:
+			astar.add_point(space.id, space.position)
 		if space.space_1 > 0 and space.space_1 < space.id:
 			astar.connect_points(space.id, space.space_1, true)
 		if space.space_2 > 0 and space.space_2 < space.id:
