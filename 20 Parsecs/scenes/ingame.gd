@@ -6,6 +6,7 @@ var turn = 1
 var planets = [3, 5, 9, 10, 14, 25, 27, 31, 38, 39, 42]
 var planet_names = []
 var bought = false
+var skipped = false
 var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
 var failed_cargo = null
 var failed_card = 0
@@ -33,7 +34,7 @@ func _ready():
 	market_cargos.shuffle()
 	$"%MarketCargo".setup(market_cargos[0])
 	$"%Character".setup(Characters.new().deck[0])
-	$"%Player".increase_money(4000)
+	$"%Player".increase_money(4)
 	$"%Ship".setup(Ships.new().deck[0])
 	start_planning()
 	
@@ -51,25 +52,25 @@ func start_planning():
 	if $"%Character".defeated:
 		$"%TurnIndicator".text += "You are defeated! Heal yourself!"
 		$"%Heal".disabled = false
-		$"%Player".decrease_money(3000)
+		$"%Player".decrease_money(3)
 		return
 	if $"%Ship".defeated:
 		$"%TurnIndicator".text += "Your ship is defeated! Repair it!"
 		$"%Repair".disabled = false
-		$"%Player".decrease_money(3000)
+		$"%Player".decrease_money(3)
 		return
 	elif $"%Character".get_damage() > 0:
-		$"%TurnIndicator".text += "Move or Work for 2000 credits or Heal yourself!"
+		$"%TurnIndicator".text += "Move or Work for 2 credits or Heal yourself!"
 		$"%Heal".disabled = false
 		if $"%Ship".get_damage() > 0:
 			$"%Repair".disabled = false
 	elif $"%Ship".get_damage() > 0:
-		$"%TurnIndicator".text += "Move or Work for 2000 credits or Repair your ship!"
+		$"%TurnIndicator".text += "Move or Work for 2 credits or Repair your ship!"
 		$"%Repair".disabled = false
 		if $"%Character".get_damage() > 0:
 			$"%Heal".disabled = false
 	else:
-		$"%TurnIndicator".text += "Move or Work for 2000 credits!"
+		$"%TurnIndicator".text += "Move or Work for 2 credits!"
 	$"%Work".disabled = false
 	astar.set_point_disabled(13)
 	for to_id in astar.get_points():
@@ -99,42 +100,37 @@ func start_action():
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
 		$"%TurnIndicator".text += "Perform any number or no actions, then press Done!"
 		bought = false
-		update_market_actions()
-		$"%MarketCargoDiscard".disabled = false
+		skipped = false
+		update_action_buttons()
 
 func stop_action():
-	$"%MarketCargoBuy".disabled = true
-	$"%MarketCargoDiscard".disabled = true
-	$"%ShipCargoSell".disabled = true
-	$"%ShipCargoDiscard".disabled = true
-	$"%HiddenCargoSell".disabled = true
-	$"%HiddenCargoDiscard".disabled = true
+	$"%MarketCargo".disable_buy()
+	$"%MarketCargo".disable_skip()
+	$"%ShipCargo".disable_deliver()
+	$"%ShipCargo".disable_drop()
 	$"%Done".disabled = true
 	start_encounter()
 
-func update_market_actions():
-	$"%MarketCargoBuy".disabled = bought
+func update_action_buttons():
+	$"%MarketCargo".enable_buy()
+	$"%MarketCargo".enable_skip()
+	$"%ShipCargo".enable_deliver()
+	$"%ShipCargo".enable_drop()
+	if skipped:
+		$"%MarketCargo".disable_skip()
+	if bought:
+		$"%MarketCargo".disable_buy()
+		$"%MarketCargo".disable_skip()
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
-		$"%MarketCargoBuy".disabled = true
-	if $"%ShipCargo".has_cargo and not $"%HiddenCargoContainer".visible:
-		$"%MarketCargoBuy".disabled = true
-	if $"%ShipCargo".has_cargo and $"%HiddenCargoContainer".visible and $"%HiddenCargo".has_cargo:
-		$"%MarketCargoBuy".disabled = true
+		$"%MarketCargo".disable_buy()
 	if $"%ShipCargo".has_cargo:
-		$"%ShipCargoSell".disabled = $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to()
-		$"%ShipCargoDiscard".disabled = false
-		$"%HiddenCargoContainer".visible = $"%ShipCargo".get_data().has("smuggling compartment")
+		$"%MarketCargo".disable_buy()
 	else:
-		$"%ShipCargoSell".disabled = true
-		$"%ShipCargoDiscard".disabled = true
-	if $"%HiddenCargo".has_cargo:
-		$"%HiddenCargoSell".disabled = $"%Player".current_space.get_node("Label").text != $"%HiddenCargo".get_to()
-		$"%HiddenCargoDiscard".disabled = false
-	else:
-		$"%HiddenCargoSell".disabled = true
-		$"%HiddenCargoDiscard".disabled = true
+		$"%ShipCargo".disable_drop()
+	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to():
+		$"%ShipCargo".disable_deliver()
 
-func sell_cargo(cargo):
+func deliver_cargo(cargo):
 	if cargo.get_data().has("illegal"):
 		failed_cargo = cargo
 		var result = roll()
@@ -155,7 +151,7 @@ func sell_cargo(cargo):
 					$"%FailedSell2".text = "Keep Cargo"
 				if failed_card == 1:
 					$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
-					$"%FailedSell2".text = "Sell Cargo (-6000)"
+					$"%FailedSell2".text = "Sell Cargo (-6)"
 				if failed_card == 2:
 					$"%FailedSell".text = "Sell Cargo (Ground Combat vs 3 Attack)"
 					$"%FailedSell2".text = "Discard Cargo"
@@ -168,7 +164,7 @@ func sell_cargo(cargo):
 					$"%FailedSell2".text = "Keep Cargo"
 				if failed_card == 1:
 					$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
-					$"%FailedSell2".text = "Sell Cargo (-6000)"
+					$"%FailedSell2".text = "Sell Cargo (-6)"
 				if failed_card == 2:
 					if skill_test("stealth"):
 						$"%FailedLabel".text += "\nStealth Test passed!"
@@ -197,7 +193,7 @@ func sell_cargo(cargo):
 					$"%FailedSell2".text = "Keep Cargo"
 				if failed_card == 1:
 					$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
-					$"%FailedSell2".text = "Sell Cargo (-6000)"
+					$"%FailedSell2".text = "Sell Cargo (-6)"
 				if failed_card == 2:
 					if skill_test("piloting"):
 						$"%FailedLabel".text += "\nPiloting Test passed!"
@@ -234,7 +230,7 @@ func sell_cargo(cargo):
 func remove_cargo(cargo):
 	market_cargos.append(cargo.get_data())
 	cargo.clear()
-	update_market_actions()
+	update_action_buttons()
 
 func roll():
 	return dice[randi() % 8]
@@ -299,7 +295,7 @@ func _on_space_pressed(space):
 	stop_planning()
 
 func _on_work_pressed():
-	$"%Player".increase_money(2000)
+	$"%Player".increase_money(2)
 	stop_planning()
 
 func _on_heal_pressed():
@@ -317,33 +313,24 @@ func _on_done_pressed():
 
 func _on_market_cargo_buy_pressed():
 	$"%Player".decrease_money(market_cargos[0].buy)
-	if not $"%ShipCargo".has_cargo:
-		$"%ShipCargo".setup(market_cargos[0])
-	else:
-		$"%HiddenCargo".setup(market_cargos[0])
+	$"%ShipCargo".setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
 	bought = true
-	update_market_actions()
-	$"%MarketCargoDiscard".disabled = true
+	update_action_buttons()
 
-func _on_market_cargo_discard_pressed():
+func _on_market_cargo_skip_pressed():
 	market_cargos.append(market_cargos.pop_front())
 	$"%MarketCargo".setup(market_cargos[0])
-	update_market_actions()
-	$"%MarketCargoDiscard".disabled = true
+	skipped = true
+	update_action_buttons()
 
-func _on_ship_cargo_sell_pressed():
-	sell_cargo($"%ShipCargo")
+func _on_ship_cargo_deliver_pressed():
+	deliver_cargo($"%ShipCargo")
 	
-func _on_ship_cargo_discard_pressed():
+func _on_ship_cargo_drop_pressed():
 	remove_cargo($"%ShipCargo")
 
-func _on_hidden_cargo_sell_pressed():
-	sell_cargo($"%HiddenCargo")
-
-func _on_hidden_cargo_discard_pressed():
-	remove_cargo($"%HiddenCargo")
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Sell Cargo (Ground Combat vs 3 Attack)":
@@ -410,9 +397,9 @@ func _on_failed_sell_pressed():
 	stop_action()
 
 func _on_failed_sell2_pressed():
-	if $"%FailedSell2".text == "Sell Cargo (-6000)":
+	if $"%FailedSell2".text == "Sell Cargo (-6)":
 		$"%Player".increase_fame(failed_cargo.get_data().fame)
-		$"%Player".increase_money(failed_cargo.get_data().sell - 6000)
+		$"%Player".increase_money(failed_cargo.get_data().sell - 6)
 		remove_cargo(failed_cargo)
 	if $"%FailedSell2".text == "Discard Cargo":
 		remove_cargo(failed_cargo)

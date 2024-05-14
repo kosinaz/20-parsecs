@@ -1,9 +1,8 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/ingame.gd" type="Script" id=3]
-[ext_resource path="res://scenes/cargo.tscn" type="PackedScene" id=4]
 [ext_resource path="res://images/planet-03-off.png" type="Texture" id=5]
 [ext_resource path="res://images/planet-03-on.png" type="Texture" id=6]
 [ext_resource path="res://images/planet-02-on.png" type="Texture" id=7]
@@ -35,7 +34,10 @@
 [ext_resource path="res://images/hud-center.png" type="Texture" id=33]
 [ext_resource path="res://images/prompt.png" type="Texture" id=34]
 [ext_resource path="res://bg.png" type="Texture" id=35]
+[ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=36]
 [ext_resource path="res://images/card.png" type="Texture" id=37]
+[ext_resource path="res://scenes/buttonfont.tres" type="DynamicFont" id=38]
+[ext_resource path="res://scenes/cargo.gd" type="Script" id=40]
 
 [sub_resource type="DynamicFont" id=3]
 size = 12
@@ -51,10 +53,17 @@ font_data = ExtResource( 29 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 14
+use_filter = true
 font_data = ExtResource( 29 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 14
+use_filter = true
+font_data = ExtResource( 29 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 10
+use_filter = true
 font_data = ExtResource( 29 )
 
 [node name="Map" type="Node2D"]
@@ -454,7 +463,7 @@ margin_bottom = 11.0
 custom_fonts/font = SubResource( 2 )
 text = "Money: 0"
 
-[node name="MarketCards" type="HBoxContainer" parent="CanvasLayer"]
+[node name="Market" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -465,306 +474,315 @@ margin_right = 288.0
 margin_bottom = 32.0
 custom_constants/separation = 0
 
-[node name="CargoContainer" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
+[node name="MarketBounty" type="TextureRect" parent="CanvasLayer/Market"]
 margin_right = 96.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarketCards/CargoContainer/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
+[node name="MarketBountyTitle" type="Label" parent="CanvasLayer/Market/MarketBounty"]
+margin_right = 96.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 36 )
+text = "Bounty"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="MarketBountyData" type="Label" parent="CanvasLayer/Market/MarketBounty"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 102.0
+custom_fonts/font = ExtResource( 36 )
+text = "Find: Sera 
+Attack: 5S
+Kill: 6K 2F -1DR
+To Clot: 15K 2F 
+1CR  -1DR
+Patrol: 3D
+"
 
-[node name="MarketCargo" parent="CanvasLayer/MarketCards/CargoContainer/MarginContainer2" instance=ExtResource( 4 )]
-unique_name_in_owner = true
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarketCards/CargoContainer"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/CargoContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="MarketBountyTake" type="Button" parent="CanvasLayer/Market/MarketBounty"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Take"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/MarketCards/CargoContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="MarketBountySkip" type="Button" parent="CanvasLayer/Market/MarketBounty"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
+text = "Skip"
 
-[node name="CargoContainer2" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
+[node name="MarketCargo" type="TextureRect" parent="CanvasLayer/Market"]
+unique_name_in_owner = true
 margin_left = 96.0
 margin_right = 192.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 40 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer2"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarketCards/CargoContainer2/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
+[node name="Title" type="Label" parent="CanvasLayer/Market/MarketCargo"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
 text = "Cargo"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer2"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="Data" type="Label" parent="CanvasLayer/Market/MarketCargo"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "Illegal
+To Jkaf: 9K 1F
+Patrol: 3D
+"
+autowrap = true
 
-[node name="MarketCargo" parent="CanvasLayer/MarketCards/CargoContainer2/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarketCards/CargoContainer2"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/CargoContainer2/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketCargo"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Buy 1K"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/MarketCards/CargoContainer2/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketCargo"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
+text = "Skip"
 
-[node name="CargoContainer3" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
+[node name="MarketGearMod" type="TextureRect" parent="CanvasLayer/Market"]
 margin_left = 192.0
 margin_right = 288.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer3"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarketCards/CargoContainer3/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
+[node name="MarketGearModTitle" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
+text = "Gear/Mod"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer3"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="MarketGearModData" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "Gear, Armor
+Armor: 2
+-1 Enemy Attack
+in Ground Combat
+if has Strength
+Patrol: 4C
+"
 
-[node name="MarketCargo" parent="CanvasLayer/MarketCards/CargoContainer3/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarketCards/CargoContainer3"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/CargoContainer3/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="MarketGearModBuy" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Buy 8K"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/MarketCards/CargoContainer3/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="MarketGearModSkip" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
+text = "Skip"
 
-[node name="CargoContainer4" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
+[node name="MarketJob" type="TextureRect" parent="CanvasLayer/Market"]
 margin_left = 288.0
 margin_right = 384.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer4"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarketCards/CargoContainer4/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
+[node name="MarketJobTitle" type="Label" parent="CanvasLayer/Market/MarketJob"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
+text = "Job"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer4"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="MarketJobData" type="Label" parent="CanvasLayer/Market/MarketJob"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "Piloting, Strength,
+Tech, Tactics, Ship
+Combat
+To Jkaf: 5K 2F 
+1AR
+Patrol: 3B"
 
-[node name="MarketCargo" parent="CanvasLayer/MarketCards/CargoContainer4/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarketCards/CargoContainer4"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/CargoContainer4/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="MarketJobTake" type="Button" parent="CanvasLayer/Market/MarketJob"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Take"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/MarketCards/CargoContainer4/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="MarketJobSkip" type="Button" parent="CanvasLayer/Market/MarketJob"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
+text = "Skip"
 
-[node name="CargoContainer5" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
+[node name="MarketLuxury" type="TextureRect" parent="CanvasLayer/Market"]
 margin_left = 384.0
 margin_right = 480.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer5"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarketCards/CargoContainer5/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
+[node name="MarketLuxuryTitle" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
+text = "Luxury"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer5"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="MarketLuxuryData" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "Mod
++1F for F rewards
+Discard if lost a
+Ship Combat
+Others can attack
+your ship
+Patrol: 4C"
 
-[node name="MarketCargo" parent="CanvasLayer/MarketCards/CargoContainer5/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarketCards/CargoContainer5"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/CargoContainer5/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="MarketLuxuryBuy" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Buy 20K"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/MarketCards/CargoContainer5/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="MarketLuxurySkip" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
+text = "Skip"
 
-[node name="CargoContainer6" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
+[node name="MarketShip" type="TextureRect" parent="CanvasLayer/Market"]
 margin_left = 480.0
 margin_right = 576.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer6"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarketCards/CargoContainer6/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
+[node name="MarketShipTitle" type="Label" parent="CanvasLayer/Market/MarketShip"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarketCards/CargoContainer6"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="MarketShipData" type="Label" parent="CanvasLayer/Market/MarketShip"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
 
-[node name="MarketCargo" parent="CanvasLayer/MarketCards/CargoContainer6/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarketCards/CargoContainer6"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/CargoContainer6/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="MarketShipBuy" type="Button" parent="CanvasLayer/Market/MarketShip"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Buy 10K"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/MarketCards/CargoContainer6/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="MarketShipSkip" type="Button" parent="CanvasLayer/Market/MarketShip"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
+text = "Skip"
 
-[node name="HBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarketCards"]
-visible = false
-margin_left = 510.0
-margin_right = 570.0
-margin_bottom = 128.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/MarketCards/HBoxContainer2"]
-margin_top = 42.0
-margin_right = 60.0
-margin_bottom = 62.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard2" type="Button" parent="CanvasLayer/MarketCards/HBoxContainer2"]
-margin_top = 66.0
-margin_right = 60.0
-margin_bottom = 86.0
-disabled = true
-text = "Discard"
-
-[node name="CharacterCards" type="HBoxContainer" parent="CanvasLayer"]
+[node name="Character" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -775,46 +793,46 @@ margin_right = 348.0
 margin_bottom = 160.0
 custom_constants/separation = 0
 
-[node name="CharacterContainer" type="VBoxContainer" parent="CanvasLayer/CharacterCards"]
+[node name="CharacterContainer" type="VBoxContainer" parent="CanvasLayer/Character"]
 margin_right = 96.0
 margin_bottom = 152.0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CharacterCards/CharacterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/CharacterContainer"]
 visible = false
 margin_right = 96.0
 margin_bottom = 16.0
 custom_constants/margin_top = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/CharacterCards/CharacterContainer/MarginContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Character/CharacterContainer/MarginContainer"]
 margin_top = 2.0
 margin_right = 96.0
 margin_bottom = 16.0
 text = "Character"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/CharacterCards/CharacterContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Character/CharacterContainer"]
 margin_right = 96.0
 margin_bottom = 128.0
 
-[node name="Character" parent="CanvasLayer/CharacterCards/CharacterContainer/MarginContainer2" instance=ExtResource( 31 )]
+[node name="Character" parent="CanvasLayer/Character/CharacterContainer/MarginContainer2" instance=ExtResource( 31 )]
 unique_name_in_owner = true
 margin_right = 96.0
 margin_bottom = 128.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CharacterCards/CharacterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character/CharacterContainer"]
 margin_top = 132.0
 margin_right = 96.0
 margin_bottom = 152.0
 alignment = 1
 
-[node name="Work" type="Button" parent="CanvasLayer/CharacterCards/CharacterContainer/HBoxContainer"]
+[node name="Work" type="Button" parent="CanvasLayer/Character/CharacterContainer/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 3.0
 margin_right = 48.0
 margin_bottom = 20.0
 text = "Work"
 
-[node name="Heal" type="Button" parent="CanvasLayer/CharacterCards/CharacterContainer/HBoxContainer"]
+[node name="Heal" type="Button" parent="CanvasLayer/Character/CharacterContainer/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 52.0
 margin_right = 93.0
@@ -822,108 +840,7 @@ margin_bottom = 20.0
 disabled = true
 text = "Heal"
 
-[node name="CargoContainer" type="VBoxContainer" parent="CanvasLayer/CharacterCards"]
-margin_left = 96.0
-margin_right = 192.0
-margin_bottom = 152.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CharacterCards/CargoContainer"]
-visible = false
-margin_right = 99.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/CharacterCards/CargoContainer/MarginContainer"]
-margin_top = 2.0
-margin_right = 99.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/CharacterCards/CargoContainer"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="ShipCargo" parent="CanvasLayer/CharacterCards/CargoContainer/MarginContainer2" instance=ExtResource( 4 )]
-unique_name_in_owner = true
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CharacterCards/CargoContainer"]
-visible = false
-margin_top = 132.0
-margin_right = 99.0
-margin_bottom = 152.0
-alignment = 1
-
-[node name="ShipCargoSell" type="Button" parent="CanvasLayer/CharacterCards/CargoContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_right = 35.0
-margin_bottom = 20.0
-disabled = true
-text = "Sell"
-
-[node name="ShipCargoDiscard" type="Button" parent="CanvasLayer/CharacterCards/CargoContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_left = 39.0
-margin_right = 99.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="HiddenCargoContainer" type="VBoxContainer" parent="CanvasLayer/CharacterCards"]
-unique_name_in_owner = true
-visible = false
-margin_left = 192.0
-margin_right = 291.0
-margin_bottom = 172.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CharacterCards/HiddenCargoContainer"]
-visible = false
-margin_right = 99.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/CharacterCards/HiddenCargoContainer/MarginContainer"]
-margin_top = 2.0
-margin_right = 99.0
-margin_bottom = 16.0
-text = "Hidden Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/CharacterCards/HiddenCargoContainer"]
-margin_top = 20.0
-margin_right = 99.0
-margin_bottom = 148.0
-
-[node name="HiddenCargo" parent="CanvasLayer/CharacterCards/HiddenCargoContainer/MarginContainer2" instance=ExtResource( 4 )]
-unique_name_in_owner = true
-margin_right = 99.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CharacterCards/HiddenCargoContainer"]
-visible = false
-margin_top = 152.0
-margin_right = 99.0
-margin_bottom = 172.0
-alignment = 1
-
-[node name="HiddenCargoSell" type="Button" parent="CanvasLayer/CharacterCards/HiddenCargoContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_right = 35.0
-margin_bottom = 20.0
-disabled = true
-text = "Sell"
-
-[node name="HiddenCargoDiscard" type="Button" parent="CanvasLayer/CharacterCards/HiddenCargoContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_left = 39.0
-margin_right = 99.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="ShipCards" type="HBoxContainer" parent="CanvasLayer"]
+[node name="Ship" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -934,33 +851,33 @@ margin_right = 384.0
 margin_bottom = 288.0
 custom_constants/separation = 0
 
-[node name="ShipContainer" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
+[node name="ShipContainer" type="VBoxContainer" parent="CanvasLayer/Ship"]
 margin_right = 96.0
 margin_bottom = 128.0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/ShipContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Ship/ShipContainer"]
 visible = false
 margin_right = 96.0
 margin_bottom = 16.0
 custom_constants/margin_top = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/ShipContainer/MarginContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Ship/ShipContainer/MarginContainer"]
 margin_top = 2.0
 margin_right = 96.0
 margin_bottom = 16.0
 text = "Ship"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/ShipContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Ship/ShipContainer"]
 margin_right = 96.0
 margin_bottom = 128.0
 
-[node name="Ship" parent="CanvasLayer/ShipCards/ShipContainer/MarginContainer2" instance=ExtResource( 30 )]
+[node name="Ship" parent="CanvasLayer/Ship/ShipContainer/MarginContainer2" instance=ExtResource( 30 )]
 unique_name_in_owner = true
 margin_right = 96.0
 margin_bottom = 128.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/ShipContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Ship/ShipContainer"]
 visible = false
 margin_top = 132.0
 margin_right = 96.0
@@ -968,7 +885,7 @@ margin_bottom = 152.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="Repair" type="Button" parent="CanvasLayer/ShipCards/ShipContainer/HBoxContainer"]
+[node name="Repair" type="Button" parent="CanvasLayer/Ship/ShipContainer/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 22.0
 margin_right = 74.0
@@ -976,388 +893,55 @@ margin_bottom = 20.0
 disabled = true
 text = "Repair"
 
-[node name="CargoContainer" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
+[node name="ShipCargo" type="TextureRect" parent="CanvasLayer/Ship"]
+unique_name_in_owner = true
 margin_left = 96.0
 margin_right = 192.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 40 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
+[node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargo"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
 text = "Cargo"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="Data" type="Label" parent="CanvasLayer/Ship/ShipCargo"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "
+"
+autowrap = true
 
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
+[node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Buy"
+text = "Deliver"
 
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
+[node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -24.0
+margin_right = -4.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
 disabled = true
-text = "Discard"
-
-[node name="CargoContainer2" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 192.0
-margin_right = 288.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer2"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer2/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer2"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer2/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer2"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer2/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer2/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="CargoContainer3" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 288.0
-margin_right = 384.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer3"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer3/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer3"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer3/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer3"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer3/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer3/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="CargoContainer4" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 384.0
-margin_right = 480.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer4"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer4/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer4"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer4/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer4"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer4/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer4/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="CargoContainer5" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 480.0
-margin_right = 576.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer5"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer5/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer5"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer5/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer5"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer5/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer5/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="CargoContainer6" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 576.0
-margin_right = 672.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer6"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer6/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer6"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer6/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer6"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer6/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer6/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="CargoContainer7" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 672.0
-margin_right = 768.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer7"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer7/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer7"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer7/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer7"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer7/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer7/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="CargoContainer8" type="VBoxContainer" parent="CanvasLayer/ShipCards"]
-margin_left = 768.0
-margin_right = 864.0
-margin_bottom = 128.0
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer8"]
-visible = false
-margin_right = 64.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/ShipCards/CargoContainer8/MarginContainer"]
-margin_top = 2.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "Cargo"
-align = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/ShipCards/CargoContainer8"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="MarketCargo" parent="CanvasLayer/ShipCards/CargoContainer8/MarginContainer2" instance=ExtResource( 4 )]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ShipCards/CargoContainer8"]
-visible = false
-margin_top = 120.0
-margin_right = 100.0
-margin_bottom = 140.0
-alignment = 1
-
-[node name="MarketCargoBuy" type="Button" parent="CanvasLayer/ShipCards/CargoContainer8/HBoxContainer"]
-margin_right = 36.0
-margin_bottom = 20.0
-disabled = true
-text = "Buy"
-
-[node name="MarketCargoDiscard" type="Button" parent="CanvasLayer/ShipCards/CargoContainer8/HBoxContainer"]
-margin_left = 40.0
-margin_right = 100.0
-margin_bottom = 20.0
-disabled = true
-text = "Discard"
-
-[node name="Character" type="MarginContainer" parent="CanvasLayer"]
-margin_left = 334.0
-margin_top = 405.0
-margin_right = 646.0
-margin_bottom = 569.0
-grow_horizontal = 0
-grow_vertical = 0
-custom_constants/margin_right = 2
-custom_constants/margin_left = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character"]
-margin_left = 2.0
-margin_right = 310.0
-margin_bottom = 164.0
+text = "Drop"
 
 [node name="PromptContainer" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -1409,43 +993,13 @@ margin_bottom = 79.0
 text = "Keep Cargo"
 
 [connection signal="pressed" from="CanvasLayer/Done" to="." method="_on_done_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer2/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer2/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer3/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer3/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer4/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer4/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer5/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer5/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer6/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/CargoContainer6/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/HBoxContainer2/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarketCards/HBoxContainer2/MarketCargoDiscard2" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/CharacterCards/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]
-[connection signal="pressed" from="CanvasLayer/CharacterCards/CharacterContainer/HBoxContainer/Heal" to="." method="_on_heal_pressed"]
-[connection signal="pressed" from="CanvasLayer/CharacterCards/CargoContainer/HBoxContainer/ShipCargoSell" to="." method="_on_ship_cargo_sell_pressed"]
-[connection signal="pressed" from="CanvasLayer/CharacterCards/CargoContainer/HBoxContainer/ShipCargoDiscard" to="." method="_on_ship_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/CharacterCards/HiddenCargoContainer/HBoxContainer/HiddenCargoSell" to="." method="_on_hidden_cargo_sell_pressed"]
-[connection signal="pressed" from="CanvasLayer/CharacterCards/HiddenCargoContainer/HBoxContainer/HiddenCargoDiscard" to="." method="_on_hidden_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/ShipContainer/HBoxContainer/Repair" to="." method="_on_repair_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer2/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer2/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer3/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer3/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer4/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer4/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer5/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer5/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer6/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer6/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer7/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer7/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer8/HBoxContainer/MarketCargoBuy" to="." method="_on_market_cargo_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/ShipCards/CargoContainer8/HBoxContainer/MarketCargoDiscard" to="." method="_on_market_cargo_discard_pressed"]
+[connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Buy" to="." method="_on_market_cargo_buy_pressed"]
+[connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Skip" to="." method="_on_market_cargo_skip_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/CharacterContainer/HBoxContainer/Heal" to="." method="_on_heal_pressed"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipContainer/HBoxContainer/Repair" to="." method="_on_repair_pressed"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Deliver" to="." method="_on_ship_cargo_deliver_pressed"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Drop" to="." method="_on_ship_cargo_drop_pressed"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
 
