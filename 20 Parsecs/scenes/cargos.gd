@@ -3,7 +3,7 @@ class_name Cargos
 
 var deck = [
 	{
-		"to": "Hnal",
+		"to": "Gnal",
 		"buy": 1000,
 		"sell": 5000,
 		"rep": "Ahut",
@@ -19,7 +19,7 @@ var deck = [
 		"move": 4,
 	},
 	{
-		"to": "Fryl",
+		"to": "Hryl",
 		"buy": 1000,
 		"sell": 5000,
 		"rep": "Cimp",
@@ -59,7 +59,7 @@ var deck = [
 	},
 	{
 		"illegal": true,
-		"to": "Itat",
+		"to": "Ftat",
 		"buy": 1000,
 		"sell": 7000,
 		"fame": 1,

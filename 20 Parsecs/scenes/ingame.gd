@@ -3,7 +3,7 @@ extends Node2D
 var astar = AStar2D.new()
 var market_cargos = []
 var turn = 1
-var planets = [3, 5, 9, 10, 14, 22, 28, 34, 35, 37, 42]
+var planets = [3, 5, 9, 10, 14, 25, 27, 31, 38, 39, 42]
 var planet_names = []
 var bought = false
 var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
