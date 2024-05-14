@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/cargo.gd" type="Script" id=1]
 [ext_resource path="res://images/card.png" type="Texture" id=2]
+[ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=3]
 
 [node name="Cargo" type="MarginContainer"]
 margin_right = 40.0
@@ -9,8 +10,8 @@ margin_bottom = 40.0
 script = ExtResource( 1 )
 
 [node name="TextureRect" type="TextureRect" parent="."]
-margin_right = 100.0
-margin_bottom = 130.0
+margin_right = 96.0
+margin_bottom = 128.0
 texture = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="TextureRect"]
@@ -21,3 +22,11 @@ margin_left = 2.0
 margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
+custom_fonts/font = ExtResource( 3 )
+text = "Illegal
+To: Jkaf
+Buy: 1000
+Sell: 9000
+Fame: 1
+Patrol: Dreb
+Move: 3"
