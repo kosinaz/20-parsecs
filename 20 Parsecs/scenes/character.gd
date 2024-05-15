@@ -1,4 +1,4 @@
-extends MarginContainer
+extends TextureRect
 
 var _data = {}
 var _damage = 0
@@ -6,15 +6,15 @@ var defeated = false
 
 func setup(data):
 	_data = data
-	$"%Label".text = str(_data.name) + "\n"
-	$"%Label".text += "Attack: " + str(_data.attack) + "\n"
-	$"%Label".text += "Armor: " + str(_data.armor) + "\n"
-	$"%Label".text += "Skill: " + str(_data.skill1) + "\n"
+	$Data.text = "Name: " + str(_data.name) + "\n"
+	$Data.text += "Attack: " + str(_data.attack) + "\n"
+	$Data.text += "Armor: " + str(_data.armor) + "\n"
+	$Data.text += "Skill: " + str(_data.skill1) + "\n"
 	if _data.has("skill2"):
-		$"%Label".text += "Skill: " + str(_data.skill2) + "\n"
+		$Data.text += "Skill: " + str(_data.skill2) + "\n"
 	if _data.has("skill3"):
-		$"%Label".text += "Skill: " + str(_data.skill3) + "\n"
-	$"%Label".text += "Damage: " + str(_damage)
+		$Data.text += "Skill: " + str(_data.skill3) + "\n"
+	$Data.text += "Damage: " + str(_damage)
 
 func get_data():
 	return _data

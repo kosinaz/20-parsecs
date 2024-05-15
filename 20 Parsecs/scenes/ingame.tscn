@@ -1,8 +1,9 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/ingame.gd" type="Script" id=3]
+[ext_resource path="res://scenes/ship.gd" type="Script" id=4]
 [ext_resource path="res://images/planet-03-off.png" type="Texture" id=5]
 [ext_resource path="res://images/planet-03-on.png" type="Texture" id=6]
 [ext_resource path="res://images/planet-02-on.png" type="Texture" id=7]
@@ -28,8 +29,8 @@
 [ext_resource path="res://images/maelstrom-off.png" type="Texture" id=27]
 [ext_resource path="res://images/maelstrom-on.png" type="Texture" id=28]
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=29]
-[ext_resource path="res://scenes/ship.tscn" type="PackedScene" id=30]
-[ext_resource path="res://scenes/character.tscn" type="PackedScene" id=31]
+[ext_resource path="res://scenes/character.gd" type="Script" id=30]
+[ext_resource path="res://images/hud-rep.png" type="Texture" id=31]
 [ext_resource path="res://images/hud-top.png" type="Texture" id=32]
 [ext_resource path="res://images/hud-center.png" type="Texture" id=33]
 [ext_resource path="res://images/prompt.png" type="Texture" id=34]
@@ -42,13 +43,15 @@
 [sub_resource type="DynamicFont" id=3]
 size = 12
 use_filter = true
-extra_spacing_bottom = -4
 font_data = ExtResource( 29 )
 
-[sub_resource type="DynamicFont" id=4]
-size = 14
+[sub_resource type="DynamicFont" id=7]
 use_filter = true
-extra_spacing_bottom = -4
+font_data = ExtResource( 29 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 12
+use_filter = true
 font_data = ExtResource( 29 )
 
 [sub_resource type="DynamicFont" id=1]
@@ -64,6 +67,18 @@ font_data = ExtResource( 29 )
 [sub_resource type="DynamicFont" id=6]
 size = 10
 use_filter = true
+font_data = ExtResource( 29 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 10
+use_filter = true
+extra_spacing_char = -1
+font_data = ExtResource( 29 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 10
+use_filter = true
+extra_spacing_char = -1
 font_data = ExtResource( 29 )
 
 [node name="Map" type="Node2D"]
@@ -361,19 +376,19 @@ texture_disabled = ExtResource( 26 )
 text = "Ktak"
 
 [node name="Space43" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 959, 497 )
+position = Vector2( 960, 480 )
 space_1 = 41
 
 [node name="Space44" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 950, 553 )
+position = Vector2( 952, 533 )
 space_1 = 43
 
 [node name="Space45" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 1006, 496 )
+position = Vector2( 1005, 485 )
 space_1 = 39
 
 [node name="Space46" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 999, 544 )
+position = Vector2( 1001, 528 )
 space_1 = 45
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
@@ -381,12 +396,12 @@ unique_name_in_owner = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HudTop" type="TextureRect" parent="CanvasLayer"]
+[node name="TurnIndicator" type="TextureRect" parent="CanvasLayer"]
 margin_right = 350.0
 margin_bottom = 50.0
 texture = ExtResource( 32 )
 
-[node name="TurnIndicator" type="Label" parent="CanvasLayer/HudTop"]
+[node name="TurnIndicator" type="Label" parent="CanvasLayer/TurnIndicator"]
 unique_name_in_owner = true
 margin_left = 4.0
 margin_top = 4.0
@@ -402,66 +417,84 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -510.0
-margin_top = -236.0
-margin_right = -464.0
-margin_bottom = -216.0
+margin_left = 454.0
+margin_top = 256.0
+margin_right = 507.0
+margin_bottom = 283.0
+custom_fonts/font = SubResource( 7 )
 disabled = true
 text = "Done"
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="Reputations" type="TextureRect" parent="CanvasLayer"]
 margin_top = 96.0
 margin_right = 96.0
-margin_bottom = 224.0
-texture = ExtResource( 37 )
+margin_bottom = 192.0
+texture = ExtResource( 31 )
 
-[node name="Reputation" type="Label" parent="CanvasLayer/TextureRect"]
+[node name="Reputation" type="Label" parent="CanvasLayer/Reputations"]
 unique_name_in_owner = true
+anchor_top = 0.5
+anchor_bottom = 0.5
 margin_left = 4.0
-margin_top = 4.0
-margin_right = 89.0
-margin_bottom = 91.0
-custom_fonts/font = SubResource( 4 )
-text = "Reputation: 
-Ahut: 0   
-Bsyn: 0   
-Cimp: 0   
-Dreb: 0"
+margin_top = -46.0
+margin_right = 82.0
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 10 )
+text = "Reputations: 
+Ahut: 0AR
+Bsyn: 0BR
+Cimp: 0CR
+Dreb: 0DR"
 
-[node name="HudCenter" type="TextureRect" parent="CanvasLayer"]
+[node name="Fame" type="TextureRect" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -96.0
 margin_top = -128.0
-margin_right = 96.0
 margin_bottom = -96.0
 texture = ExtResource( 33 )
 
-[node name="Fame" type="Label" parent="CanvasLayer/HudCenter"]
-unique_name_in_owner = true
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 4.0
-margin_top = -10.5
-margin_right = 68.0
-margin_bottom = 10.5
-custom_fonts/font = SubResource( 1 )
-text = "Fame: 0"
-
-[node name="Money" type="Label" parent="CanvasLayer/HudCenter"]
+[node name="Fame" type="Label" parent="CanvasLayer/Fame"]
 unique_name_in_owner = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -25.0
-margin_top = -10.0
-margin_right = 84.0
-margin_bottom = 11.0
+margin_left = -32.5
+margin_top = -9.5
+margin_right = 32.5
+margin_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 1 )
+text = "Fame: 0F"
+
+[node name="Money" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_top = -128.0
+margin_right = 96.0
+margin_bottom = -96.0
+texture = ExtResource( 33 )
+
+[node name="Money" type="Label" parent="CanvasLayer/Money"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -36.5
+margin_top = -9.5
+margin_right = 36.5
+margin_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
 custom_fonts/font = SubResource( 2 )
-text = "Money: 0"
+text = "Money: 0K"
 
 [node name="Market" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -732,12 +765,14 @@ disabled = true
 text = "Skip"
 
 [node name="MarketShip" type="TextureRect" parent="CanvasLayer/Market"]
+unique_name_in_owner = true
 margin_left = 480.0
 margin_right = 576.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
+script = ExtResource( 4 )
 
-[node name="MarketShipTitle" type="Label" parent="CanvasLayer/Market/MarketShip"]
+[node name="Title" type="Label" parent="CanvasLayer/Market/MarketShip"]
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
@@ -745,7 +780,7 @@ custom_fonts/font = ExtResource( 36 )
 text = "Ship"
 align = 1
 
-[node name="MarketShipData" type="Label" parent="CanvasLayer/Market/MarketShip"]
+[node name="Data" type="Label" parent="CanvasLayer/Market/MarketShip"]
 margin_left = 4.0
 margin_top = 14.0
 margin_right = 92.0
@@ -758,7 +793,7 @@ Cargo: 1
 Mod: 1
 Crew: 2"
 
-[node name="MarketShipBuy" type="Button" parent="CanvasLayer/Market/MarketShip"]
+[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketShip"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -769,7 +804,7 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Buy 10K"
 
-[node name="MarketShipSkip" type="Button" parent="CanvasLayer/Market/MarketShip"]
+[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketShip"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -787,111 +822,101 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -288.0
+margin_left = -48.0
 margin_top = 32.0
-margin_right = 348.0
+margin_right = 48.0
 margin_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
 custom_constants/separation = 0
 
-[node name="CharacterContainer" type="VBoxContainer" parent="CanvasLayer/Character"]
+[node name="Character" type="TextureRect" parent="CanvasLayer/Character"]
+unique_name_in_owner = true
 margin_right = 96.0
-margin_bottom = 152.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 30 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Character/CharacterContainer"]
-visible = false
+[node name="Title" type="Label" parent="CanvasLayer/Character/Character"]
+margin_top = 1.0
 margin_right = 96.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Character/CharacterContainer/MarginContainer"]
-margin_top = 2.0
-margin_right = 96.0
-margin_bottom = 16.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
 text = "Character"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Character/CharacterContainer"]
-margin_right = 96.0
-margin_bottom = 128.0
+[node name="Data" type="Label" parent="CanvasLayer/Character/Character"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "
+"
+autowrap = true
 
-[node name="Character" parent="CanvasLayer/Character/CharacterContainer/MarginContainer2" instance=ExtResource( 31 )]
+[node name="Gain2K" type="Button" parent="CanvasLayer/Character/Character"]
 unique_name_in_owner = true
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Character/CharacterContainer"]
-margin_top = 132.0
-margin_right = 96.0
-margin_bottom = 152.0
-alignment = 1
-
-[node name="Work" type="Button" parent="CanvasLayer/Character/CharacterContainer/HBoxContainer"]
-unique_name_in_owner = true
+anchor_top = 1.0
+anchor_bottom = 1.0
 margin_left = 3.0
-margin_right = 48.0
-margin_bottom = 20.0
-text = "Work"
+margin_top = -24.0
+margin_right = 47.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 8 )
+text = "Gain2K"
 
-[node name="Heal" type="Button" parent="CanvasLayer/Character/CharacterContainer/HBoxContainer"]
+[node name="Recover" type="Button" parent="CanvasLayer/Character/Character"]
 unique_name_in_owner = true
-margin_left = 52.0
-margin_right = 93.0
-margin_bottom = 20.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -24.0
+margin_right = -3.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 9 )
 disabled = true
-text = "Heal"
+text = "Recover"
 
 [node name="Ship" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -384.0
+margin_left = -96.0
 margin_top = 160.0
-margin_right = 384.0
+margin_right = 96.0
 margin_bottom = 288.0
+grow_horizontal = 2
+grow_vertical = 2
 custom_constants/separation = 0
 
-[node name="ShipContainer" type="VBoxContainer" parent="CanvasLayer/Ship"]
+[node name="Ship" type="TextureRect" parent="CanvasLayer/Ship"]
+unique_name_in_owner = true
 margin_right = 96.0
 margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Ship/ShipContainer"]
-visible = false
+[node name="Title" type="Label" parent="CanvasLayer/Ship/Ship"]
+margin_top = 1.0
 margin_right = 96.0
-margin_bottom = 16.0
-custom_constants/margin_top = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Ship/ShipContainer/MarginContainer"]
-margin_top = 2.0
-margin_right = 96.0
-margin_bottom = 16.0
+margin_bottom = 15.0
+custom_fonts/font = ExtResource( 36 )
 text = "Ship"
 align = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Ship/ShipContainer"]
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="Ship" parent="CanvasLayer/Ship/ShipContainer/MarginContainer2" instance=ExtResource( 30 )]
-unique_name_in_owner = true
-margin_right = 96.0
-margin_bottom = 128.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Ship/ShipContainer"]
-visible = false
-margin_top = 132.0
-margin_right = 96.0
-margin_bottom = 152.0
-custom_constants/separation = 0
-alignment = 1
-
-[node name="Repair" type="Button" parent="CanvasLayer/Ship/ShipContainer/HBoxContainer"]
-unique_name_in_owner = true
-margin_left = 22.0
-margin_right = 74.0
-margin_bottom = 20.0
-disabled = true
-text = "Repair"
+[node name="Data" type="Label" parent="CanvasLayer/Ship/Ship"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_fonts/font = ExtResource( 36 )
+text = "
+"
+autowrap = true
 
 [node name="ShipCargo" type="TextureRect" parent="CanvasLayer/Ship"]
 unique_name_in_owner = true
@@ -935,9 +960,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -38.0
+margin_left = -42.0
 margin_top = -24.0
-margin_right = -4.0
+margin_right = -5.0
 margin_bottom = -5.0
 custom_fonts/font = SubResource( 6 )
 disabled = true
@@ -995,9 +1020,8 @@ text = "Keep Cargo"
 [connection signal="pressed" from="CanvasLayer/Done" to="." method="_on_done_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Buy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Skip" to="." method="_on_market_cargo_skip_pressed"]
-[connection signal="pressed" from="CanvasLayer/Character/CharacterContainer/HBoxContainer/Work" to="." method="_on_work_pressed"]
-[connection signal="pressed" from="CanvasLayer/Character/CharacterContainer/HBoxContainer/Heal" to="." method="_on_heal_pressed"]
-[connection signal="pressed" from="CanvasLayer/Ship/ShipContainer/HBoxContainer/Repair" to="." method="_on_repair_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/Character/Gain2K" to="." method="_on_work_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/Character/Recover" to="." method="_on_heal_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Deliver" to="." method="_on_ship_cargo_deliver_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Drop" to="." method="_on_ship_cargo_drop_pressed"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/MarginContainer/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]

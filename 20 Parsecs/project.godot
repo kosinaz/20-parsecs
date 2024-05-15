@@ -28,12 +28,18 @@ _global_script_classes=[ {
 "class": "Space",
 "language": "GDScript",
 "path": "res://scenes/space.gd"
+}, {
+"base": "Node",
+"class": "StarterShips",
+"language": "GDScript",
+"path": "res://scenes/starter_ships.gd"
 } ]
 _global_script_class_icons={
 "Cargos": "",
 "Characters": "",
 "Ships": "",
-"Space": ""
+"Space": "",
+"StarterShips": ""
 }
 
 [application]

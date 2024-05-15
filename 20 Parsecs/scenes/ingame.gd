@@ -2,11 +2,13 @@ extends Node2D
 
 var astar = AStar2D.new()
 var market_cargos = []
+var market_ships = []
 var turn = 1
 var planets = [3, 5, 9, 10, 14, 25, 27, 31, 38, 39, 42]
 var planet_names = []
 var bought = false
 var skipped = false
+var smuggling_compartment = false
 var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
 var failed_cargo = null
 var failed_card = 0
@@ -29,10 +31,13 @@ func _ready():
 		if space.space_4 > 0 and space.space_4 < space.id:
 			astar.connect_points(space.id, space.space_4, true)
 	move_to($Spaces/Space3)
-	market_cargos.append_array(Cargos.new().deck)
 	randomize()
+	market_cargos.append_array(Cargos.new().deck)
 	market_cargos.shuffle()
+	market_ships.append_array(Ships.new().deck)
+	market_ships.shuffle()
 	$"%MarketCargo".setup(market_cargos[0])
+	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(Characters.new().deck[0])
 	$"%Player".increase_money(4)
 	$"%Ship".setup(Ships.new().deck[0])
@@ -43,35 +48,20 @@ func _draw():
 		for next_id in astar.get_point_connections(id):
 			draw_line(astar.get_point_position(id), astar.get_point_position(next_id), Color.darkslateblue, 2)
 
-func move_to(space):
-	$"%Player".current_space = space
-	$"%Player".position = space.position
-
 func start_planning():
+	$"%Gain2K".disabled = false
+	$"%Recover".disabled = false
 	$"%TurnIndicator".text = "Turn " + str(turn) + ", Planning Step\n"
-	if $"%Character".defeated:
-		$"%TurnIndicator".text += "You are defeated! Heal yourself!"
-		$"%Heal".disabled = false
+	if $"%Character".defeated or $"%Ship".defeated:
+		$"%TurnIndicator".text += "You are defeated and lost 3K! Recover!"
+		$"%Gain2K".disabled = true
 		$"%Player".decrease_money(3)
 		return
-	if $"%Ship".defeated:
-		$"%TurnIndicator".text += "Your ship is defeated! Repair it!"
-		$"%Repair".disabled = false
-		$"%Player".decrease_money(3)
-		return
-	elif $"%Character".get_damage() > 0:
-		$"%TurnIndicator".text += "Move or Work for 2 credits or Heal yourself!"
-		$"%Heal".disabled = false
-		if $"%Ship".get_damage() > 0:
-			$"%Repair".disabled = false
-	elif $"%Ship".get_damage() > 0:
-		$"%TurnIndicator".text += "Move or Work for 2 credits or Repair your ship!"
-		$"%Repair".disabled = false
-		if $"%Character".get_damage() > 0:
-			$"%Heal".disabled = false
+	elif $"%Character".get_damage() > 0 or $"%Ship".get_damage() > 0:
+		$"%TurnIndicator".text += "Move or Gain 2K or Recover!"
 	else:
-		$"%TurnIndicator".text += "Move or Work for 2 credits!"
-	$"%Work".disabled = false
+		$"%TurnIndicator".text += "Move or Gain 2K!"
+		$"%Recover".disabled = true
 	astar.set_point_disabled(13)
 	for to_id in astar.get_points():
 		if astar.get_id_path($"%Player".current_space.id, to_id).size() > $"%Ship".get_data().speed + 1:
@@ -87,10 +77,13 @@ func start_planning():
 func stop_planning():
 	for space in $Spaces.get_children():
 		space.get_node("Button").disabled = true
-	$"%Work".disabled = true
-	$"%Heal".disabled = true
-	$"%Repair".disabled = true
+	$"%Gain2K".disabled = true
+	$"%Recover".disabled = true
 	start_action()
+
+func move_to(space):
+	$"%Player".current_space = space
+	$"%Player".position = space.position
 
 func start_action():
 	if not planets.has($"%Player".current_space.id):
@@ -325,12 +318,20 @@ func _on_market_cargo_skip_pressed():
 	skipped = true
 	update_action_buttons()
 
+func _on_market_ship_buy_pressed():
+	$"%Player".decrease_money(market_ships[0].buy)
+	$"%ShipCargo".setup(market_cargos[0])
+	market_cargos.pop_front()
+	$"%MarketCargo".setup(market_cargos[0])
+	bought = true
+	update_action_buttons()
+	
+
 func _on_ship_cargo_deliver_pressed():
 	deliver_cargo($"%ShipCargo")
 	
 func _on_ship_cargo_drop_pressed():
 	remove_cargo($"%ShipCargo")
-
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Sell Cargo (Ground Combat vs 3 Attack)":

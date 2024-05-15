@@ -16,19 +16,19 @@ func get_money():
 	
 func increase_money(amount):
 	money += amount
-	$"%Money".text = "Money: " + str(money)
+	$"%Money".text = "Money: " + str(money) + "K"
 	
 func decrease_money(amount):
 	money -= amount
-	$"%Money".text = "Money: " + str(money)
+	$"%Money".text = "Money: " + str(money) + "K"
 	
 func increase_fame(amount):
 	fame += amount
-	$"%Fame".text = "Fame: " + str(fame)
+	$"%Fame".text = "Fame: " + str(fame) + "F"
 	
 func decrease_fame(amount):
 	fame -= amount
-	$"%Fame".text = "Fame: " + str(fame)
+	$"%Fame".text = "Fame: " + str(fame) + "F"
 
 func increase_reputation(reputation):
 	if reputation == "Ahut" and ahut < 1:
@@ -39,7 +39,7 @@ func increase_reputation(reputation):
 		cimp += 1
 	if reputation == "Dreb" and dreb < 1:
 		dreb += 1
-	$"%Reputation".text = "Reputation: Ahut: " + str(ahut) + "   Bsyn: " + str(bsyn) + "   Cimp: " + str(cimp) + "   Dreb: " + str(dreb)
+	$"%Reputation".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBsyn: " + str(bsyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
 
 func decrease_reputation(reputation):
 	if reputation == "Ahut" and ahut > -1:
@@ -50,4 +50,4 @@ func decrease_reputation(reputation):
 		cimp -= 1
 	if reputation == "Dreb" and dreb > -1:
 		dreb -= 1
-	$"%Reputation".text = "Reputation: Ahut: " + str(ahut) + "   Bsyn: " + str(bsyn) + "   Cimp: " + str(cimp) + "   Dreb: " + str(dreb)
+	$"%Reputation".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBsyn: " + str(bsyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
