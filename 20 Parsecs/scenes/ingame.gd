@@ -159,8 +159,7 @@ func deliver_cargo(cargo):
 		failed_cargo = cargo
 		var result = roll()
 		failed_card = randi() % 4
-		failed_card = 3
-		if result == "hit" or (result == "blank" and $"%HiddenCargoContainer".visible):
+		if result == "hit" or (result == "blank" and smuggling_compartment):
 			$"%Player".increase_fame(cargo.get_data().fame)
 			$"%Player".increase_money(cargo.get_data().sell)
 			remove_cargo(cargo)
@@ -171,28 +170,28 @@ func deliver_cargo(cargo):
 			$"%FailedSell2".show()
 			if result == "crit":
 				if failed_card == 0:
-					$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
+					$"%FailedSell".text = "Deliver -1AR"
 					$"%FailedSell2".text = "Keep Cargo"
 				if failed_card == 1:
-					$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
-					$"%FailedSell2".text = "Sell Cargo (-6)"
+					$"%FailedSell".text = "Deliver -1BR"
+					$"%FailedSell2".text = "Deliver -6K"
 				if failed_card == 2:
-					$"%FailedSell".text = "Sell Cargo (Ground Combat vs 3 Attack)"
-					$"%FailedSell2".text = "Discard Cargo"
+					$"%FailedSell".text = "Attack 3G"
+					$"%FailedSell2".text = "Drop"
 				if failed_card == 3:
-					$"%FailedSell".text = "Sell Cargo (Ship Combat vs 3 Attack)"
+					$"%FailedSell".text = "Attack 3S"
 					$"%FailedSell2".hide()
 			elif result == "focus":
 				if failed_card == 0:
-					$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
+					$"%FailedSell".text = "Deliver -1DR"
 					$"%FailedSell2".text = "Keep Cargo"
 				if failed_card == 1:
-					$"%FailedSell".text = "Sell Cargo (-1 Ahut)"
-					$"%FailedSell2".text = "Sell Cargo (-6)"
+					$"%FailedSell".text = "Deliver -1AR"
+					$"%FailedSell2".text = "Deliver -6K"
 				if failed_card == 2:
 					if skill_test("stealth"):
 						$"%FailedLabel".text += "\nStealth Test passed!"
-						$"%FailedSell".text = "Sell Cargo"
+						$"%FailedSell".text = "Deliver"
 						$"%FailedSell2".hide()
 					else:
 						$"%FailedLabel".text += "\nStealth Test failed!"
@@ -200,28 +199,28 @@ func deliver_cargo(cargo):
 						if faction == "":
 							$"%FailedSell".text = "Keep Cargo"
 						else:
-							$"%FailedSell".text = "Keep Cargo (-1 " + faction + ")"
+							$"%FailedSell".text = "Keep Cargo -1" + faction
 						$"%FailedSell2".hide()
 				if failed_card == 3:
 					if skill_test("influence"):
 						$"%FailedLabel".text += "\nInfluence Test passed!"
-						$"%FailedSell".text = "Sell Cargo"
+						$"%FailedSell".text = "Deliver"
 						$"%FailedSell2".hide()
 					else:
 						$"%FailedLabel".text += "\nInfluence Test failed!"
-						$"%FailedSell".text = "Keep Cargo (-1 Cimp)"
+						$"%FailedSell".text = "Keep Cargo -1CR"
 						$"%FailedSell2".hide()
 			elif result == "blank":
 				if failed_card == 0:
-					$"%FailedSell".text = "Sell Cargo (-1 Bsyn)"
+					$"%FailedSell".text = "Deliver -1BR"
 					$"%FailedSell2".text = "Keep Cargo"
 				if failed_card == 1:
-					$"%FailedSell".text = "Sell Cargo (-1 Dreb)"
-					$"%FailedSell2".text = "Sell Cargo (-6)"
+					$"%FailedSell".text = "Deliver -1DR"
+					$"%FailedSell2".text = "Deliver -6K"
 				if failed_card == 2:
 					if skill_test("piloting"):
 						$"%FailedLabel".text += "\nPiloting Test passed!"
-						$"%FailedSell".text = "Sell Cargo"
+						$"%FailedSell".text = "Deliver"
 						$"%FailedSell2".hide()
 					else:
 						$"%FailedLabel".text += "\nPiloting Test failed!"
@@ -229,21 +228,21 @@ func deliver_cargo(cargo):
 						if faction == "":
 							$"%FailedSell".text = "Keep Cargo"
 						else:
-							$"%FailedSell".text = "Keep Cargo (-1 " + faction + ")"
+							$"%FailedSell".text = "Keep Cargo -1" + faction
 						$"%FailedSell2".hide()
 				if failed_card == 3:
 					if $"%Player".cimp == 1:
-						$"%FailedLabel".text += "\nYour Cimp reputation saved you!"
-						$"%FailedSell".text = "Sell Cargo"
+						$"%FailedLabel".text += "\nYour Cimp Reputation saved you!"
+						$"%FailedSell".text = "Deliver"
 						$"%FailedSell2".hide()
 					else:
 						if skill_test("stealth"):
 							$"%FailedLabel".text += "\nStealth Test passed!"
-							$"%FailedSell".text = "Sell Cargo"
+							$"%FailedSell".text = "Deliver"
 							$"%FailedSell2".hide()
 						else:
 							$"%FailedLabel".text += "\nStealth Test failed!"
-							$"%FailedSell".text = "Keep Cargo (-1 Cimp)"
+							$"%FailedSell".text = "Keep Cargo -1CR"
 							$"%FailedSell2".hide()
 	else:
 		$"%Player".increase_money(cargo.get_data().sell)
@@ -410,7 +409,7 @@ func _on_ship_cargo_drop3_pressed():
 	remove_cargo($"%ShipCargo3")
 
 func _on_failed_sell_pressed():
-	if $"%FailedSell".text == "Sell Cargo (Ground Combat vs 3 Attack)":
+	if $"%FailedSell".text == "Attack 3G":
 		var combat = combat($"%Character".get_data().attack, 3)
 		$"%Character".damage(combat.attacker_damage)
 		if combat.attacker_won: 
@@ -418,21 +417,21 @@ func _on_failed_sell_pressed():
 				$"%FailedLabel".text = "You would have won the combat,\nbut suffered too much damage.\nYou are defeated!"
 				$"%FailedSell".hide()
 				$"%FailedSell2".show()
-				$"%FailedSell2".text = "End turn"
+				$"%FailedSell2".text = "End Turn"
 				return
 			else:
 				$"%FailedLabel".text = "You won the combat!"
 				$"%FailedSell".show()
-				$"%FailedSell".text = "Sell Cargo"
+				$"%FailedSell".text = "Deliver"
 				$"%FailedSell2".hide()
 				return
 		else:
 			$"%FailedLabel".text = "You failed the combat!"
 			$"%FailedSell".hide()
 			$"%FailedSell2".show()
-			$"%FailedSell2".text = "End turn"
+			$"%FailedSell2".text = "End Turn"
 			return
-	elif $"%FailedSell".text == "Sell Cargo (Ship Combat vs 3 Attack)":
+	elif $"%FailedSell".text == "Attack 3S":
 		var combat = combat($"%Ship".get_data().attack, 3)
 		$"%Ship".damage(combat.attacker_damage)
 		if combat.attacker_won: 
@@ -440,33 +439,33 @@ func _on_failed_sell_pressed():
 				$"%FailedLabel".text = "You would have won the combat,\nbut suffered too much damage.\nYou are defeated!"
 				$"%FailedSell".hide()
 				$"%FailedSell2".show()
-				$"%FailedSell2".text = "End turn"
+				$"%FailedSell2".text = "End Turn"
 				return
 			else:
 				$"%FailedLabel".text = "You won the combat!"
 				$"%FailedSell".show()
-				$"%FailedSell".text = "Sell Cargo"
+				$"%FailedSell".text = "Deliver"
 				$"%FailedSell2".hide()
 				return
 		else:
 			$"%FailedLabel".text = "You failed the combat!"
 			$"%FailedSell".hide()
 			$"%FailedSell2".show()
-			$"%FailedSell2".text = "End turn"
+			$"%FailedSell2".text = "End Turn"
 			return
-	elif $"%FailedSell".text == "Keep Cargo (-1 Ahut)":
-		$"%Player".decrease_reputation("Ahut")
-	elif $"%FailedSell".text == "Keep Cargo (-1 Bsyn)":
-		$"%Player".decrease_reputation("Bsyn")
-	elif $"%FailedSell".text == "Keep Cargo (-1 Cimp)":
-		$"%Player".decrease_reputation("Cimp")
+	elif $"%FailedSell".text == "Keep Cargo -1AR":
+		$"%Player".decrease_reputation("A")
+	elif $"%FailedSell".text == "Keep Cargo -1BR":
+		$"%Player".decrease_reputation("B")
+	elif $"%FailedSell".text == "Keep Cargo -1CR":
+		$"%Player".decrease_reputation("C")
 	elif $"%FailedSell".text != "Keep Cargo":
-		if $"%FailedSell".text == "Sell Cargo (-1 Ahut)":
-			$"%Player".decrease_reputation("Ahut")
-		if $"%FailedSell".text == "Sell Cargo (-1 Bsyn)":
-			$"%Player".decrease_reputation("Bsyn")
-		if $"%FailedSell".text == "Sell Cargo (-1 Dreb)":
-			$"%Player".decrease_reputation("Dreb")
+		if $"%FailedSell".text == "Deliver -1AR":
+			$"%Player".decrease_reputation("A")
+		if $"%FailedSell".text == "Deliver -1BR":
+			$"%Player".decrease_reputation("B")
+		if $"%FailedSell".text == "Deliver -1DR":
+			$"%Player".decrease_reputation("D")
 		$"%Player".increase_fame(failed_cargo.get_data().fame)
 		$"%Player".increase_money(failed_cargo.get_data().sell)
 		remove_cargo(failed_cargo)
@@ -474,15 +473,12 @@ func _on_failed_sell_pressed():
 	stop_action()
 
 func _on_failed_sell2_pressed():
-	if $"%FailedSell2".text == "Sell Cargo (-6)":
+	if $"%FailedSell2".text == "Deliver -6K":
 		$"%Player".increase_fame(failed_cargo.get_data().fame)
 		$"%Player".increase_money(failed_cargo.get_data().sell - 6)
 		remove_cargo(failed_cargo)
-	if $"%FailedSell2".text == "Discard Cargo":
+	if $"%FailedSell2".text == "Drop":
 		remove_cargo(failed_cargo)
 	$"%PromptContainer".hide()
 	stop_action()
 
-
-func _on_ship_cargo_delive2r_pressed():
-	pass # Replace with function body.

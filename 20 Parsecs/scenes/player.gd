@@ -31,23 +31,23 @@ func decrease_fame(amount):
 	$"%Fame".text = "Fame: " + str(fame) + "F"
 
 func increase_reputation(reputation):
-	if reputation == "Ahut" and ahut < 1:
+	if reputation == "A" and ahut < 1:
 		ahut += 1
-	if reputation == "Bsyn" and bsyn < 1:
+	if reputation == "B" and bsyn < 1:
 		bsyn += 1
-	if reputation == "Cimp" and cimp < 1:
+	if reputation == "C" and cimp < 1:
 		cimp += 1
-	if reputation == "Dreb" and dreb < 1:
+	if reputation == "D" and dreb < 1:
 		dreb += 1
-	$"%Reputation".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBsyn: " + str(bsyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
+	$"%Reputation".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBasyn: " + str(bsyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
 
 func decrease_reputation(reputation):
-	if reputation == "Ahut" and ahut > -1:
+	if reputation == "A" and ahut > -1:
 		ahut -= 1
-	if reputation == "Bsyn" and bsyn > -1:
+	if reputation == "B" and bsyn > -1:
 		bsyn -= 1
-	if reputation == "Cimp" and cimp > -1:
+	if reputation == "C" and cimp > -1:
 		cimp -= 1
-	if reputation == "Dreb" and dreb > -1:
+	if reputation == "D" and dreb > -1:
 		dreb -= 1
-	$"%Reputation".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBsyn: " + str(bsyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
+	$"%Reputation".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBasyn: " + str(bsyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"

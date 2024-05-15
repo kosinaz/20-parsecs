@@ -10,18 +10,18 @@ func setup(data):
 		$Buy.text = "Buy " + str(data.buy) + "K"
 	$Data.text = ""
 	if data.has("smuggling compartment"):
-		$Data.text += "Smuggling\nCompartment\n+25% success"
+		$Data.text += "Smuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
 	if data.has("illegal"):
 		$Data.text += "Illegal\n"
 	$Data.text += "To " + data.to + ": "
-	$Data.text += str(data.sell) + "K "
+	$Data.text += str(data.sell) + "K"
 	if data.has("rep"):
-		$Data.text += "1" + data.rep.left(1) + "R "
+		$Data.text += " 1" + data.rep + "R"
 	if data.has("fame"):
-		$Data.text += str(data.fame) + "F "
+		$Data.text += " " + str(data.fame) + "F"
 	if data.has("patrol") and has_node("Buy"):
-		$Data.text += "\nPatrol: " + str(data.move) + data.patrol.left(1)
+		$Data.text += "\nPatrol: " + str(data.move) + data.patrol
 
 func get_data():
 	return _data
