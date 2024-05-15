@@ -20,6 +20,11 @@ _global_script_classes=[ {
 "path": "res://scenes/characters.gd"
 }, {
 "base": "Node",
+"class": "Patrols",
+"language": "GDScript",
+"path": "res://scenes/patrols.gd"
+}, {
+"base": "Node",
 "class": "Ships",
 "language": "GDScript",
 "path": "res://scenes/ships.gd"
@@ -37,6 +42,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Cargos": "",
 "Characters": "",
+"Patrols": "",
 "Ships": "",
 "Space": "",
 "StarterShips": ""

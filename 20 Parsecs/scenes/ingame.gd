@@ -12,6 +12,9 @@ var smuggling_compartment = false
 var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
 var failed_cargo = null
 var failed_card = 0
+onready var patrols = [$"%PatrolA", $"%PatrolB", $"%PatrolC", $"%PatrolD"]
+var patrol_names = ["Ahut", "Basyn", "Cimp", "Dreb"]
+var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 
 func _ready():
 	for space in $Spaces.get_children():
@@ -30,7 +33,11 @@ func _ready():
 			astar.connect_points(space.id, space.space_3, true)
 		if space.space_4 > 0 and space.space_4 < space.id:
 			astar.connect_points(space.id, space.space_4, true)
-	move_to($Spaces/Space3)
+	move_to($"%Player", $Spaces/Space3)
+	move_to($"%PatrolA", $Spaces/Space46)
+	move_to($"%PatrolB", $Spaces/Space2)
+	move_to($"%PatrolC", $Spaces/Space44)
+	move_to($"%PatrolD", $Spaces/Space1)
 	randomize()
 	market_cargos.append_array(Cargos.new().deck)
 	market_cargos.shuffle()
@@ -40,7 +47,8 @@ func _ready():
 	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(Characters.new().deck[0])
 	$"%Player".increase_money(4)
-	$"%Ship".setup(StarterShips.new().deck[0])
+	$"%Ship".setup(Ships.new().deck[7])
+#	$"%Ship".setup(StarterShips.new().deck[0])
 	start_planning()
 	
 func _draw():
@@ -63,16 +71,31 @@ func start_planning():
 		$"%TurnIndicator".text += "Move or Gain 2K!"
 		$"%Recover".disabled = true
 	astar.set_point_disabled(13)
+	var patrol_space_ids = []
+	for r in ["A", "B", "C", "D"]:
+		if $"%Player".get_reputation(r) == -1:
+			var id = get_node("%Patrol" + r).current_space.id
+			astar.set_point_disabled(id)
+			patrol_space_ids.append(id)
 	for to_id in astar.get_points():
-		if astar.get_id_path($"%Player".current_space.id, to_id).size() > $"%Ship".get_data().speed + 1:
+		var path = astar.get_id_path($"%Player".current_space.id, to_id)
+		if path.size() > $"%Ship".get_data().speed + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = true
 		else:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = false
 	astar.set_point_disabled(13, false)
-	if astar.get_id_path($"%Player".current_space.id, 13).size() > $"%Ship".get_data().speed + 1:
+	var path13 = astar.get_id_path($"%Player".current_space.id, 13)
+	if path13.size() > $"%Ship".get_data().speed + 1 or path13.size() == 0:
 		get_node("Spaces/Space13/Button").disabled = true
 	else:
 		get_node("Spaces/Space13/Button").disabled = false
+	for id in patrol_space_ids:
+		astar.set_point_disabled(id, false)
+		var path = astar.get_id_path($"%Player".current_space.id, id)
+		if path.size() > $"%Ship".get_data().speed + 1 or path.size() == 0:
+			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = true
+		else:
+			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = false
 
 func stop_planning():
 	for space in $Spaces.get_children():
@@ -81,9 +104,41 @@ func stop_planning():
 	$"%Recover".disabled = true
 	start_action()
 
-func move_to(space):
-	$"%Player".current_space = space
-	$"%Player".position = space.position
+func move_to(ship, space):
+	ship.current_space = space
+	ship.position = space.position
+
+func move_patrol(patrol, step):
+	var path = astar.get_id_path(patrol.current_space.id, $"%Player".current_space.id)
+	if path.size() > step + 1:
+		move_to(patrol, get_node("Spaces/Space" + str(path[step])))
+	else:
+		move_to(patrol, $"%Player".current_space)
+
+func upgrade_patrol(patrol):
+	if patrol.name.ends_with("A"):
+		move_to($"%PatrolA", $Spaces/Space46)
+	if patrol.name.ends_with("B"):
+		move_to($"%PatrolB", $Spaces/Space2)
+	if patrol.name.ends_with("C"):
+		move_to($"%PatrolC", $Spaces/Space44)
+	if patrol.name.ends_with("D"):
+		move_to($"%PatrolD", $Spaces/Space1)
+	patrol.level += 1
+	patrol.data = Patrols.new().deck[patrol.level]
+	$"%Patrols".text = "Patrols:"
+	for i in range(4):
+		$"%Patrols".text += "\n" + patrol_names[i] + ": "
+		if patrols[i].data.has("attack"):
+			$"%Patrols".text += str(patrols[i].data.attack) + "S "
+		if patrols[i].data.has("money"):
+			$"%Patrols".text += str(patrols[i].data.money) + "K "
+		if patrols[i].data.has("fame"):
+			$"%Patrols".text += str(patrols[i].data.fame) + "F "
+		if patrols[i].data.has("invulnerable"):
+			$"%Patrols".text += "invulnerable"
+		else:
+			$"%Patrols".text += reps[i]
 
 func start_action():
 	if not planets.has($"%Player".current_space.id):
@@ -199,7 +254,7 @@ func deliver_cargo(cargo):
 						if faction == "":
 							$"%FailedSell".text = "Keep Cargo"
 						else:
-							$"%FailedSell".text = "Keep Cargo -1" + faction
+							$"%FailedSell".text = "Keep Cargo -1" + faction + "R"
 						$"%FailedSell2".hide()
 				if failed_card == 3:
 					if skill_test("influence"):
@@ -228,7 +283,7 @@ func deliver_cargo(cargo):
 						if faction == "":
 							$"%FailedSell".text = "Keep Cargo"
 						else:
-							$"%FailedSell".text = "Keep Cargo -1" + faction
+							$"%FailedSell".text = "Keep Cargo -1" + faction + "R"
 						$"%FailedSell2".hide()
 				if failed_card == 3:
 					if $"%Player".cimp == 1:
@@ -307,14 +362,45 @@ func combat(attack1, attack2):
 	}
 
 func start_encounter():
+	for r in ["A", "B", "C", "D"]:
+		if $"%Player".get_reputation(r) == -1:
+			var patrol = get_node("%Patrol" + r)
+			if patrol.current_space == $"%Player".current_space:
+				attack_patrol(patrol)
+				return
 	start_turn()
+
+func attack_patrol(attacking_patrol):
+	if attacking_patrol.data.has("invulnerable"):
+		pass
+	else:
+		var combat = combat($"%Ship".get_data().attack, attacking_patrol.data.attack)
+		$"%Ship".damage(combat.attacker_damage)
+		$"%AlertWindow".show()
+		if combat.attacker_won: 
+			if $"%Ship".defeated:
+				$"%AlertSummary".text = "You won the combat against the patrol,\nbut suffered too much damage.\nYou are defeated!"
+			else:
+				$"%AlertSummary".text = "You won the combat against the patrol!"
+			if attacking_patrol.data.has("money"):
+				$"%Player".increase_money(attacking_patrol.data.money)
+			if attacking_patrol.data.has("fame"):
+				$"%Player".increase_fame(attacking_patrol.data.fame)
+			$"%Player".decrease_reputation(attacking_patrol.name.right(6))
+			upgrade_patrol(attacking_patrol)
+			attacking_patrol = null
+		else:
+			$"%AlertSummary".text = "You failed the combat against the patrol!"
+			var spaces = astar.get_point_connections($"%Player".current_space.id)
+			move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
+			attacking_patrol = null
 
 func start_turn():
 	turn += 1
 	start_planning()
 
 func _on_space_pressed(space):
-	move_to(space)
+	move_to($"%Player", space)
 	stop_planning()
 
 func _on_work_pressed():
@@ -347,6 +433,8 @@ func _on_market_cargo_buy_pressed():
 		$"%ShipCargo3".setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
+	if market_cargos[0].has("patrol"):
+		move_patrol(get_node("%Patrol" + market_cargos[0].patrol), market_cargos[0].move)
 	bought = true
 	update_action_buttons()
 
@@ -482,3 +570,6 @@ func _on_failed_sell2_pressed():
 	$"%PromptContainer".hide()
 	stop_action()
 
+func _on_alert_button_pressed():
+	$"%AlertWindow".hide()
+	start_turn()
