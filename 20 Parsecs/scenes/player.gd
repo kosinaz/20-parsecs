@@ -7,9 +7,6 @@ var ahut = 0
 var bsyn = 0
 var cimp = 0
 var dreb = 0
-
-func _draw():
-	draw_circle(Vector2(), 5, Color.blue)
 	
 func get_money():
 	return money
