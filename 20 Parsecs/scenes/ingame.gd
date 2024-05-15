@@ -40,7 +40,7 @@ func _ready():
 	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(Characters.new().deck[0])
 	$"%Player".increase_money(4)
-	$"%Ship".setup(Ships.new().deck[0])
+	$"%Ship".setup(StarterShips.new().deck[0])
 	start_planning()
 	
 func _draw():
@@ -99,29 +99,60 @@ func start_action():
 func stop_action():
 	$"%MarketCargo".disable_buy()
 	$"%MarketCargo".disable_skip()
+	$"%MarketShip".disable_buy()
+	$"%MarketShip".disable_skip()
 	$"%ShipCargo".disable_deliver()
 	$"%ShipCargo".disable_drop()
+	$"%ShipCargo2".disable_deliver()
+	$"%ShipCargo2".disable_drop()
+	$"%ShipCargo3".disable_deliver()
+	$"%ShipCargo3".disable_drop()
 	$"%Done".disabled = true
 	start_encounter()
 
 func update_action_buttons():
 	$"%MarketCargo".enable_buy()
 	$"%MarketCargo".enable_skip()
+	$"%MarketShip".enable_buy()
+	$"%MarketShip".enable_skip()
 	$"%ShipCargo".enable_deliver()
 	$"%ShipCargo".enable_drop()
+	$"%ShipCargo2".enable_deliver()
+	$"%ShipCargo2".enable_drop()
+	$"%ShipCargo3".enable_deliver()
+	$"%ShipCargo3".enable_drop()
 	if skipped:
 		$"%MarketCargo".disable_skip()
+		$"%MarketShip".disable_skip()
 	if bought:
 		$"%MarketCargo".disable_buy()
 		$"%MarketCargo".disable_skip()
+		$"%MarketShip".disable_buy()
+		$"%MarketShip".disable_skip()
+	if $"%Player".get_money() < $"%MarketCargo".get_data().buy:
+		$"%MarketCargo".disable_buy()
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
 		$"%MarketCargo".disable_buy()
-	if $"%ShipCargo".has_cargo:
-		$"%MarketCargo".disable_buy()
-	else:
+	var available_cargos = 0
+	if not $"%ShipCargo".has_cargo:
+		available_cargos += 1
 		$"%ShipCargo".disable_drop()
+	if $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
+		available_cargos += 1
+		$"%ShipCargo2".disable_drop()
+	if $"%ShipCargo3".visible and not $"%ShipCargo3".has_cargo:
+		available_cargos += 1
+		$"%ShipCargo3".disable_drop()
+	if available_cargos == 0:
+		$"%MarketCargo".disable_buy()
+	if $"%Player".get_money() < $"%MarketShip".get_data().buy:
+		$"%MarketShip".disable_buy()
 	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to():
 		$"%ShipCargo".disable_deliver()
+	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo2".get_to():
+		$"%ShipCargo2".disable_deliver()
+	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo3".get_to():
+		$"%ShipCargo3".disable_deliver()
 
 func deliver_cargo(cargo):
 	if cargo.get_data().has("illegal"):
@@ -306,7 +337,15 @@ func _on_done_pressed():
 
 func _on_market_cargo_buy_pressed():
 	$"%Player".decrease_money(market_cargos[0].buy)
-	$"%ShipCargo".setup(market_cargos[0])
+	if market_cargos[0].has("smuggling compartment"):
+		smuggling_compartment = true
+		$"%ShipCargo3".show()
+	if not $"%ShipCargo".has_cargo:
+		$"%ShipCargo".setup(market_cargos[0])
+	elif $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
+		$"%ShipCargo2".setup(market_cargos[0])
+	elif $"%ShipCargo3".visible and not $"%ShipCargo3".has_cargo:
+		$"%ShipCargo3".setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
 	bought = true
@@ -320,18 +359,55 @@ func _on_market_cargo_skip_pressed():
 
 func _on_market_ship_buy_pressed():
 	$"%Player".decrease_money(market_ships[0].buy)
-	$"%ShipCargo".setup(market_cargos[0])
-	market_cargos.pop_front()
-	$"%MarketCargo".setup(market_cargos[0])
+	$"%Ship".setup(market_ships[0])
+	market_ships.pop_front()
+	$"%MarketShip".setup(market_ships[0])
+	if $"%Ship".get_data().cargo == 2:
+		$"%ShipCargo2".show()
+	else:
+		$"%ShipCargo2".hide()
 	bought = true
 	update_action_buttons()
 	
+func _on_market_ship_skip_pressed():
+	market_ships.append(market_ships.pop_front())
+	$"%MarketShip".setup(market_ships[0])
+	skipped = true
+	update_action_buttons()
 
 func _on_ship_cargo_deliver_pressed():
 	deliver_cargo($"%ShipCargo")
 	
+func _on_ship_cargo_deliver2_pressed():
+	deliver_cargo($"%ShipCargo2")
+	
+func _on_ship_cargo_deliver3_pressed():
+	deliver_cargo($"%ShipCargo3")
+	
 func _on_ship_cargo_drop_pressed():
-	remove_cargo($"%ShipCargo")
+	if $"%ShipCargo".get_data().has("smuggling compartment"):
+		smuggling_compartment = false
+		$"%ShipCargo3".hide()
+		remove_cargo($"%ShipCargo")
+		if $"%ShipCargo3".has_cargo:
+			$"%ShipCargo".setup($"%ShipCargo3".get_data())
+			remove_cargo($"%ShipCargo3")
+	else:
+		remove_cargo($"%ShipCargo")
+
+func _on_ship_cargo_drop2_pressed():
+	if $"%ShipCargo2".get_data().has("smuggling compartment"):
+		smuggling_compartment = false
+		$"%ShipCargo3".hide()
+		remove_cargo($"%ShipCargo2")
+		if $"%ShipCargo3".has_cargo:
+			$"%ShipCargo2".setup($"%ShipCargo3".get_data())
+			remove_cargo($"%ShipCargo3")
+	else:
+		remove_cargo($"%ShipCargo2")
+
+func _on_ship_cargo_drop3_pressed():
+	remove_cargo($"%ShipCargo3")
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Sell Cargo (Ground Combat vs 3 Attack)":
@@ -406,3 +482,7 @@ func _on_failed_sell2_pressed():
 		remove_cargo(failed_cargo)
 	$"%PromptContainer".hide()
 	stop_action()
+
+
+func _on_ship_cargo_delive2r_pressed():
+	pass # Replace with function body.

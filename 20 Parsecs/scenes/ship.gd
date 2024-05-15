@@ -17,7 +17,8 @@ func setup(data):
 	if _data.has("cargomod"):
 		$Data.text += "Cargo/Mod: " + str(_data.cargomod) + "\n"
 	$Data.text += "Crew: " + str(_data.crew) + "\n"
-	$Data.text += "Damage: " + str(_damage)
+	if not has_node("Buy"):
+		$Data.text += "Damage: " + str(_damage)
 
 func get_data():
 	return _data
@@ -39,3 +40,14 @@ func repair(amount = 0):
 	_damage -= amount
 	setup(_data)
 
+func enable_buy():
+	$Buy.disabled = false
+	
+func disable_buy():
+	$Buy.disabled = true
+
+func enable_skip():
+	$Skip.disabled = false
+
+func disable_skip():
+	$Skip.disabled = true
