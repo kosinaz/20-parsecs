@@ -14,7 +14,9 @@ func setup(data):
 		$Data.text += "Skill: " + str(_data.skill2) + "\n"
 	if _data.has("skill3"):
 		$Data.text += "Skill: " + str(_data.skill3) + "\n"
-	$Data.text += "Damage: " + str(_damage)
+	$"%CharacterDamage".value = 0
+	$"%CharacterDamage".max_value = _data.armor
+	$"%CharacterDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
 
 func get_data():
 	return _data
@@ -27,11 +29,13 @@ func damage(amount):
 	if _damage >= _data.armor:
 		defeated = true
 		_damage = _data.armor
-	setup(_data)
+	$"%CharacterDamage".value = _damage
+	$"%CharacterDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
 
 func heal(amount = 0):
 	defeated = false
 	if amount == 0:
 		amount = _damage
 	_damage -= amount
-	setup(_data)
+	$"%CharacterDamage".value = _damage
+	$"%CharacterDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)

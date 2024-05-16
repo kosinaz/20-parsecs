@@ -3,10 +3,10 @@ extends Node2D
 var current_space = null
 var fame = 0
 var money = 0
-var ahut = 0
-var basyn = 0
-var cimp = 0
-var dreb = 0
+var ahut = -1
+var basyn = -1
+var cimp = -1
+var dreb = -1
 	
 func get_money():
 	return money

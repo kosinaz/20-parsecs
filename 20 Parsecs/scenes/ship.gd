@@ -16,9 +16,10 @@ func setup(data):
 		$Data.text += "Mod: " + str(_data.mod) + "\n"
 	if _data.has("cargomod"):
 		$Data.text += "Cargo/Mod: " + str(_data.cargomod) + "\n"
-	$Data.text += "Crew: " + str(_data.crew) + "\n"
-	if not has_node("Buy"):
-		$Data.text += "Damage: " + str(_damage)
+	$Data.text += "Crew: " + str(_data.crew)
+	$"%ShipDamage".value = 0
+	$"%ShipDamage".max_value = _data.armor
+	$"%ShipDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
 
 func get_data():
 	return _data
@@ -31,14 +32,16 @@ func damage(amount):
 	if _damage >= _data.armor:
 		defeated = true
 		_damage = _data.armor
-	setup(_data)
+	$"%ShipDamage".value = _damage
+	$"%ShipDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
 
 func repair(amount = 0):
 	defeated = false
 	if amount == 0:
 		amount = _damage
 	_damage -= amount
-	setup(_data)
+	$"%ShipDamage".value = _damage
+	$"%ShipDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
 
 func enable_buy():
 	$Buy.disabled = false
