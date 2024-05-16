@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -49,6 +49,7 @@
 [ext_resource path="res://images/patrol c.png" type="Texture" id=47]
 [ext_resource path="res://images/bar-under.png" type="Texture" id=48]
 [ext_resource path="res://images/bar-progress.png" type="Texture" id=49]
+[ext_resource path="res://scenes/gearmod.gd" type="Script" id=50]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -699,13 +700,15 @@ custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Skip"
 
-[node name="MarketGearMod" type="TextureRect" parent="CanvasLayer/Market"]
+[node name="MarketGearmod" type="TextureRect" parent="CanvasLayer/Market"]
+unique_name_in_owner = true
 margin_left = 192.0
 margin_right = 288.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
+script = ExtResource( 50 )
 
-[node name="Title" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Title" type="Label" parent="CanvasLayer/Market/MarketGearmod"]
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
@@ -714,7 +717,7 @@ custom_fonts/font = ExtResource( 36 )
 text = "Gear/Mod"
 align = 1
 
-[node name="Data" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Data" type="Label" parent="CanvasLayer/Market/MarketGearmod"]
 margin_left = 4.0
 margin_top = 14.0
 margin_right = 92.0
@@ -728,8 +731,9 @@ in Ground Combat
 if has Strength
 Patrol: 4C
 "
+autowrap = true
 
-[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketGearmod"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -740,7 +744,7 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Buy 8K"
 
-[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketGearmod"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -1597,6 +1601,113 @@ disabled = true
 toggle_mode = true
 text = "Barter"
 
+[node name="ShipCargoMod" type="TextureRect" parent="CanvasLayer/Ship"]
+unique_name_in_owner = true
+visible = false
+margin_left = 192.0
+margin_right = 288.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 40 )
+
+[node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargoMod"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Mod"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/Ship/ShipCargoMod"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "
+"
+autowrap = true
+
+[node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargoMod"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -42.0
+margin_top = -24.0
+margin_right = -5.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargoMod"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 49.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
+
+[node name="ShipMod" type="TextureRect" parent="CanvasLayer/Ship"]
+unique_name_in_owner = true
+margin_left = 192.0
+margin_right = 288.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 50 )
+
+[node name="Title" type="Label" parent="CanvasLayer/Ship/ShipMod"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Mod"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/Ship/ShipMod"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "
+"
+autowrap = true
+
+[node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipMod"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -42.0
+margin_top = -24.0
+margin_right = -5.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipMod"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 49.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
+
 [node name="PromptContainer" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
@@ -1696,6 +1807,8 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Buy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Skip" to="." method="_on_market_cargo_skip_pressed"]
+[connection signal="pressed" from="CanvasLayer/Market/MarketGearmod/Buy" to="." method="_on_market_gearmod_buy_pressed"]
+[connection signal="pressed" from="CanvasLayer/Market/MarketGearmod/Skip" to="." method="_on_market_gearmod_skip_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketShip/Buy" to="." method="_on_market_ship_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketShip/Skip" to="." method="_on_market_ship_skip_pressed"]
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip/Buy" to="." method="_on_used_ship_market_buy_pressed"]
@@ -1715,6 +1828,10 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo3/Deliver" to="." method="_on_ship_cargo_deliver3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo3/Drop" to="." method="_on_ship_cargo_drop3_pressed"]
 [connection signal="toggled" from="CanvasLayer/Ship/ShipCargo3/Barter" to="." method="_on_ship_cargo_barter_toggled"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipCargoMod/Drop" to="." method="_on_ship_mod_drop_pressed"]
+[connection signal="toggled" from="CanvasLayer/Ship/ShipCargoMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipMod/Drop" to="." method="_on_ship_mod_drop_pressed"]
+[connection signal="toggled" from="CanvasLayer/Ship/ShipMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
 [connection signal="pressed" from="CanvasLayer/AlertWindow/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
