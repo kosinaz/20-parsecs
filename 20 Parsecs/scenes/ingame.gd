@@ -81,21 +81,33 @@ func start_planning():
 		var path = astar.get_id_path($"%Player".current_space.id, to_id)
 		if path.size() > $"%Ship".get_data().speed + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = true
+			get_node("Spaces/Space" + str(to_id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
+			get_node("Spaces/Space" + str(to_id)).get_node("Faction").add_color_override("font_color", Color("9a9a9a"))
 		else:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = false
+			get_node("Spaces/Space" + str(to_id)).get_node("Label").add_color_override("font_color", Color.white)
+			get_node("Spaces/Space" + str(to_id)).get_node("Faction").add_color_override("font_color", Color.white)
 	astar.set_point_disabled(13, false)
 	var path13 = astar.get_id_path($"%Player".current_space.id, 13)
 	if path13.size() > $"%Ship".get_data().speed + 1 or path13.size() == 0:
 		get_node("Spaces/Space13/Button").disabled = true
+		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
+		get_node("Spaces/Space" + str(13)).get_node("Faction").add_color_override("font_color", Color.white)
 	else:
 		get_node("Spaces/Space13/Button").disabled = false
+		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
+		get_node("Spaces/Space" + str(13)).get_node("Faction").add_color_override("font_color", Color.white)
 	for id in patrol_space_ids:
 		astar.set_point_disabled(id, false)
 		var path = astar.get_id_path($"%Player".current_space.id, id)
 		if path.size() > $"%Ship".get_data().speed + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = true
+			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
+			get_node("Spaces/Space" + str(id)).get_node("Faction").add_color_override("font_color", Color("9a9a9a"))
 		else:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = false
+			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color.white)
+			get_node("Spaces/Space" + str(id)).get_node("Faction").add_color_override("font_color", Color.white)
 
 func stop_planning():
 	for space in $Spaces.get_children():
