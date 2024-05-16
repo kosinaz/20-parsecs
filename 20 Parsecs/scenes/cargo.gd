@@ -60,3 +60,9 @@ func enable_drop():
 
 func disable_drop():
 	$Drop.disabled = true
+
+func enable_barter():
+	$Barter.disabled = false
+
+func disable_barter():
+	$Barter.disabled = true

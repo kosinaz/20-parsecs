@@ -1428,12 +1428,14 @@ text = "
 autowrap = true
 
 [node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = 17.0
+margin_right = 24.0
+margin_bottom = 36.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Deliver"
@@ -1450,6 +1452,18 @@ margin_bottom = -5.0
 custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 49.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
 
 [node name="ShipCargo2" type="TextureRect" parent="CanvasLayer/Ship"]
 unique_name_in_owner = true
@@ -1482,10 +1496,10 @@ autowrap = true
 [node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo2"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
+margin_left = 23.0
+margin_top = -47.0
+margin_right = 72.0
+margin_bottom = -28.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Deliver"
@@ -1502,6 +1516,20 @@ margin_bottom = -5.0
 custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargo2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -44.0
+margin_top = 40.0
+margin_right = 1.0
+margin_bottom = 59.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
 
 [node name="ShipCargo3" type="TextureRect" parent="CanvasLayer/Ship"]
 unique_name_in_owner = true
@@ -1534,10 +1562,10 @@ autowrap = true
 [node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo3"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
+margin_left = 23.0
+margin_top = -47.0
+margin_right = 72.0
+margin_bottom = -28.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Deliver"
@@ -1554,6 +1582,20 @@ margin_bottom = -5.0
 custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargo3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -44.0
+margin_top = 40.0
+margin_right = 1.0
+margin_bottom = 59.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
 
 [node name="PromptContainer" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -1666,10 +1708,13 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip8/Buy" to="." method="_on_used_ship_market_buy8_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Deliver" to="." method="_on_ship_cargo_deliver_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Drop" to="." method="_on_ship_cargo_drop_pressed"]
+[connection signal="toggled" from="CanvasLayer/Ship/ShipCargo/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo2/Deliver" to="." method="_on_ship_cargo_deliver2_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo2/Drop" to="." method="_on_ship_cargo_drop2_pressed"]
+[connection signal="toggled" from="CanvasLayer/Ship/ShipCargo2/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo3/Deliver" to="." method="_on_ship_cargo_deliver3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo3/Drop" to="." method="_on_ship_cargo_drop3_pressed"]
+[connection signal="toggled" from="CanvasLayer/Ship/ShipCargo3/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/PromptContainer/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
 [connection signal="pressed" from="CanvasLayer/AlertWindow/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
