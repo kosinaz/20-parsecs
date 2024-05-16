@@ -451,14 +451,41 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Recover"
 
-[node name="Done" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
+[node name="Finish" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 112.0
-margin_right = 150.0
+margin_right = 153.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Done"
+text = "Finish"
+
+[node name="Explore" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 157.0
+margin_right = 207.0
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 38 )
+disabled = true
+text = "Explore"
+
+[node name="Contact" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 211.0
+margin_right = 261.0
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 38 )
+disabled = true
+text = "Contact"
+
+[node name="Attack" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 265.0
+margin_right = 310.0
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 38 )
+disabled = true
+text = "Attack"
 
 [node name="Patrol" type="TextureRect" parent="CanvasLayer"]
 margin_top = 64.0
@@ -1277,7 +1304,10 @@ text = "Ok"
 
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Gain2K" to="." method="_on_work_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Recover" to="." method="_on_heal_pressed"]
-[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Done" to="." method="_on_done_pressed"]
+[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Finish" to="." method="_on_finish_pressed"]
+[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Explore" to="." method="_on_explore_pressed"]
+[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Contact" to="." method="_on_contact_pressed"]
+[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Buy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Skip" to="." method="_on_market_cargo_skip_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketShip/Buy" to="." method="_on_market_ship_buy_pressed"]

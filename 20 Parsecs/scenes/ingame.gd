@@ -15,6 +15,7 @@ var failed_card = 0
 onready var patrols = [$"%PatrolA", $"%PatrolB", $"%PatrolC", $"%PatrolD"]
 var patrol_names = ["Ahut", "Basyn", "Cimp", "Dreb"]
 var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
+var attacking_patrol = null
 
 func _ready():
 	for space in $Spaces.get_children():
@@ -47,8 +48,8 @@ func _ready():
 	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(Characters.new().deck[0])
 	$"%Player".increase_money(4)
-	$"%Ship".setup(Ships.new().deck[7])
-#	$"%Ship".setup(StarterShips.new().deck[0])
+#	$"%Ship".setup(Ships.new().deck[7])
+	$"%Ship".setup(StarterShips.new().deck[0])
 	start_planning()
 	
 func _draw():
@@ -73,7 +74,7 @@ func start_planning():
 	astar.set_point_disabled(13)
 	var patrol_space_ids = []
 	for r in ["A", "B", "C", "D"]:
-		if $"%Player".get_reputation(r) == -1:
+		if $"%Player".get_reputation(r) != 1:
 			var id = get_node("%Patrol" + r).current_space.id
 			astar.set_point_disabled(id)
 			patrol_space_ids.append(id)
@@ -156,9 +157,9 @@ func start_action():
 	if not planets.has($"%Player".current_space.id):
 		stop_action()
 	else:
-		$"%Done".disabled = false
+		$"%Finish".disabled = false
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
-		$"%TurnIndicator".text += "Perform any number or no actions, then press Done!"
+		$"%TurnIndicator".text += "Perform any number or no actions, then press Finish!"
 		bought = false
 		skipped = false
 		update_action_buttons()
@@ -174,7 +175,7 @@ func stop_action():
 	$"%ShipCargo2".disable_drop()
 	$"%ShipCargo3".disable_deliver()
 	$"%ShipCargo3".disable_drop()
-	$"%Done".disabled = true
+	$"%Finish".disabled = true
 	start_encounter()
 
 func update_action_buttons():
@@ -374,15 +375,38 @@ func combat(attack1, attack2):
 	}
 
 func start_encounter():
+	$"%Explore".disabled = false
+	$"%Contact".disabled = false
+	$"%Attack".disabled = true
+	$"%TurnIndicator".text = "Turn " + str(turn) + ", Encounter Step\n"
 	for r in ["A", "B", "C", "D"]:
-		if $"%Player".get_reputation(r) == -1:
-			var patrol = get_node("%Patrol" + r)
-			if patrol.current_space == $"%Player".current_space:
-				attack_patrol(patrol)
-				return
+		var patrol = get_node("%Patrol" + r)
+		if patrol.current_space == $"%Player".current_space:
+			$"%Attack".disabled = false
+			attacking_patrol = patrol
+			if $"%Player".get_reputation(r) == -1:
+				$"%Contact".disabled = true
+				$"%Explore".disabled = true
+	if not planets.has($"%Player".current_space.id):
+		$"%Contact".disabled = true
+	if $"%Contact".disabled and $"%Explore".disabled:
+		$"%TurnIndicator".text += "You must Attack the hostile patrol!"
+	elif $"%Contact".disabled and $"%Attack".disabled:
+		$"%TurnIndicator".text += "Explore your space!"
+	elif $"%Contact".disabled:
+		$"%TurnIndicator".text += "Explore your space or Attack the patrol!"
+	elif $"%Attack".disabled:
+		$"%TurnIndicator".text += "Explore the planet or Contact someone on it!"
+	else:
+		$"%TurnIndicator".text += "Explore or Contact someone or Attack the patrol!"
+
+func stop_encounter():
+	$"%Explore".disabled = true
+	$"%Contact".disabled = true
+	$"%Attack".disabled = true
 	start_turn()
 
-func attack_patrol(attacking_patrol):
+func attack_patrol():
 	if attacking_patrol.data.has("invulnerable"):
 		pass
 	else:
@@ -429,7 +453,7 @@ func _on_repair_pressed():
 	$"%Ship".repair()
 	stop_planning()
 
-func _on_done_pressed():
+func _on_finish_pressed():
 	stop_action()
 
 func _on_market_cargo_buy_pressed():
@@ -584,4 +608,13 @@ func _on_failed_sell2_pressed():
 
 func _on_alert_button_pressed():
 	$"%AlertWindow".hide()
-	start_turn()
+	stop_encounter()
+
+func _on_attack_pressed():
+	attack_patrol()
+
+func _on_explore_pressed():
+	stop_encounter()
+
+func _on_contact_pressed():
+	stop_encounter()
