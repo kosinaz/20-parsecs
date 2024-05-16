@@ -6,14 +6,15 @@ var has_cargo = false
 func setup(data):
 	has_cargo = true
 	_data = data
+	$Data.text = ""
 	if has_node("Buy"):
 		$Buy.text = "Buy " + str(data.buy) + "K"
-	$Data.text = ""
 	if data.has("smuggling compartment"):
-		$Data.text += "Smuggling\nCompartment\n+25% success\n+1 Cargo"
+		$Data.text += "Price: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
 	if data.has("illegal"):
 		$Data.text += "Illegal\n"
+	$Data.text += "Price: " + str(_data.buy) + "K\n"
 	$Data.text += "To " + data.to + ": "
 	$Data.text += str(data.sell) + "K"
 	if data.has("rep"):

@@ -582,6 +582,7 @@ custom_fonts/font = SubResource( 2 )
 text = "Money: 0K"
 
 [node name="Market" type="HBoxContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -704,7 +705,7 @@ margin_right = 288.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 
-[node name="MarketGearModTitle" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Title" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
@@ -713,7 +714,7 @@ custom_fonts/font = ExtResource( 36 )
 text = "Gear/Mod"
 align = 1
 
-[node name="MarketGearModData" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Data" type="Label" parent="CanvasLayer/Market/MarketGearMod"]
 margin_left = 4.0
 margin_top = 14.0
 margin_right = 92.0
@@ -728,7 +729,7 @@ if has Strength
 Patrol: 4C
 "
 
-[node name="MarketGearModBuy" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -739,7 +740,7 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Buy 8K"
 
-[node name="MarketGearModSkip" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
+[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketGearMod"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -889,6 +890,7 @@ Armor: 5
 Cargo: 1
 Mod: 1
 Crew: 2"
+autowrap = true
 
 [node name="Buy" type="Button" parent="CanvasLayer/Market/MarketShip"]
 anchor_top = 1.0
@@ -913,6 +915,348 @@ margin_bottom = -5.0
 custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Skip"
+
+[node name="UsedShipMarket" type="HBoxContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -48.0
+margin_top = -96.0
+margin_right = 48.0
+margin_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 0
+
+[node name="UsedShip" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_right = 96.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 5K"
+
+[node name="UsedShip2" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 96.0
+margin_right = 192.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip2"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip2"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip2"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 5K"
+
+[node name="UsedShip3" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 192.0
+margin_right = 288.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip3"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip3"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip3"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 10K"
+
+[node name="UsedShip4" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 288.0
+margin_right = 384.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip4"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip4"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip4"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 10K"
+
+[node name="UsedShip5" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 384.0
+margin_right = 480.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip5"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip5"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip5"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 15K"
+
+[node name="UsedShip6" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 480.0
+margin_right = 576.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip6"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip6"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip6"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 15K"
+
+[node name="UsedShip7" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 576.0
+margin_right = 672.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip7"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip7"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip7"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 20K"
+
+[node name="UsedShip8" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
+margin_left = 672.0
+margin_right = 768.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 4 )
+
+[node name="Title" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip8"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Ship"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/UsedShipMarket/UsedShip8"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Speed: 6
+Attack: 4
+Armor: 5
+Cargo: 1
+Mod: 1
+Crew: 2"
+autowrap = true
+
+[node name="Buy" type="Button" parent="CanvasLayer/UsedShipMarket/UsedShip8"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 35.0
+margin_bottom = -5.0
+custom_fonts/font = ExtResource( 38 )
+text = "Buy 20K"
 
 [node name="Character" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -1312,6 +1656,14 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Skip" to="." method="_on_market_cargo_skip_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketShip/Buy" to="." method="_on_market_ship_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketShip/Skip" to="." method="_on_market_ship_skip_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip/Buy" to="." method="_on_used_ship_market_buy_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip2/Buy" to="." method="_on_used_ship_market_buy2_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip3/Buy" to="." method="_on_used_ship_market_buy3_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip4/Buy" to="." method="_on_used_ship_market_buy4_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip5/Buy" to="." method="_on_used_ship_market_buy5_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip6/Buy" to="." method="_on_used_ship_market_buy6_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip7/Buy" to="." method="_on_used_ship_market_buy7_pressed"]
+[connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip8/Buy" to="." method="_on_used_ship_market_buy8_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Deliver" to="." method="_on_ship_cargo_deliver_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Drop" to="." method="_on_ship_cargo_drop_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo2/Deliver" to="." method="_on_ship_cargo_deliver2_pressed"]

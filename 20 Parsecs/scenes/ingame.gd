@@ -1,7 +1,12 @@
 extends Node2D
 
 var astar = AStar2D.new()
+var cargo_deck = Cargos.new().deck
 var market_cargos = []
+var ship_deck = Ships.new().deck
+var starter_ship_deck = StarterShips.new().deck
+var character_deck = Characters.new().deck
+var patrol_deck = Patrols.new().deck
 var market_ships = []
 var turn = 1
 var planets = [3, 5, 9, 10, 14, 25, 27, 31, 38, 39, 42]
@@ -40,16 +45,15 @@ func _ready():
 	move_to($"%PatrolC", $Spaces/Space44)
 	move_to($"%PatrolD", $Spaces/Space1)
 	randomize()
-	market_cargos.append_array(Cargos.new().deck)
+	market_cargos.append_array(cargo_deck)
 	market_cargos.shuffle()
-	market_ships.append_array(Ships.new().deck)
+	market_ships.append_array(ship_deck)
 	market_ships.shuffle()
 	$"%MarketCargo".setup(market_cargos[0])
 	$"%MarketShip".setup(market_ships[0])
-	$"%Character".setup(Characters.new().deck[0])
+	$"%Character".setup(character_deck[0])
 	$"%Player".increase_money(4)
-#	$"%Ship".setup(Ships.new().deck[7])
-	$"%Ship".setup(StarterShips.new().deck[0])
+	$"%Ship".setup(starter_ship_deck[0])
 	start_planning()
 	
 func _draw():
@@ -138,7 +142,7 @@ func upgrade_patrol(patrol):
 	if patrol.name.ends_with("D"):
 		move_to($"%PatrolD", $Spaces/Space1)
 	patrol.level += 1
-	patrol.data = Patrols.new().deck[patrol.level]
+	patrol.data = patrol_deck[patrol.level]
 	$"%Patrols".text = "Patrols:"
 	for i in range(4):
 		$"%Patrols".text += "\n" + patrol_names[i] + ": "
@@ -213,7 +217,10 @@ func update_action_buttons():
 		$"%ShipCargo3".disable_drop()
 	if available_cargos == 0:
 		$"%MarketCargo".disable_buy()
-	if $"%Player".get_money() < $"%MarketShip".get_data().buy:
+	if $"%MarketShip".get_data().has("used"):
+		if $"%Player".get_money() < 5:
+			$"%MarketShip".disable_buy()
+	elif $"%Player".get_money() < $"%MarketShip".get_reduced_price($"%Ship".get_price()):
 		$"%MarketShip".disable_buy()
 	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to():
 		$"%ShipCargo".disable_deliver()
@@ -374,6 +381,52 @@ func combat(attack1, attack2):
 		"defender_damage": result1,
 	}
 
+func show_used_ships():
+	$"%UsedShipMarket".show()
+	$"%Market".hide()
+	for i in range(8):
+		$"%UsedShipMarket".get_child(i).hide()
+	var start = $"%Ship".get_price() / 2.5
+	for i in range(start, 8):
+#		if ship_deck[i] == $"%Enemy".get_data():
+#			continue
+		var ship = $"%UsedShipMarket".get_child(i)
+		ship.show()
+		ship.setup(ship_deck[i])
+		if ship_deck[i].buy - $"%Ship".get_price() > $"%Player".money:
+			ship.get_node("Buy").disabled = true
+		else:
+			ship.get_node("Buy").disabled = false
+
+func buy_used_ship(ship):
+	$"%Player".decrease_money(max(ship.buy - $"%Ship".get_price(), 0))
+	$"%Ship".setup(ship)
+	market_ships.erase(ship)
+	market_ships.append(market_ships.pop_front())
+	market_ships.shuffle()
+	$"%MarketShip".setup(market_ships[0])
+	$"%UsedShipMarket".hide()
+	$"%Market".show()
+	if $"%Ship".get_data().cargo == 2:
+		$"%ShipCargo2".show()
+	else:
+		$"%ShipCargo2".hide()
+	bought = true
+	$"%Ship".damage(3)
+	update_action_buttons()
+
+func buy_ship(ship):
+	$"%Player".decrease_money(max(ship.buy - $"%Ship".get_price(), 0))
+	$"%Ship".setup(ship)
+	market_ships.pop_front()
+	$"%MarketShip".setup(market_ships[0])
+	if $"%Ship".get_data().cargo == 2:
+		$"%ShipCargo2".show()
+	else:
+		$"%ShipCargo2".hide()
+	bought = true
+	update_action_buttons()
+
 func start_encounter():
 	$"%Explore".disabled = false
 	$"%Contact".disabled = false
@@ -481,22 +534,40 @@ func _on_market_cargo_skip_pressed():
 	update_action_buttons()
 
 func _on_market_ship_buy_pressed():
-	$"%Player".decrease_money(market_ships[0].buy)
-	$"%Ship".setup(market_ships[0])
-	market_ships.pop_front()
-	$"%MarketShip".setup(market_ships[0])
-	if $"%Ship".get_data().cargo == 2:
-		$"%ShipCargo2".show()
+	if market_ships[0].has("used"):
+		show_used_ships()
 	else:
-		$"%ShipCargo2".hide()
-	bought = true
-	update_action_buttons()
+		buy_ship(market_ships[0])
 	
 func _on_market_ship_skip_pressed():
 	market_ships.append(market_ships.pop_front())
 	$"%MarketShip".setup(market_ships[0])
 	skipped = true
 	update_action_buttons()
+
+func _on_used_ship_market_buy_pressed():
+	buy_used_ship(ship_deck[0])
+
+func _on_used_ship_market_buy2_pressed():
+	buy_used_ship(ship_deck[1])
+
+func _on_used_ship_market_buy3_pressed():
+	buy_used_ship(ship_deck[2])
+
+func _on_used_ship_market_buy4_pressed():
+	buy_used_ship(ship_deck[3])
+
+func _on_used_ship_market_buy5_pressed():
+	buy_used_ship(ship_deck[4])
+
+func _on_used_ship_market_buy6_pressed():
+	buy_used_ship(ship_deck[5])
+
+func _on_used_ship_market_buy7_pressed():
+	buy_used_ship(ship_deck[6])
+
+func _on_used_ship_market_buy8_pressed():
+	buy_used_ship(ship_deck[7])
 
 func _on_ship_cargo_deliver_pressed():
 	deliver_cargo($"%ShipCargo")

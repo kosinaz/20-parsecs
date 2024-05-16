@@ -85,4 +85,7 @@ var deck = [
 		"mod": 1,
 		"crew": 3,
 	},
+	{
+		"used": true,
+	},
 ]
