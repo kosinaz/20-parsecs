@@ -523,7 +523,10 @@ func stop_encounter():
 
 func attack_patrol():
 	if attacking_patrol.data.has("invulnerable"):
-		pass
+		$"%AlertSummary".text = "You failed the combat against the patrol!"
+		var spaces = astar.get_point_connections($"%Player".current_space.id)
+		move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
+		attacking_patrol = null
 	else:
 		var combat = combat($"%Ship".get_data().attack, attacking_patrol.data.attack)
 		$"%Ship".damage(combat.attacker_damage)
