@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -50,6 +50,7 @@
 [ext_resource path="res://images/bar-under.png" type="Texture" id=48]
 [ext_resource path="res://images/bar-progress.png" type="Texture" id=49]
 [ext_resource path="res://scenes/gearmod.gd" type="Script" id=50]
+[ext_resource path="res://scenes/cargomod.gd" type="Script" id=51]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -1495,6 +1496,7 @@ script = ExtResource( 40 )
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
 custom_fonts/font = ExtResource( 36 )
 text = "Cargo"
 align = 1
@@ -1564,6 +1566,7 @@ script = ExtResource( 40 )
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
 custom_fonts/font = ExtResource( 36 )
 text = "Cargo"
 align = 1
@@ -1620,25 +1623,25 @@ disabled = true
 toggle_mode = true
 text = "Barter"
 
-[node name="ShipCargoMod" type="TextureRect" parent="CanvasLayer/Ship"]
+[node name="ShipCargomod" type="TextureRect" parent="CanvasLayer/Ship"]
 unique_name_in_owner = true
 visible = false
 margin_left = 192.0
 margin_right = 288.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
-script = ExtResource( 40 )
+script = ExtResource( 51 )
 
-[node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargoMod"]
+[node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargomod"]
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
 custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
 custom_fonts/font = ExtResource( 36 )
-text = "Mod"
+text = "Cargo/Mod"
 align = 1
 
-[node name="Data" type="Label" parent="CanvasLayer/Ship/ShipCargoMod"]
+[node name="Data" type="Label" parent="CanvasLayer/Ship/ShipCargomod"]
 margin_left = 4.0
 margin_top = 14.0
 margin_right = 92.0
@@ -1649,7 +1652,20 @@ text = "
 "
 autowrap = true
 
-[node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargoMod"]
+[node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargomod"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 23.0
+margin_top = -47.0
+margin_right = 72.0
+margin_bottom = -28.0
+custom_fonts/font = ExtResource( 38 )
+disabled = true
+text = "Deliver"
+
+[node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargomod"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -1662,7 +1678,8 @@ custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Drop"
 
-[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargoMod"]
+[node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargomod"]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1673,6 +1690,20 @@ custom_fonts/font = SubResource( 6 )
 disabled = true
 toggle_mode = true
 text = "Barter"
+
+[node name="Recover" type="Button" parent="CanvasLayer/Ship/ShipCargomod"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -37.0
+margin_top = 17.0
+margin_right = 38.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+text = "Recover 1SD"
 
 [node name="ShipMod" type="TextureRect" parent="CanvasLayer/Ship"]
 unique_name_in_owner = true
@@ -1887,8 +1918,10 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo3/Deliver" to="." method="_on_ship_cargo_deliver3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo3/Drop" to="." method="_on_ship_cargo_drop3_pressed"]
 [connection signal="toggled" from="CanvasLayer/Ship/ShipCargo3/Barter" to="." method="_on_ship_cargo_barter_toggled"]
-[connection signal="pressed" from="CanvasLayer/Ship/ShipCargoMod/Drop" to="." method="_on_ship_mod_drop_pressed"]
-[connection signal="toggled" from="CanvasLayer/Ship/ShipCargoMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipCargomod/Deliver" to="." method="_on_ship_cargomod_deliver_pressed"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipCargomod/Drop" to="." method="_on_ship_cargomod_drop_pressed"]
+[connection signal="toggled" from="CanvasLayer/Ship/ShipCargomod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipCargomod/Recover" to="." method="_on_ship_cargomod_recover_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipMod/Drop" to="." method="_on_ship_mod_drop_pressed"]
 [connection signal="toggled" from="CanvasLayer/Ship/ShipMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipMod/Recover" to="." method="_on_ship_mod_recover_pressed"]
