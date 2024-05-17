@@ -1442,6 +1442,7 @@ text = "
 autowrap = true
 
 [node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1455,6 +1456,7 @@ disabled = true
 text = "Deliver"
 
 [node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -1468,6 +1470,7 @@ disabled = true
 text = "Drop"
 
 [node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargo"]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1508,6 +1511,7 @@ text = "
 autowrap = true
 
 [node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo2"]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 23.0
@@ -1519,6 +1523,7 @@ disabled = true
 text = "Deliver"
 
 [node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargo2"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -1532,6 +1537,7 @@ disabled = true
 text = "Drop"
 
 [node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargo2"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1574,6 +1580,7 @@ text = "
 autowrap = true
 
 [node name="Deliver" type="Button" parent="CanvasLayer/Ship/ShipCargo3"]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 23.0
@@ -1585,6 +1592,7 @@ disabled = true
 text = "Deliver"
 
 [node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipCargo3"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -1598,6 +1606,7 @@ disabled = true
 text = "Drop"
 
 [node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipCargo3"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1694,6 +1703,7 @@ text = "
 autowrap = true
 
 [node name="Drop" type="Button" parent="CanvasLayer/Ship/ShipMod"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -1707,6 +1717,7 @@ disabled = true
 text = "Drop"
 
 [node name="Barter" type="Button" parent="CanvasLayer/Ship/ShipMod"]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

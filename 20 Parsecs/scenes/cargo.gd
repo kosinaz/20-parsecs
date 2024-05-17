@@ -9,6 +9,12 @@ func setup(data):
 	$Data.text = ""
 	if has_node("Buy"):
 		$Buy.text = "Buy " + str(data.buy) + "K"
+	if has_node("Deliver"):
+		$Deliver.show()
+	if has_node("Drop"):
+		$Drop.show()
+	if has_node("Barter"):
+		$Barter.show()
 	if data.has("smuggling compartment"):
 		$Data.text += "Price: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
@@ -31,7 +37,12 @@ func clear():
 	has_cargo = false
 	_data = {}
 	$Data.text = ""
+	if has_node("Deliver"):
+		$Deliver.hide()
+	if has_node("Drop"):
+		$Drop.hide()
 	if has_node("Barter"):
+		$Barter.hide()
 		$Barter.pressed = false
 	
 func get_to():

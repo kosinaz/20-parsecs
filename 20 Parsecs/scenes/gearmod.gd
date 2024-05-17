@@ -15,6 +15,10 @@ func setup(data):
 	$Data.text += data.description
 	if data.has("patrol") and has_node("Buy"):
 		$Data.text += "\nPatrol: " + str(data.move) + data.patrol
+	if has_node("Drop"):
+		$Drop.show()
+	if has_node("Barter"):
+		$Barter.show()
 
 func get_data():
 	return _data
@@ -28,9 +32,13 @@ func clear():
 	has_mod = false
 	_data = {}
 	$Data.text = ""
+	if has_node("Recover"):
+		$Recover.hide()
+	if has_node("Drop"):
+		$Drop.hide()
 	if has_node("Barter"):
+		$Barter.hide()
 		$Barter.pressed = false
-	$Recover.hide()
 
 func enable_buy():
 	$Buy.disabled = false
