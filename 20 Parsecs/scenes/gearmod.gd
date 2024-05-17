@@ -1,11 +1,18 @@
 extends TextureRect
 
 var _data = {}
-var has_mod = false
+var is_empty = true
+var is_ship_cargo = false
+export var is_ship_mod = false
+var is_mod = true
+var is_gear = true
+var is_cargo = false
+var is_market = false
+var movement_target = null
 
 func setup(data):
 	clear()
-	has_mod = true
+	is_empty = false
 	_data = data
 	if has_node("Drop"):
 		$Drop.show()
@@ -14,10 +21,20 @@ func setup(data):
 	if has_node("Move"):
 		$Move.show()
 	if data.has("smuggling compartment"):
+		is_cargo = true
+		is_mod = true
+		is_gear = false
 		$Data.text = "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
 	$Data.text = data.type + "\n"
+	if data.type == "Mod":
+		is_mod = true
+		is_gear = false
+	if data.type == "Gear":
+		is_mod = false
+		is_gear = true
 	if has_node("Buy"):
+		is_market = true
 		$Buy.text = "Buy " + str(data.buy) + "K"
 	elif data.name == "shield upgrade":
 		$Recover.show()
@@ -30,7 +47,7 @@ func get_data():
 	return _data
 	
 func get_name():
-	if has_mod and _data.has("name"):
+	if not is_empty and _data.has("name"):
 		return _data.name
 	return ""
 
@@ -38,7 +55,8 @@ func is_bartering():
 	return $Barter.pressed
 	
 func clear():
-	has_mod = false
+	movement_target = null
+	is_empty = true
 	_data = {}
 	$Data.text = ""
 	if has_node("Recover"):
@@ -50,6 +68,8 @@ func clear():
 		$Barter.pressed = false
 	if has_node("Move"):
 		$Move.hide()
+	is_mod = true
+	is_gear = true
 
 func enable_buy():
 	$Buy.disabled = false

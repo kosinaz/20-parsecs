@@ -1427,6 +1427,7 @@ margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 40 )
+is_ship_cargo = true
 
 [node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargo"]
 margin_top = 1.0
@@ -1511,6 +1512,7 @@ margin_right = 288.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 40 )
+is_ship_cargo = true
 
 [node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargo2"]
 margin_top = 1.0
@@ -1595,6 +1597,7 @@ margin_right = 288.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 40 )
+is_ship_cargo = true
 
 [node name="Title" type="Label" parent="CanvasLayer/Ship/ShipCargo3"]
 margin_top = 1.0
@@ -1602,7 +1605,7 @@ margin_right = 96.0
 margin_bottom = 15.0
 custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
 custom_fonts/font = ExtResource( 36 )
-text = "Cargo3"
+text = "Cargo"
 align = 1
 
 [node name="Data" type="Label" parent="CanvasLayer/Ship/ShipCargo3"]
@@ -1774,6 +1777,7 @@ margin_right = 288.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 50 )
+is_ship_mod = true
 
 [node name="Title" type="Label" parent="CanvasLayer/Ship/ShipMod"]
 margin_top = 1.0

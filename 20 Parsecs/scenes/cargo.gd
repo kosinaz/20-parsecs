@@ -1,14 +1,21 @@
 extends TextureRect
 
 var _data = {}
-var has_cargo = false
+var is_empty = true
+export var is_ship_cargo = false
+var is_ship_mod = false
+var is_cargo = true
+var is_mod = false
+var is_market = false
+var movement_target = null
 
 func setup(data):
 	clear()
-	has_cargo = true
+	is_empty = false
 	_data = data
 	$Data.text = ""
 	if has_node("Buy"):
+		is_market = true
 		$Buy.text = "Buy " + str(data.buy) + "K"
 	if has_node("Drop"):
 		$Drop.show()
@@ -17,6 +24,7 @@ func setup(data):
 	if has_node("Move"):
 		$Move.show()
 	if data.has("smuggling compartment"):
+		is_mod = true
 		$Data.text += "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
 	if has_node("Deliver"):
@@ -40,7 +48,8 @@ func is_bartering():
 	return $Barter.pressed
 
 func clear():
-	has_cargo = false
+	is_empty = true
+	movement_target = null
 	_data = {}
 	$Data.text = ""
 	if has_node("Deliver"):
@@ -52,6 +61,7 @@ func clear():
 		$Barter.pressed = false
 	if has_node("Move"):
 		$Move.hide()
+	is_mod = false
 	
 func get_to():
 	if _data == {} or not _data.has("to"):

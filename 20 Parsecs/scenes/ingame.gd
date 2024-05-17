@@ -25,8 +25,13 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
+onready var market_cards = [$"%MarketCargo", $"%MarketGearmod"]
+onready var ship_cards = [$"%ShipCargo", $"%ShipCargo2", $"%ShipCargo3", $"%ShipCargomod", $"%ShipMod"]
+onready var all_cards = []
 
 func _ready():
+	all_cards.append_array(market_cards)
+	all_cards.append_array(ship_cards)
 	for space in $Spaces.get_children():
 		space.connect("pressed", self, "_on_space_pressed")
 		if space.get_node("Label").text != "":
@@ -256,26 +261,6 @@ func update_action_buttons():
 		$"%MarketShip".disable_buy()
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
 		$"%MarketCargo".disable_buy()
-	var available_cargos = 0
-	if not $"%ShipCargo".has_cargo or $"%ShipCargo".is_bartering():
-		available_cargos += 1
-	if $"%ShipCargo2".visible and (not $"%ShipCargo2".has_cargo or $"%ShipCargo2".is_bartering()):
-		available_cargos += 1
-	if $"%ShipCargo3".visible and (not $"%ShipCargo3".has_cargo or $"%ShipCargo3".is_bartering()):
-		available_cargos += 1
-	if $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or $"%ShipCargomod".is_bartering()):
-		available_cargos += 1
-	if available_cargos == 0:
-		$"%MarketCargo".disable_buy()
-	var available_mods = 0
-	if $"%ShipMod".visible and (not $"%ShipMod".has_mod or $"%ShipMod".is_bartering()):
-		available_mods += 1
-	if $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or $"%ShipCargomod".is_bartering()):
-		available_mods += 1
-	if available_mods == 0 and $"%MarketGearmod".get_data().type == "Mod":
-		$"%MarketGearmod".disable_buy()
-	if available_mods > 0 and $"%MarketCargo".get_data().has("smuggling compartment"):
-		$"%MarketCargo".enable_buy()
 	if $"%Ship".get_damage() == 0:
 		$"%ShipMod".disable_recover()
 		$"%ShipCargomod".disable_recover()
@@ -287,23 +272,59 @@ func update_action_buttons():
 		$"%ShipCargo3".disable_deliver()
 	if $"%Player".current_space.get_node("Label").text != $"%ShipCargomod".get_to():
 		$"%ShipCargomod".disable_deliver()
-	if not $"%ShipCargo2".visible and not $"%ShipCargo3".visible and (not $"%ShipCargomod".visible or ($"%ShipCargomod".has_cargo and $"%ShipCargomod".get_data().has("type"))):
-		$"%ShipCargo".disable_move()
-	if not $"%ShipCargomod".visible and not $"%ShipMod".get_data().has("smuggling compartment"):
-		$"%ShipMod".disable_move()
-	if not $"%ShipMod".visible and $"%ShipCargomod".get_data().has("type"):
-		$"%ShipCargomod".disable_move()
-	if $"%ShipCargomod".visible and $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type") and not $"%ShipMod".get_data().has("smuggling compartment"):
-		$"%ShipMod".disable_move()
-	if $"%ShipMod".visible and $"%ShipMod".has_mod and not $"%ShipCargomod".visible and $"%ShipCargo".get_data().has("smuggling compartment"):
-		$"%ShipCargo".disable_move()
-	if $"%ShipMod".visible and $"%ShipMod".has_mod and not $"%ShipCargomod".visible and $"%ShipCargo2".get_data().has("smuggling compartment"):
-		$"%ShipCargo2".disable_move()
-	if not $"%ShipCargo2".visible and $"%ShipCargo".get_data().has("smuggling compartment"):
-		$"%ShipCargo3".disable_move()
-	if not $"%ShipCargo2".visible and $"%ShipCargo".has_cargo and $"%ShipMod".get_data().has("smuggling compartment"):
-		$"%ShipMod".disable_move()
+	update_card_movement_targets()
+	for card in market_cards:
+		if card.movement_target == null:
+			card.disable_buy()
+	for card in ship_cards:
+		if card.movement_target == null:
+			card.disable_move()
 	update_market_prices()
+
+func update_card_movement_targets():
+	for card in all_cards:
+		card.movement_target = null
+		var available_targets = []
+		available_targets.append_array(ship_cards)
+		if card.get_data().has("smuggling compartment"):
+			available_targets.erase($"%ShipCargo3")
+		if not card.is_cargo:
+			available_targets.erase($"%ShipCargo")
+			available_targets.erase($"%ShipCargo2")
+			available_targets.erase($"%ShipCargo3")
+		if not card.is_mod:
+			available_targets.erase($"%ShipMod")
+		if card.is_market:
+			for available_target in available_targets:
+				if not available_target.visible:
+					continue
+				if not available_target.is_empty and not available_target.is_bartering():
+					continue
+				card.movement_target = available_target
+				break
+		else:
+			var i = available_targets.find(card)
+			var available_targets_ordered = []
+			available_targets_ordered.append_array(available_targets)
+			available_targets_ordered.erase(card)
+			if i > 0:
+				available_targets_ordered = available_targets.slice(i + 1, available_targets.size())
+				available_targets_ordered.append_array(available_targets.slice(0, i - 1))
+			for available_target in available_targets_ordered:
+				if not available_target.visible:
+					continue
+				if not available_target.is_empty:
+					if available_target.get_data().has("smuggling compartment") and card == $"%ShipCargo3":
+						continue
+					if available_target.is_cargo and card.is_ship_cargo:
+						card.movement_target = available_target
+						break
+					if available_target.is_mod and card.is_ship_mod:
+						card.movement_target = available_target
+						break
+				else:
+					card.movement_target = available_target
+					break
 
 func update_market_prices():
 	discount = 0
@@ -429,9 +450,9 @@ func drop_cargo(cargo):
 		smuggling_compartment = false
 		$"%ShipCargo3".hide()
 		remove_cargo(cargo)
-		if $"%ShipCargo3".has_cargo:
-			cargo.setup($"%ShipCargo3".get_data())
-			remove_cargo($"%ShipCargo3")
+#		if $"%ShipCargo3".has_cargo:
+#			cargo.setup($"%ShipCargo3".get_data())
+#			remove_cargo($"%ShipCargo3")
 	else:
 		remove_cargo(cargo)
 
@@ -439,9 +460,9 @@ func drop_mod(mod):
 	if mod.get_data().has("smuggling compartment"):
 		smuggling_compartment = false
 		$"%ShipCargo3".hide()
-		if $"%ShipCargo3".has_cargo:
-			remove_cargo($"%ShipCargo3")
-		remove_cargo(mod)
+#		if $"%ShipCargo3".has_cargo:
+#			remove_cargo($"%ShipCargo3")
+#		remove_cargo(mod)
 	else:
 		market_gearmods.append(mod.get_data())
 		mod.clear()
@@ -631,102 +652,12 @@ func drop_barter_pool():
 		drop_mod($"%ShipMod")
 	discount = 0
 	
-func move_cargo(cargo):
-	if cargo == $"%ShipCargo":
-		var other_cargo_data = null
-		if $"%ShipCargo2".visible:
-			if $"%ShipCargo2".has_cargo:
-				other_cargo_data = $"%ShipCargo2".get_data()
-			$"%ShipCargo2".setup($"%ShipCargo".get_data())
-		elif $"%ShipCargo3".visible and not cargo.get_data().has("smuggling compartment"):
-			if $"%ShipCargo3".has_cargo:
-				other_cargo_data = $"%ShipCargo3".get_data()
-			$"%ShipCargo3".setup($"%ShipCargo".get_data())
-		elif $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or ($"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"))):
-			if $"%ShipCargomod".has_cargo:
-				other_cargo_data = $"%ShipCargomod".get_data()
-			$"%ShipCargomod".setup($"%ShipCargo".get_data())
-		elif cargo.get_data().has("smuggling compartment") and not $"%ShipMod".has_mod:
-			$"%ShipMod".setup($"%ShipCargo".get_data())
-		if other_cargo_data != null:
-			$"%ShipCargo".setup(other_cargo_data)
-		else:
-			$"%ShipCargo".clear()
-	if cargo == $"%ShipCargo2":
-		var other_cargo_data = null
-		if $"%ShipCargo3".visible and not cargo.get_data().has("smuggling compartment"):
-			if $"%ShipCargo3".has_cargo:
-				other_cargo_data = $"%ShipCargo3".get_data()
-			$"%ShipCargo3".setup($"%ShipCargo2".get_data())
-		elif $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or ($"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"))):
-			if $"%ShipCargomod".has_cargo:
-				other_cargo_data = $"%ShipCargomod".get_data()
-			$"%ShipCargomod".setup($"%ShipCargo2".get_data())
-		elif cargo.get_data().has("smuggling compartment") and not $"%ShipMod".has_mod and $"%ShipMod".visible:
-			$"%ShipMod".setup($"%ShipCargo".get_data())
-		else:
-			if $"%ShipCargo".has_cargo:
-				other_cargo_data = $"%ShipCargo".get_data()
-			$"%ShipCargo".setup($"%ShipCargo2".get_data())
-		if other_cargo_data != null:
-			$"%ShipCargo2".setup(other_cargo_data)
-		else:
-			$"%ShipCargo2".clear()
-	if cargo == $"%ShipCargo3":
-		var other_cargo_data = null
-		if $"%ShipCargomod".visible and not $"%ShipCargomod".get_data().has("smuggling compartment") and (not $"%ShipCargomod".has_cargo or ($"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"))):
-			if $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"):
-				other_cargo_data = $"%ShipCargomod".get_data()
-			$"%ShipCargomod".setup($"%ShipCargo3".get_data())
-		else:
-			if $"%ShipCargo".has_cargo:
-				other_cargo_data = $"%ShipCargo".get_data()
-			$"%ShipCargo".setup($"%ShipCargo3".get_data())
-		if other_cargo_data != null:
-			$"%ShipCargo3".setup(other_cargo_data)
-		else:
-			$"%ShipCargo3".clear()
-	if cargo == $"%ShipCargomod":
-		var other_cargo_data = null
-		if cargo.get_data().has("smuggling compartment") and  $"%ShipMod".visible and not $"%ShipMod".has_mod:
-			$"%ShipMod".setup($"%ShipCargomod".get_data())
-		else:
-			if $"%ShipCargo".has_cargo:
-				other_cargo_data = $"%ShipCargo".get_data()
-			$"%ShipCargo".setup($"%ShipCargomod".get_data())
-		if other_cargo_data != null:
-			$"%ShipCargomod".setup(other_cargo_data)
-		else:
-			$"%ShipCargomod".clear()
-	update_action_buttons()
-	
-func move_mod(mod):
-	if mod == $"%ShipCargomod":
-		var other_mod_data = null
-		if $"%ShipMod".has_mod:
-			other_mod_data = $"%ShipMod".get_data()
-		$"%ShipMod".setup($"%ShipCargomod".get_data())
-		if other_mod_data != null:
-			$"%ShipCargomod".setup(other_mod_data)
-		else:
-			$"%ShipCargomod".clear()
-	if mod == $"%ShipMod":
-		var other_mod_data = null
-		if $"%ShipMod".get_data().has("smuggling compartment"):
-			if not $"%ShipCargo".has_cargo:
-				$"%ShipCargo".setup($"%ShipMod".get_data())
-			elif $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
-				$"%ShipCargo2".setup($"%ShipMod".get_data())
-			else:
-				$"%ShipCargomod".setup($"%ShipMod".get_data())
-		else:
-			if $"%ShipCargomod".has_cargo:
-				other_mod_data = $"%ShipCargomod".get_data()
-			$"%ShipCargomod".setup($"%ShipMod".get_data())
-		if other_mod_data != null:
-			$"%ShipMod".setup(other_mod_data)
-		else:
-			$"%ShipMod".clear()
+func move_card(card):
+	var other_data = card.movement_target.get_data()
+	card.movement_target.setup(card.get_data())
+	card.clear()
+	if other_data:
+		card.setup(other_data)
 	update_action_buttons()
 
 func start_encounter():
@@ -826,16 +757,7 @@ func _on_market_cargo_buy_pressed():
 	if market_cargos[0].has("smuggling compartment"):
 		smuggling_compartment = true
 		$"%ShipCargo3".show()
-	if not $"%ShipCargo".has_cargo:
-		$"%ShipCargo".setup(market_cargos[0])
-	elif $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
-		$"%ShipCargo2".setup(market_cargos[0])
-	elif $"%ShipCargo3".visible and not $"%ShipCargo3".has_cargo and not market_cargos[0].has("smuggling compartment"):
-		$"%ShipCargo3".setup(market_cargos[0])
-	elif $"%ShipCargomod".visible and not $"%ShipCargomod".has_cargo:
-		$"%ShipCargomod".setup(market_cargos[0])
-	elif $"%ShipMod".visible and not $"%ShipMod".has_mod and market_cargos[0].has("smuggling compartment"):
-		$"%ShipMod".setup(market_cargos[0])
+	$"%MarketCargo".movement_target.setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
 	if market_cargos[0].has("patrol"):
@@ -852,14 +774,8 @@ func _on_market_cargo_skip_pressed():
 func _on_market_gearmod_buy_pressed():
 	$"%Player".decrease_money(max(0, market_gearmods[0].buy - discount))
 	drop_barter_pool()
-	if market_gearmods[0].type == "Mod":
-		if $"%ShipMod".visible and not $"%ShipMod".has_mod:
-			$"%ShipMod".setup(market_gearmods[0])
-			$"%Ship".update_armor()
-		elif $"%ShipCargomod".visible and not $"%ShipCargomod".has_cargo:
-			$"%ShipCargomod".setup(market_gearmods[0])
-	#	elif $"%ShipCargoMod".visible and not $"%ShipCargoMod".has_cargomod:
-	#		$"%ShipCargoMod".setup(market_gearmods[0])
+	$"%MarketGearmod".movement_target.setup(market_gearmods[0])
+	$"%Ship".update_armor()
 	market_gearmods.pop_front()
 	$"%MarketGearmod".setup(market_gearmods[0])
 	if market_gearmods[0].has("patrol"):
@@ -940,22 +856,19 @@ func _on_ship_cargo_barter_toggled(_pressed):
 	update_action_buttons()
 
 func _on_ship_cargo_move_pressed():
-	move_cargo($"%ShipCargo")
+	move_card($"%ShipCargo")
 	
 func _on_ship_cargo2_move_pressed():
-	move_cargo($"%ShipCargo2")
+	move_card($"%ShipCargo2")
 	
 func _on_ship_cargo3_move_pressed():
-	move_cargo($"%ShipCargo3")
+	move_card($"%ShipCargo3")
 	
 func _on_ship_cargomod_move_pressed():
-	if $"%ShipCargomod".get_data().has("type"):
-		move_mod($"%ShipCargomod")
-	else:
-		move_cargo($"%ShipCargomod")
+	move_card($"%ShipCargomod")
 	
 func _on_ship_mod_move_pressed():
-	move_mod($"%ShipMod")
+	move_card($"%ShipMod")
 
 func _on_ship_mod_recover_pressed():
 	$"%Ship".repair(1)
