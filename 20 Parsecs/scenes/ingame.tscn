@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -70,6 +70,10 @@ font_data = ExtResource( 29 )
 size = 10
 use_filter = true
 font_data = ExtResource( 29 )
+
+[sub_resource type="NoiseTexture" id=11]
+width = 1024
+height = 576
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 3 )
@@ -927,9 +931,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -48.0
+margin_left = -384.0
 margin_top = -96.0
-margin_right = 48.0
+margin_right = 384.0
 margin_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1708,9 +1712,21 @@ disabled = true
 toggle_mode = true
 text = "Barter"
 
-[node name="PromptContainer" type="TextureRect" parent="CanvasLayer"]
+[node name="Prompt" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
+self_modulate = Color( 1, 1, 1, 0.784314 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -288.0
+margin_right = 512.0
+margin_bottom = 288.0
+texture = SubResource( 11 )
+
+[node name="Window" type="TextureRect" parent="CanvasLayer/Prompt"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1721,7 +1737,7 @@ margin_right = 144.0
 margin_bottom = 64.0
 texture = ExtResource( 34 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PromptContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Prompt/Window"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1733,7 +1749,7 @@ margin_bottom = 40.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FailedLabel" type="Label" parent="CanvasLayer/PromptContainer/VBoxContainer"]
+[node name="FailedLabel" type="Label" parent="CanvasLayer/Prompt/Window/VBoxContainer"]
 unique_name_in_owner = true
 margin_right = 183.0
 margin_bottom = 35.0
@@ -1742,7 +1758,7 @@ text = "Smuggling failed!
 Encounter step will be skipped!"
 align = 1
 
-[node name="FailedSell" type="Button" parent="CanvasLayer/PromptContainer/VBoxContainer"]
+[node name="FailedSell" type="Button" parent="CanvasLayer/Prompt/Window/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 39.0
 margin_right = 183.0
@@ -1750,7 +1766,7 @@ margin_bottom = 58.0
 custom_fonts/font = ExtResource( 38 )
 text = "Deliver (Attack: 3S)"
 
-[node name="FailedSell2" type="Button" parent="CanvasLayer/PromptContainer/VBoxContainer"]
+[node name="FailedSell2" type="Button" parent="CanvasLayer/Prompt/Window/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 62.0
 margin_right = 183.0
@@ -1758,9 +1774,21 @@ margin_bottom = 81.0
 custom_fonts/font = ExtResource( 38 )
 text = "Keep Cargo"
 
-[node name="AlertWindow" type="TextureRect" parent="CanvasLayer"]
+[node name="Alert" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
+self_modulate = Color( 1, 1, 1, 0.784314 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -288.0
+margin_right = 512.0
+margin_bottom = 288.0
+texture = SubResource( 11 )
+
+[node name="Window" type="TextureRect" parent="CanvasLayer/Alert"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1771,7 +1799,7 @@ margin_right = 144.0
 margin_bottom = 64.0
 texture = ExtResource( 34 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/AlertWindow"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Alert/Window"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1783,7 +1811,7 @@ margin_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AlertSummary" type="Label" parent="CanvasLayer/AlertWindow/VBoxContainer"]
+[node name="AlertSummary" type="Label" parent="CanvasLayer/Alert/Window/VBoxContainer"]
 unique_name_in_owner = true
 margin_right = 207.0
 margin_bottom = 35.0
@@ -1792,7 +1820,7 @@ text = "Smuggling failed!
 Encounter step will be skipped!"
 align = 1
 
-[node name="AlertButton" type="Button" parent="CanvasLayer/AlertWindow/VBoxContainer"]
+[node name="AlertButton" type="Button" parent="CanvasLayer/Alert/Window/VBoxContainer"]
 margin_top = 39.0
 margin_right = 207.0
 margin_bottom = 58.0
@@ -1832,9 +1860,9 @@ text = "Ok"
 [connection signal="toggled" from="CanvasLayer/Ship/ShipCargoMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipMod/Drop" to="." method="_on_ship_mod_drop_pressed"]
 [connection signal="toggled" from="CanvasLayer/Ship/ShipMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
-[connection signal="pressed" from="CanvasLayer/PromptContainer/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
-[connection signal="pressed" from="CanvasLayer/PromptContainer/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
-[connection signal="pressed" from="CanvasLayer/AlertWindow/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
+[connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
+[connection signal="pressed" from="CanvasLayer/Alert/Window/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

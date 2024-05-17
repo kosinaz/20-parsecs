@@ -295,7 +295,7 @@ func deliver_cargo(cargo):
 			remove_cargo(cargo)
 		else:
 			skip_encounter = true
-			$"%PromptContainer".show()
+			$"%Prompt".show()
 			$"%FailedLabel".text = "Smuggling failed!\nEncounter step will be skipped!"
 			$"%FailedSell".show()
 			$"%FailedSell2".show()
@@ -592,7 +592,7 @@ func attack_patrol():
 	else:
 		var combat = combat(get_ship_attack(), attacking_patrol.data.attack)
 		$"%Ship".damage(combat.attacker_damage)
-		$"%AlertWindow".show()
+		$"%Alert".show()
 		if combat.attacker_won: 
 			if $"%Ship".defeated:
 				$"%AlertSummary".text = "You won the combat against the patrol,\nbut suffered too much damage.\nYou are defeated!"
@@ -803,7 +803,7 @@ func _on_failed_sell_pressed():
 		$"%Player".increase_fame(failed_cargo.get_data().fame)
 		$"%Player".increase_money(failed_cargo.get_data().sell)
 		remove_cargo(failed_cargo)
-	$"%PromptContainer".hide()
+	$"%Prompt".hide()
 	stop_action()
 
 func _on_failed_sell2_pressed():
@@ -813,11 +813,11 @@ func _on_failed_sell2_pressed():
 		remove_cargo(failed_cargo)
 	if $"%FailedSell2".text == "Drop":
 		remove_cargo(failed_cargo)
-	$"%PromptContainer".hide()
+	$"%Prompt".hide()
 	stop_action()
 
 func _on_alert_button_pressed():
-	$"%AlertWindow".hide()
+	$"%Alert".hide()
 	stop_encounter()
 
 func _on_attack_pressed():
