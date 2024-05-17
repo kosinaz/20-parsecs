@@ -289,11 +289,11 @@ func update_action_buttons():
 		$"%ShipCargomod".disable_deliver()
 	if not $"%ShipCargo2".visible and not $"%ShipCargo3".visible and (not $"%ShipCargomod".visible or ($"%ShipCargomod".has_cargo and $"%ShipCargomod".get_data().has("type"))):
 		$"%ShipCargo".disable_move()
-	if not $"%ShipCargomod".visible:
+	if not $"%ShipCargomod".visible and not $"%ShipMod".get_data().has("smuggling compartment"):
 		$"%ShipMod".disable_move()
 	if not $"%ShipMod".visible and $"%ShipCargomod".get_data().has("type"):
 		$"%ShipCargomod".disable_move()
-	if $"%ShipCargomod".visible and $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"):
+	if $"%ShipCargomod".visible and $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type") and not $"%ShipMod".get_data().has("smuggling compartment"):
 		$"%ShipMod".disable_move()
 	update_market_prices()
 
@@ -638,6 +638,8 @@ func move_cargo(cargo):
 			if $"%ShipCargomod".has_cargo:
 				other_cargo_data = $"%ShipCargomod".get_data()
 			$"%ShipCargomod".setup($"%ShipCargo".get_data())
+		elif cargo.get_data().has("smuggling compartment") and not $"%ShipMod".has_mod:
+			$"%ShipMod".setup($"%ShipCargo".get_data())
 		if other_cargo_data != null:
 			$"%ShipCargo".setup(other_cargo_data)
 		else:
@@ -652,6 +654,8 @@ func move_cargo(cargo):
 			if $"%ShipCargomod".has_cargo:
 				other_cargo_data = $"%ShipCargomod".get_data()
 			$"%ShipCargomod".setup($"%ShipCargo2".get_data())
+		elif cargo.get_data().has("smuggling compartment") and not $"%ShipMod".has_mod:
+			$"%ShipMod".setup($"%ShipCargo".get_data())
 		else:
 			if $"%ShipCargo".has_cargo:
 				other_cargo_data = $"%ShipCargo".get_data()
@@ -676,9 +680,12 @@ func move_cargo(cargo):
 			$"%ShipCargo3".clear()
 	if cargo == $"%ShipCargomod":
 		var other_cargo_data = null
-		if $"%ShipCargo".has_cargo:
-			other_cargo_data = $"%ShipCargo".get_data()
-		$"%ShipCargo".setup($"%ShipCargomod".get_data())
+		if cargo.get_data().has("smuggling compartment") and  $"%ShipMod".visible and not $"%ShipMod".has_mod:
+			$"%ShipMod".setup($"%ShipCargomod".get_data())
+		else:
+			if $"%ShipCargo".has_cargo:
+				other_cargo_data = $"%ShipCargo".get_data()
+			$"%ShipCargo".setup($"%ShipCargomod".get_data())
 		if other_cargo_data != null:
 			$"%ShipCargomod".setup(other_cargo_data)
 		else:
@@ -699,7 +706,13 @@ func move_mod(mod):
 		var other_mod_data = null
 		if $"%ShipCargomod".has_cargo:
 			other_mod_data = $"%ShipCargomod".get_data()
-		$"%ShipCargomod".setup($"%ShipMod".get_data())
+		elif $"%ShipMod".get_data().has("smuggling compartment"):
+			if not $"%ShipCargo".has_cargo:
+				$"%ShipCargo".setup($"%ShipMod".get_data())
+			elif $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
+				$"%ShipCargo2".setup($"%ShipMod".get_data())
+			else:
+				$"%ShipCargomod".setup($"%ShipMod".get_data())
 		if other_mod_data != null:
 			$"%ShipMod".setup(other_mod_data)
 		else:
