@@ -30,4 +30,18 @@ var deck = [
 		"name": "shield upgrade",
 		"description": "Armor: +1S\nAction: Recover 1 Ship Damage",
 	},
+	{
+		"type": "Mod",
+		"buy": 5,
+		"name": "maneuvering thrusters",
+		"description": "Armor: +1S\nEnemy Attack: -1S if you have Tactics.",
+	},
+	{
+		"type": "Mod",
+		"buy": 5,
+		"name": "ion cannon",
+		"description": "-1 Ship Damage or -2 Ship Damage if you have Tactics.",
+		"patrol": "A",
+		"move": 3,
+	},
 ]

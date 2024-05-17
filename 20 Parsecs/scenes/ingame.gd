@@ -437,6 +437,8 @@ func is_highly_skilled(skill):
 	return count > 1
 
 func combat(attack1, attack2):
+	if $"%ShipMod".get_name() == "maneuvering thrusters" and is_skilled("Tactics"):
+		attack2 -= 1
 	var result1 = 0
 	for _i in range(attack1):
 		var result = roll()
@@ -451,12 +453,21 @@ func combat(attack1, attack2):
 			if result == "crit":
 				result1 += 2
 	var result2 = 0
+	var has_hit = false
+	var has_crit = false
 	for _i in range(attack2):
 		var result = roll()
 		if result == "hit":
 			result2 += 1
+			has_hit = true
 		if result == "crit":
 			result2 += 2
+			has_crit = true
+	if $"%ShipMod".get_name() == "ion cannon":
+		if has_crit and is_skilled("Tactics"):
+			result2 -= 2
+		elif has_hit:
+			result2 -= 1
 	return {
 		"attacker_won": result2 < result1,
 		"attacker_damage": result2,
