@@ -295,6 +295,14 @@ func update_action_buttons():
 		$"%ShipCargomod".disable_move()
 	if $"%ShipCargomod".visible and $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type") and not $"%ShipMod".get_data().has("smuggling compartment"):
 		$"%ShipMod".disable_move()
+	if $"%ShipMod".visible and $"%ShipMod".has_mod and not $"%ShipCargomod".visible and $"%ShipCargo".get_data().has("smuggling compartment"):
+		$"%ShipCargo".disable_move()
+	if $"%ShipMod".visible and $"%ShipMod".has_mod and not $"%ShipCargomod".visible and $"%ShipCargo2".get_data().has("smuggling compartment"):
+		$"%ShipCargo2".disable_move()
+	if not $"%ShipCargo2".visible and $"%ShipCargo".get_data().has("smuggling compartment"):
+		$"%ShipCargo3".disable_move()
+	if not $"%ShipCargo2".visible and $"%ShipCargo".has_cargo and $"%ShipMod".get_data().has("smuggling compartment"):
+		$"%ShipMod".disable_move()
 	update_market_prices()
 
 func update_market_prices():
@@ -654,7 +662,7 @@ func move_cargo(cargo):
 			if $"%ShipCargomod".has_cargo:
 				other_cargo_data = $"%ShipCargomod".get_data()
 			$"%ShipCargomod".setup($"%ShipCargo2".get_data())
-		elif cargo.get_data().has("smuggling compartment") and not $"%ShipMod".has_mod:
+		elif cargo.get_data().has("smuggling compartment") and not $"%ShipMod".has_mod and $"%ShipMod".visible:
 			$"%ShipMod".setup($"%ShipCargo".get_data())
 		else:
 			if $"%ShipCargo".has_cargo:
@@ -704,15 +712,17 @@ func move_mod(mod):
 			$"%ShipCargomod".clear()
 	if mod == $"%ShipMod":
 		var other_mod_data = null
-		if $"%ShipCargomod".has_cargo:
-			other_mod_data = $"%ShipCargomod".get_data()
-		elif $"%ShipMod".get_data().has("smuggling compartment"):
+		if $"%ShipMod".get_data().has("smuggling compartment"):
 			if not $"%ShipCargo".has_cargo:
 				$"%ShipCargo".setup($"%ShipMod".get_data())
 			elif $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
 				$"%ShipCargo2".setup($"%ShipMod".get_data())
 			else:
 				$"%ShipCargomod".setup($"%ShipMod".get_data())
+		else:
+			if $"%ShipCargomod".has_cargo:
+				other_mod_data = $"%ShipCargomod".get_data()
+			$"%ShipCargomod".setup($"%ShipMod".get_data())
 		if other_mod_data != null:
 			$"%ShipMod".setup(other_mod_data)
 		else:
