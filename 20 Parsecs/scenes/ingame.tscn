@@ -931,9 +931,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -384.0
+margin_left = -48.0
 margin_top = -96.0
-margin_right = 384.0
+margin_right = 48.0
 margin_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -980,8 +980,8 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 5K"
 
 [node name="UsedShip2" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 96.0
-margin_right = 192.0
+visible = false
+margin_right = 96.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )
@@ -1021,8 +1021,9 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 5K"
 
 [node name="UsedShip3" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 192.0
-margin_right = 288.0
+visible = false
+margin_left = 96.0
+margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )
@@ -1062,8 +1063,9 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 10K"
 
 [node name="UsedShip4" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 288.0
-margin_right = 384.0
+visible = false
+margin_left = 96.0
+margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )
@@ -1103,8 +1105,9 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 10K"
 
 [node name="UsedShip5" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 384.0
-margin_right = 480.0
+visible = false
+margin_left = 96.0
+margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )
@@ -1144,8 +1147,9 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 15K"
 
 [node name="UsedShip6" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 480.0
-margin_right = 576.0
+visible = false
+margin_left = 96.0
+margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )
@@ -1185,8 +1189,9 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 15K"
 
 [node name="UsedShip7" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 576.0
-margin_right = 672.0
+visible = false
+margin_left = 96.0
+margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )
@@ -1226,8 +1231,9 @@ custom_fonts/font = ExtResource( 38 )
 text = "Buy 20K"
 
 [node name="UsedShip8" type="TextureRect" parent="CanvasLayer/UsedShipMarket"]
-margin_left = 672.0
-margin_right = 768.0
+visible = false
+margin_left = 96.0
+margin_right = 192.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 script = ExtResource( 4 )

@@ -482,6 +482,10 @@ func get_character_attack():
 func show_used_ships():
 	$"%UsedShipMarket".show()
 	$"%Market".hide()
+	$"%ShipCargo".disable_deliver()
+	$"%ShipCargo2".disable_deliver()
+	$"%ShipCargo3".disable_deliver()
+	$"%Finish".disabled = true
 	for i in range(8):
 		$"%UsedShipMarket".get_child(i).hide()
 	var start = $"%Ship".get_price() / 2.5
@@ -515,6 +519,7 @@ func buy_used_ship(ship):
 	$"%MarketShip".setup(market_ships[0])
 	$"%UsedShipMarket".hide()
 	$"%Market".show()
+	$"%Finish".disabled = false
 	if $"%Ship".get_data().cargo == 2:
 		$"%ShipCargo2".show()
 	else:
