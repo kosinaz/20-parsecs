@@ -4,6 +4,7 @@ var _data = {}
 var has_cargo = false
 
 func setup(data):
+	clear()
 	has_cargo = true
 	_data = data
 	$Data.text = ""
@@ -11,6 +12,8 @@ func setup(data):
 		$Drop.show()
 	if has_node("Barter"):
 		$Barter.show()
+	if has_node("Move"):
+		$Move.show()
 	if data.has("type"):
 		if data.name == "shield upgrade":
 			$Recover.show()
@@ -18,7 +21,7 @@ func setup(data):
 		$Data.text += data.description
 	else:
 		if data.has("smuggling compartment"):
-			$Data.text += "Price: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
+			$Data.text += "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 			return
 		if has_node("Deliver"):
 			$Deliver.show()
@@ -55,6 +58,8 @@ func clear():
 	if has_node("Barter"):
 		$Barter.hide()
 		$Barter.pressed = false
+	if has_node("Move"):
+		$Move.hide()
 	
 func get_to():
 	if _data == {} or not _data.has("to"):
@@ -84,3 +89,9 @@ func enable_recover():
 
 func disable_recover():
 	$Recover.disabled = true
+
+func enable_move():
+	$Move.disabled = false
+
+func disable_move():
+	$Move.disabled = true

@@ -4,12 +4,15 @@ var _data = {}
 var has_mod = false
 
 func setup(data):
+	clear()
 	has_mod = true
 	_data = data
 	if has_node("Drop"):
 		$Drop.show()
 	if has_node("Barter"):
 		$Barter.show()
+	if has_node("Move"):
+		$Move.show()
 	if data.has("smuggling compartment"):
 		$Data.text = "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
@@ -42,6 +45,8 @@ func clear():
 	if has_node("Barter"):
 		$Barter.hide()
 		$Barter.pressed = false
+	if has_node("Move"):
+		$Move.hide()
 
 func enable_buy():
 	$Buy.disabled = false
@@ -72,3 +77,9 @@ func enable_recover():
 
 func disable_recover():
 	$Recover.disabled = true
+
+func enable_move():
+	$Move.disabled = false
+
+func disable_move():
+	$Move.disabled = true

@@ -182,18 +182,23 @@ func stop_action():
 	$"%ShipCargo".disable_deliver()
 	$"%ShipCargo".disable_drop()
 	$"%ShipCargo".disable_barter()
+	$"%ShipCargo".disable_move()
 	$"%ShipCargo2".disable_deliver()
 	$"%ShipCargo2".disable_drop()
 	$"%ShipCargo2".disable_barter()
+	$"%ShipCargo2".disable_move()
 	$"%ShipCargo3".disable_deliver()
 	$"%ShipCargo3".disable_drop()
 	$"%ShipCargo3".disable_barter()
+	$"%ShipCargo3".disable_move()
 	$"%ShipCargomod".disable_drop()
 	$"%ShipCargomod".disable_barter()
 	$"%ShipCargomod".disable_recover()
+	$"%ShipCargomod".disable_move()
 	$"%ShipMod".disable_drop()
 	$"%ShipMod".disable_barter()
 	$"%ShipMod".disable_recover()
+	$"%ShipMod".disable_move()
 	$"%Finish".disabled = true
 	start_encounter()
 
@@ -207,18 +212,23 @@ func update_action_buttons():
 	$"%ShipCargo".enable_deliver()
 	$"%ShipCargo".enable_drop()
 	$"%ShipCargo".enable_barter()
+	$"%ShipCargo".enable_move()
 	$"%ShipCargo2".enable_deliver()
 	$"%ShipCargo2".enable_drop()
 	$"%ShipCargo2".enable_barter()
+	$"%ShipCargo2".enable_move()
 	$"%ShipCargo3".enable_deliver()
 	$"%ShipCargo3".enable_drop()
 	$"%ShipCargo3".enable_barter()
+	$"%ShipCargo3".enable_move()
 	$"%ShipCargomod".enable_drop()
 	$"%ShipCargomod".enable_barter()
 	$"%ShipCargomod".enable_recover()
+	$"%ShipCargomod".enable_move()
 	$"%ShipMod".enable_drop()
 	$"%ShipMod".enable_barter()
 	$"%ShipMod".enable_recover()
+	$"%ShipMod".enable_move()
 	if skipped:
 		$"%MarketCargo".disable_skip()
 		$"%MarketGearmod".disable_skip()
@@ -277,6 +287,14 @@ func update_action_buttons():
 		$"%ShipCargo3".disable_deliver()
 	if $"%Player".current_space.get_node("Label").text != $"%ShipCargomod".get_to():
 		$"%ShipCargomod".disable_deliver()
+	if not $"%ShipCargo2".visible and not $"%ShipCargo3".visible and not $"%ShipCargomod".visible:
+		$"%ShipCargo".disable_move()
+	if not $"%ShipCargomod".visible:
+		$"%ShipMod".disable_move()
+	if not $"%ShipMod".visible and $"%ShipCargomod".get_data().has("type"):
+		$"%ShipCargomod".disable_move()
+	if $"%ShipCargomod".visible and $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"):
+		$"%ShipMod".disable_move()
 
 func update_market_prices():
 	discount = 0
@@ -605,6 +623,89 @@ func drop_barter_pool():
 	if $"%ShipMod".get_node("Barter").pressed:
 		drop_mod($"%ShipMod")
 	discount = 0
+	
+func move_cargo(cargo):
+	if cargo == $"%ShipCargo":
+		var other_cargo_data = null
+		if $"%ShipCargo2".visible:
+			if $"%ShipCargo2".has_cargo:
+				other_cargo_data = $"%ShipCargo2".get_data()
+			$"%ShipCargo2".setup($"%ShipCargo".get_data())
+		elif $"%ShipCargo3".visible and not cargo.get_data().has("smuggling compartment"):
+			if $"%ShipCargo3".has_cargo:
+				other_cargo_data = $"%ShipCargo3".get_data()
+			$"%ShipCargo3".setup($"%ShipCargo".get_data())
+		elif $"%ShipCargomod".visible:
+			if $"%ShipCargomod".has_cargo:
+				other_cargo_data = $"%ShipCargomod".get_data()
+			$"%ShipCargomod".setup($"%ShipCargo".get_data())
+		if other_cargo_data != null:
+			$"%ShipCargo".setup(other_cargo_data)
+		else:
+			$"%ShipCargo".clear()
+	if cargo == $"%ShipCargo2":
+		var other_cargo_data = null
+		if $"%ShipCargo3".visible and not cargo.get_data().has("smuggling compartment"):
+			if $"%ShipCargo3".has_cargo:
+				other_cargo_data = $"%ShipCargo3".get_data()
+			$"%ShipCargo3".setup($"%ShipCargo2".get_data())
+		elif $"%ShipCargomod".visible:
+			if $"%ShipCargomod".has_cargo:
+				other_cargo_data = $"%ShipCargomod".get_data()
+			$"%ShipCargomod".setup($"%ShipCargo2".get_data())
+		else:
+			if $"%ShipCargo".has_cargo:
+				other_cargo_data = $"%ShipCargo".get_data()
+			$"%ShipCargo".setup($"%ShipCargo2".get_data())
+		if other_cargo_data != null:
+			$"%ShipCargo2".setup(other_cargo_data)
+		else:
+			$"%ShipCargo2".clear()
+	if cargo == $"%ShipCargo3":
+		var other_cargo_data = null
+		if $"%ShipCargomod".visible and not $"%ShipCargomod".get_data().has("smuggling compartment"):
+			if $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"):
+				other_cargo_data = $"%ShipCargomod".get_data()
+			$"%ShipCargomod".setup($"%ShipCargo3".get_data())
+		else:
+			if $"%ShipCargo".has_cargo:
+				other_cargo_data = $"%ShipCargo".get_data()
+			$"%ShipCargo".setup($"%ShipCargo3".get_data())
+		if other_cargo_data != null:
+			$"%ShipCargo3".setup(other_cargo_data)
+		else:
+			$"%ShipCargo3".clear()
+	if cargo == $"%ShipCargomod":
+		var other_cargo_data = null
+		if $"%ShipCargo".has_cargo:
+			other_cargo_data = $"%ShipCargo".get_data()
+		$"%ShipCargo".setup($"%ShipCargomod".get_data())
+		if other_cargo_data != null:
+			$"%ShipCargomod".setup(other_cargo_data)
+		else:
+			$"%ShipCargomod".clear()
+	update_action_buttons()
+	
+func move_mod(mod):
+	if mod == $"%ShipCargomod":
+		var other_mod_data = null
+		if $"%ShipMod".has_mod:
+			other_mod_data = $"%ShipMod".get_data()
+		$"%ShipMod".setup($"%ShipCargomod".get_data())
+		if other_mod_data != null:
+			$"%ShipCargomod".setup(other_mod_data)
+		else:
+			$"%ShipCargomod".clear()
+	if mod == $"%ShipMod":
+		var other_mod_data = null
+		if $"%ShipCargomod".has_cargo:
+			other_mod_data = $"%ShipCargomod".get_data()
+		$"%ShipCargomod".setup($"%ShipMod".get_data())
+		if other_mod_data != null:
+			$"%ShipMod".setup(other_mod_data)
+		else:
+			$"%ShipMod".clear()
+	update_action_buttons()
 
 func start_encounter():
 	if skip_encounter:
@@ -816,6 +917,24 @@ func _on_ship_mod_drop_pressed():
 func _on_ship_cargo_barter_toggled(_pressed):
 	update_market_prices()
 
+func _on_ship_cargo_move_pressed():
+	move_cargo($"%ShipCargo")
+	
+func _on_ship_cargo2_move_pressed():
+	move_cargo($"%ShipCargo2")
+	
+func _on_ship_cargo3_move_pressed():
+	move_cargo($"%ShipCargo3")
+	
+func _on_ship_cargomod_move_pressed():
+	if $"%ShipCargomod".get_data().has("type"):
+		move_mod($"%ShipCargomod")
+	else:
+		move_cargo($"%ShipCargomod")
+	
+func _on_ship_mod_move_pressed():
+	move_mod($"%ShipMod")
+
 func _on_ship_mod_recover_pressed():
 	$"%Ship".repair(1)
 	$"%ShipMod".disable_recover()
@@ -910,3 +1029,5 @@ func _on_explore_pressed():
 
 func _on_contact_pressed():
 	stop_encounter()
+
+
