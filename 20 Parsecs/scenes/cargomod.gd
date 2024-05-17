@@ -15,6 +15,7 @@ func setup(data):
 	if has_node("Move"):
 		$Move.show()
 	if data.has("type"):
+		$Data.text += data.type + "\n"
 		if data.name == "shield upgrade":
 			$Recover.show()
 		$Data.text += "Price: " + str(_data.buy) + "K\n"

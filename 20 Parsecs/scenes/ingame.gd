@@ -287,7 +287,7 @@ func update_action_buttons():
 		$"%ShipCargo3".disable_deliver()
 	if $"%Player".current_space.get_node("Label").text != $"%ShipCargomod".get_to():
 		$"%ShipCargomod".disable_deliver()
-	if not $"%ShipCargo2".visible and not $"%ShipCargo3".visible and not $"%ShipCargomod".visible:
+	if not $"%ShipCargo2".visible and not $"%ShipCargo3".visible and (not $"%ShipCargomod".visible or ($"%ShipCargomod".has_cargo and $"%ShipCargomod".get_data().has("type"))):
 		$"%ShipCargo".disable_move()
 	if not $"%ShipCargomod".visible:
 		$"%ShipMod".disable_move()
@@ -635,7 +635,7 @@ func move_cargo(cargo):
 			if $"%ShipCargo3".has_cargo:
 				other_cargo_data = $"%ShipCargo3".get_data()
 			$"%ShipCargo3".setup($"%ShipCargo".get_data())
-		elif $"%ShipCargomod".visible:
+		elif $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or ($"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"))):
 			if $"%ShipCargomod".has_cargo:
 				other_cargo_data = $"%ShipCargomod".get_data()
 			$"%ShipCargomod".setup($"%ShipCargo".get_data())
@@ -649,7 +649,7 @@ func move_cargo(cargo):
 			if $"%ShipCargo3".has_cargo:
 				other_cargo_data = $"%ShipCargo3".get_data()
 			$"%ShipCargo3".setup($"%ShipCargo2".get_data())
-		elif $"%ShipCargomod".visible:
+		elif $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or ($"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"))):
 			if $"%ShipCargomod".has_cargo:
 				other_cargo_data = $"%ShipCargomod".get_data()
 			$"%ShipCargomod".setup($"%ShipCargo2".get_data())
@@ -663,7 +663,7 @@ func move_cargo(cargo):
 			$"%ShipCargo2".clear()
 	if cargo == $"%ShipCargo3":
 		var other_cargo_data = null
-		if $"%ShipCargomod".visible and not $"%ShipCargomod".get_data().has("smuggling compartment"):
+		if $"%ShipCargomod".visible and not $"%ShipCargomod".get_data().has("smuggling compartment") and (not $"%ShipCargomod".has_cargo or ($"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"))):
 			if $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"):
 				other_cargo_data = $"%ShipCargomod".get_data()
 			$"%ShipCargomod".setup($"%ShipCargo3".get_data())
