@@ -24,4 +24,10 @@ var deck = [
 		"name": "nav computer",
 		"description": "Speed: +1",
 	},
+	{
+		"type": "Mod",
+		"buy": 3,
+		"name": "shield upgrade",
+		"description": "Armor: +1S\nAction: Recover 1 Ship Damage",
+	},
 ]

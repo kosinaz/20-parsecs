@@ -1718,6 +1718,20 @@ disabled = true
 toggle_mode = true
 text = "Barter"
 
+[node name="Recover" type="Button" parent="CanvasLayer/Ship/ShipMod"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -37.0
+margin_top = 17.0
+margin_right = 38.0
+margin_bottom = 36.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+text = "Recover 1SD"
+
 [node name="Prompt" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
@@ -1866,6 +1880,7 @@ text = "Ok"
 [connection signal="toggled" from="CanvasLayer/Ship/ShipCargoMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipMod/Drop" to="." method="_on_ship_mod_drop_pressed"]
 [connection signal="toggled" from="CanvasLayer/Ship/ShipMod/Barter" to="." method="_on_ship_cargo_barter_toggled"]
+[connection signal="pressed" from="CanvasLayer/Ship/ShipMod/Recover" to="." method="_on_ship_mod_recover_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
 [connection signal="pressed" from="CanvasLayer/Alert/Window/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]

@@ -165,15 +165,12 @@ func upgrade_patrol(patrol):
 			$"%Patrols".text += reps[i]
 
 func start_action():
-	if not planets.has($"%Player".current_space.id):
-		stop_action()
-	else:
-		$"%Finish".disabled = false
-		$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
-		$"%TurnIndicator".text += "Perform any number or no actions, then press Finish!"
-		bought = false
-		skipped = false
-		update_action_buttons()
+	$"%Finish".disabled = false
+	$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
+	$"%TurnIndicator".text += "Perform any number or no actions, then press Finish!"
+	bought = false
+	skipped = false
+	update_action_buttons()
 
 func stop_action():
 	$"%MarketCargo".disable_buy()
@@ -193,6 +190,7 @@ func stop_action():
 	$"%ShipCargo3".disable_barter()
 	$"%ShipMod".disable_drop()
 	$"%ShipMod".disable_barter()
+	$"%ShipMod".disable_recover()
 	$"%Finish".disabled = true
 	start_encounter()
 
@@ -214,11 +212,12 @@ func update_action_buttons():
 	$"%ShipCargo3".enable_barter()
 	$"%ShipMod".enable_drop()
 	$"%ShipMod".enable_barter()
+	$"%ShipMod".enable_recover()
 	if skipped:
 		$"%MarketCargo".disable_skip()
 		$"%MarketGearmod".disable_skip()
 		$"%MarketShip".disable_skip()
-	if bought:
+	if bought or not planets.has($"%Player".current_space.id):
 		$"%MarketCargo".disable_buy()
 		$"%MarketCargo".disable_skip()
 		$"%MarketGearmod".disable_buy()
@@ -257,16 +256,18 @@ func update_action_buttons():
 		$"%ShipMod".disable_barter()
 	if available_mods == 0 and $"%MarketGearmod".get_data().type == "Mod":
 		$"%MarketGearmod".disable_buy()
+	if $"%Ship".get_damage() == 0:
+		$"%ShipMod".disable_recover()
 	if $"%MarketShip".get_data().has("used"):
 		if $"%Player".get_money() < 5 or $"%Ship".get_price() == 20:
 			$"%MarketShip".disable_buy()
 	elif $"%Player".get_money() < $"%MarketShip".get_reduced_price($"%Ship".get_price()):
 		$"%MarketShip".disable_buy()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to():
+	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to() or not $"%ShipCargo".has_cargo:
 		$"%ShipCargo".disable_deliver()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo2".get_to():
+	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo2".get_to() or not  $"%ShipCargo".has_cargo:
 		$"%ShipCargo2".disable_deliver()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo3".get_to():
+	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo3".get_to() or not  $"%ShipCargo".has_cargo:
 		$"%ShipCargo3".disable_deliver()
 
 func update_market_prices():
@@ -403,6 +404,7 @@ func drop_mod(mod):
 	mod.clear()
 	update_action_buttons()
 	update_market_prices()
+	$"%Ship".update_armor()
 
 func roll():
 	return dice[randi() % 8]
@@ -672,6 +674,7 @@ func _on_market_gearmod_buy_pressed():
 	if market_gearmods[0].type == "Mod":
 		if not $"%ShipMod".has_mod:
 			$"%ShipMod".setup(market_gearmods[0])
+			$"%Ship".update_armor()
 	#	elif $"%ShipCargoMod".visible and not $"%ShipCargoMod".has_cargomod:
 	#		$"%ShipCargoMod".setup(market_gearmods[0])
 	market_gearmods.pop_front()
@@ -746,6 +749,10 @@ func _on_ship_mod_drop_pressed():
 	
 func _on_ship_cargo_barter_toggled(_pressed):
 	update_market_prices()
+
+func _on_ship_mod_recover_pressed():
+	$"%Ship".repair(1)
+	$"%ShipMod".disable_recover()
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Attack 3G":

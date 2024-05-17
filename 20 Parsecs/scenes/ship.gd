@@ -24,8 +24,7 @@ func setup(data):
 	$Data.text += "\nCrew: " + str(_data.crew)
 	if not has_node("Buy"):
 		$"%ShipDamage".value = 0
-		$"%ShipDamage".max_value = _data.armor
-		$"%ShipDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
+		update_armor()
 
 func get_data():
 	return _data
@@ -43,11 +42,11 @@ func get_reduced_price(price):
 
 func damage(amount):
 	_damage += amount
-	if _damage >= _data.armor:
+	if _damage >= get_armor():
 		defeated = true
-		_damage = _data.armor
+		_damage = get_armor()
 	$"%ShipDamage".value = _damage
-	$"%ShipDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
+	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
 
 func repair(amount = 0):
 	defeated = false
@@ -55,7 +54,20 @@ func repair(amount = 0):
 		amount = _damage
 	_damage -= amount
 	$"%ShipDamage".value = _damage
-	$"%ShipDamageLabel".text = str(_data.armor - _damage) + "/" + str(_data.armor)
+	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
+
+func get_armor():
+	var armor = _data.armor
+	if $"%ShipMod".get_name() == "shield upgrade":
+		armor += 1
+	return armor
+
+func update_armor():
+	$"%ShipDamage".max_value = get_armor()
+	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
+	if _damage >= get_armor():
+		defeated = true
+		_damage = get_armor()
 
 func enable_buy():
 	$Buy.disabled = false
