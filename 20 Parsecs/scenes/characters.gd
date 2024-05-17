@@ -7,6 +7,7 @@ var deck = [
 		"attack": 3,
 		"armor": 4,
 		'skill1': "Piloting",
-		'skill2': "Tech",
+#		'skill2': "Tech",
+		'skill2': "Tactics",
 	},
 ]

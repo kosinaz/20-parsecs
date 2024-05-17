@@ -440,6 +440,8 @@ func combat(attack1, attack2):
 	if $"%ShipMod".get_name() == "maneuvering thrusters" and is_skilled("Tactics"):
 		attack2 -= 1
 	var result1 = 0
+	var autoblastered = 0
+	var critautoblastered = false
 	for _i in range(attack1):
 		var result = roll()
 		if result == "hit":
@@ -452,6 +454,14 @@ func combat(attack1, attack2):
 				result1 += 1
 			if result == "crit":
 				result1 += 2
+		if result == "focus" and $"%ShipMod".get_name() == "autoblaster":
+			if is_skilled("Tactics"):
+				if not critautoblastered:
+					critautoblastered = true
+					result1 += 2
+			elif autoblastered < 2:
+				autoblastered += 1
+				result1 += 1
 	var result2 = 0
 	var has_hit = false
 	var has_crit = false
@@ -469,7 +479,7 @@ func combat(attack1, attack2):
 		elif has_hit:
 			result2 -= 1
 	return {
-		"attacker_won": result2 < result1,
+		"attacker_won": result2 <= result1,
 		"attacker_damage": result2,
 		"defender_damage": result1,
 	}
@@ -603,19 +613,21 @@ func stop_encounter():
 
 func attack_patrol():
 	if attacking_patrol.data.has("invulnerable"):
-		$"%AlertSummary".text = "You failed the combat against the patrol!"
+		$"%Alert".show()
+		$"%AlertSummary".text = "You failed the combat against\nthe undefeatable patrol!"
 		var spaces = astar.get_point_connections($"%Player".current_space.id)
 		move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 		attacking_patrol = null
+		$"%Ship".damage(10)
 	else:
 		var combat = combat(get_ship_attack(), attacking_patrol.data.attack)
 		$"%Ship".damage(combat.attacker_damage)
 		$"%Alert".show()
 		if combat.attacker_won: 
 			if $"%Ship".defeated:
-				$"%AlertSummary".text = "You won the combat against the patrol,\nbut suffered too much damage.\nYou are defeated!"
+				$"%AlertSummary".text = "You won the combat against the patrol!\n(" + str(combat.defender_damage) + " vs " + str(combat.attacker_damage) + ")\nYou suffered too much damage.\nYou are defeated!"
 			else:
-				$"%AlertSummary".text = "You won the combat against the patrol!"
+				$"%AlertSummary".text = "You won the combat against the patrol!\n(" + str(combat.defender_damage) + " vs " + str(combat.attacker_damage) + ")"
 			if attacking_patrol.data.has("money"):
 				$"%Player".increase_money(attacking_patrol.data.money)
 			if attacking_patrol.data.has("fame"):
@@ -624,7 +636,7 @@ func attack_patrol():
 			upgrade_patrol(attacking_patrol)
 			attacking_patrol = null
 		else:
-			$"%AlertSummary".text = "You failed the combat against the patrol!"
+			$"%AlertSummary".text = "You failed the combat against the patrol!\n(" + str(combat.defender_damage) + " vs " + str(combat.attacker_damage) + ")"
 			var spaces = astar.get_point_connections($"%Player".current_space.id)
 			move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 			attacking_patrol = null
