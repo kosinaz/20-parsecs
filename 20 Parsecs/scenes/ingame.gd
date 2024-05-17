@@ -264,6 +264,8 @@ func update_action_buttons():
 		available_mods += 1
 	if available_mods == 0 and $"%MarketGearmod".get_data().type == "Mod":
 		$"%MarketGearmod".disable_buy()
+	if available_mods > 0 and $"%MarketCargo".get_data().has("smuggling compartment"):
+		$"%MarketCargo".enable_buy()
 	if $"%Ship".get_damage() == 0:
 		$"%ShipMod".disable_recover()
 		$"%ShipCargomod".disable_recover()
@@ -408,8 +410,15 @@ func drop_cargo(cargo):
 		remove_cargo(cargo)
 
 func drop_mod(mod):
-	market_gearmods.append(mod.get_data())
-	mod.clear()
+	if mod.get_data().has("smuggling compartment"):
+		smuggling_compartment = false
+		$"%ShipCargo3".hide()
+		if $"%ShipCargo3".has_cargo:
+			remove_cargo($"%ShipCargo3")
+		remove_cargo(mod)
+	else:
+		market_gearmods.append(mod.get_data())
+		mod.clear()
 	update_action_buttons()
 	update_market_prices()
 	$"%Ship".update_armor()
@@ -698,10 +707,12 @@ func _on_market_cargo_buy_pressed():
 		$"%ShipCargo".setup(market_cargos[0])
 	elif $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
 		$"%ShipCargo2".setup(market_cargos[0])
-	elif $"%ShipCargo3".visible and not $"%ShipCargo3".has_cargo:
+	elif $"%ShipCargo3".visible and not $"%ShipCargo3".has_cargo and not market_cargos[0].has("smuggling compartment"):
 		$"%ShipCargo3".setup(market_cargos[0])
 	elif $"%ShipCargomod".visible and not $"%ShipCargomod".has_cargo:
 		$"%ShipCargomod".setup(market_cargos[0])
+	elif $"%ShipMod".visible and not $"%ShipMod".has_mod and market_cargos[0].has("smuggling compartment"):
+		$"%ShipMod".setup(market_cargos[0])
 	market_cargos.pop_front()
 	$"%MarketCargo".setup(market_cargos[0])
 	if market_cargos[0].has("patrol"):

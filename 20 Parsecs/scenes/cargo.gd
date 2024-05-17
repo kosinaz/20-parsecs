@@ -9,15 +9,15 @@ func setup(data):
 	$Data.text = ""
 	if has_node("Buy"):
 		$Buy.text = "Buy " + str(data.buy) + "K"
-	if has_node("Deliver"):
-		$Deliver.show()
 	if has_node("Drop"):
 		$Drop.show()
 	if has_node("Barter"):
 		$Barter.show()
 	if data.has("smuggling compartment"):
-		$Data.text += "Price: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
+		$Data.text += "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
+	if has_node("Deliver"):
+		$Deliver.show()
 	if data.has("illegal"):
 		$Data.text += "Illegal\n"
 	$Data.text += "Price: " + str(_data.buy) + "K\n"

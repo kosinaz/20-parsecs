@@ -6,6 +6,13 @@ var has_mod = false
 func setup(data):
 	has_mod = true
 	_data = data
+	if has_node("Drop"):
+		$Drop.show()
+	if has_node("Barter"):
+		$Barter.show()
+	if data.has("smuggling compartment"):
+		$Data.text = "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
+		return
 	$Data.text = data.type + "\n"
 	if has_node("Buy"):
 		$Buy.text = "Buy " + str(data.buy) + "K"
@@ -15,16 +22,12 @@ func setup(data):
 	$Data.text += data.description
 	if data.has("patrol") and has_node("Buy"):
 		$Data.text += "\nPatrol: " + str(data.move) + data.patrol
-	if has_node("Drop"):
-		$Drop.show()
-	if has_node("Barter"):
-		$Barter.show()
 
 func get_data():
 	return _data
 	
 func get_name():
-	if has_mod:
+	if has_mod and _data.has("name"):
 		return _data.name
 	return ""
 
