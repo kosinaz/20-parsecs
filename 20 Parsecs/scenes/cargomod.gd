@@ -46,6 +46,9 @@ func get_name():
 		return _data.name
 	return ""
 
+func is_bartering():
+	return $Barter.pressed
+
 func clear():
 	has_cargo = false
 	_data = {}

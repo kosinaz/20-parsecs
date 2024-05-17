@@ -35,6 +35,9 @@ func setup(data):
 
 func get_data():
 	return _data
+	
+func is_bartering():
+	return $Barter.pressed
 
 func clear():
 	has_cargo = false

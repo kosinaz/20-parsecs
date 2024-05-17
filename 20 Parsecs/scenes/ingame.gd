@@ -257,20 +257,20 @@ func update_action_buttons():
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
 		$"%MarketCargo".disable_buy()
 	var available_cargos = 0
-	if not $"%ShipCargo".has_cargo:
+	if not $"%ShipCargo".has_cargo or $"%ShipCargo".is_bartering():
 		available_cargos += 1
-	if $"%ShipCargo2".visible and not $"%ShipCargo2".has_cargo:
+	if $"%ShipCargo2".visible and (not $"%ShipCargo2".has_cargo or $"%ShipCargo2".is_bartering()):
 		available_cargos += 1
-	if $"%ShipCargo3".visible and not $"%ShipCargo3".has_cargo:
+	if $"%ShipCargo3".visible and (not $"%ShipCargo3".has_cargo or $"%ShipCargo3".is_bartering()):
 		available_cargos += 1
-	if $"%ShipCargomod".visible and not $"%ShipCargomod".has_cargo:
+	if $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or $"%ShipCargomod".is_bartering()):
 		available_cargos += 1
 	if available_cargos == 0:
 		$"%MarketCargo".disable_buy()
 	var available_mods = 0
-	if $"%ShipMod".visible and not $"%ShipMod".has_mod:
+	if $"%ShipMod".visible and (not $"%ShipMod".has_mod or $"%ShipMod".is_bartering()):
 		available_mods += 1
-	if $"%ShipCargomod".visible and not $"%ShipCargomod".has_cargo:
+	if $"%ShipCargomod".visible and (not $"%ShipCargomod".has_cargo or $"%ShipCargomod".is_bartering()):
 		available_mods += 1
 	if available_mods == 0 and $"%MarketGearmod".get_data().type == "Mod":
 		$"%MarketGearmod".disable_buy()
@@ -295,6 +295,7 @@ func update_action_buttons():
 		$"%ShipCargomod".disable_move()
 	if $"%ShipCargomod".visible and $"%ShipCargomod".has_cargo and not $"%ShipCargomod".get_data().has("type"):
 		$"%ShipMod".disable_move()
+	update_market_prices()
 
 func update_market_prices():
 	discount = 0
@@ -414,7 +415,6 @@ func remove_cargo(cargo):
 	market_cargos.append(cargo.get_data())
 	cargo.clear()
 	update_action_buttons()
-	update_market_prices()
 
 func drop_cargo(cargo):
 	if cargo.get_data().has("smuggling compartment"):
@@ -438,7 +438,6 @@ func drop_mod(mod):
 		market_gearmods.append(mod.get_data())
 		mod.clear()
 	update_action_buttons()
-	update_market_prices()
 	$"%Ship".update_armor()
 
 func roll():
@@ -915,7 +914,7 @@ func _on_ship_mod_drop_pressed():
 	drop_mod($"%ShipMod")
 	
 func _on_ship_cargo_barter_toggled(_pressed):
-	update_market_prices()
+	update_action_buttons()
 
 func _on_ship_cargo_move_pressed():
 	move_cargo($"%ShipCargo")
