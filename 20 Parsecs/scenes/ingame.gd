@@ -25,7 +25,7 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
-onready var market_cards = [$"%MarketCargo", $"%MarketGearmod"]
+onready var market_cards = [$"%MarketCargo", $"%MarketGearmod", $"%MarketShip"]
 onready var ship_cards = [$"%ShipCargo", $"%ShipCargo2", $"%ShipCargo3", $"%ShipCargomod", $"%ShipMod"]
 onready var character_cards = [$"%CharacterGear", $"%CharacterGear2"]
 onready var all_cards = []
@@ -186,111 +186,49 @@ func start_action():
 	update_action_buttons()
 
 func stop_action():
-	$"%MarketCargo".disable_buy()
-	$"%MarketCargo".disable_skip()
-	$"%MarketGearmod".disable_buy()
-	$"%MarketGearmod".disable_skip()
-	$"%MarketShip".disable_buy()
-	$"%MarketShip".disable_skip()
-	$"%ShipCargo".disable_deliver()
-	$"%ShipCargo".disable_drop()
-	$"%ShipCargo".disable_barter()
-	$"%ShipCargo".disable_move()
-	$"%ShipCargo2".disable_deliver()
-	$"%ShipCargo2".disable_drop()
-	$"%ShipCargo2".disable_barter()
-	$"%ShipCargo2".disable_move()
-	$"%ShipCargo3".disable_deliver()
-	$"%ShipCargo3".disable_drop()
-	$"%ShipCargo3".disable_barter()
-	$"%ShipCargo3".disable_move()
-	$"%ShipCargomod".disable_drop()
-	$"%ShipCargomod".disable_barter()
-	$"%ShipCargomod".disable_recover()
-	$"%ShipCargomod".disable_move()
-	$"%ShipMod".disable_drop()
-	$"%ShipMod".disable_barter()
-	$"%ShipMod".disable_recover()
-	$"%ShipMod".disable_move()
+	for card in all_cards:
+		card.disable_buttons()
 	$"%Finish".disabled = true
 	start_encounter()
 
 func update_action_buttons():
-	$"%MarketCargo".enable_buy()
-	$"%MarketCargo".enable_skip()
-	$"%MarketGearmod".enable_buy()
-	$"%MarketGearmod".enable_skip()
-	$"%MarketShip".enable_buy()
-	$"%MarketShip".enable_skip()
-	$"%ShipCargo".enable_deliver()
-	$"%ShipCargo".enable_drop()
-	$"%ShipCargo".enable_barter()
-	$"%ShipCargo".enable_move()
-	$"%ShipCargo2".enable_deliver()
-	$"%ShipCargo2".enable_drop()
-	$"%ShipCargo2".enable_barter()
-	$"%ShipCargo2".enable_move()
-	$"%ShipCargo3".enable_deliver()
-	$"%ShipCargo3".enable_drop()
-	$"%ShipCargo3".enable_barter()
-	$"%ShipCargo3".enable_move()
-	$"%ShipCargomod".enable_drop()
-	$"%ShipCargomod".enable_barter()
-	$"%ShipCargomod".enable_recover()
-	$"%ShipCargomod".enable_move()
-	$"%ShipMod".enable_drop()
-	$"%ShipMod".enable_barter()
-	$"%ShipMod".enable_recover()
-	$"%ShipMod".enable_move()
+	for card in all_cards:
+		card.enable_buttons()
 	if skipped:
-		$"%MarketCargo".disable_skip()
-		$"%MarketGearmod".disable_skip()
-		$"%MarketShip".disable_skip()
+		for card in market_cards:
+			card.disable_button("Skip")
 	if bought or not planets.has($"%Player".current_space.id):
-		$"%MarketCargo".disable_buy()
-		$"%MarketCargo".disable_skip()
-		$"%MarketGearmod".disable_buy()
-		$"%MarketGearmod".disable_skip()
-		$"%MarketShip".disable_buy()
-		$"%MarketShip".disable_skip()
-		$"%ShipCargo".disable_barter()
-		$"%ShipCargo2".disable_barter()
-		$"%ShipCargo3".disable_barter()
-		$"%ShipCargomod".disable_barter()
-		$"%ShipMod".disable_barter()
-	if $"%Player".get_money() < $"%MarketCargo".get_data().buy - discount:
-		$"%MarketCargo".disable_buy()
-	if $"%Player".get_money() < $"%MarketGearmod".get_data().buy - discount:
-		$"%MarketGearmod".disable_buy()
-	if $"%MarketShip".get_data().has("used"):
-		if $"%Player".get_money() < 5 or $"%Ship".get_price() == 20:
-			$"%MarketShip".disable_buy()
-	elif $"%Player".get_money() < $"%MarketShip".get_reduced_price($"%Ship".get_price()):
-		$"%MarketShip".disable_buy()
+		for card in market_cards:
+			card.disable_buttons()
+		for card in ship_cards:
+			card.disable_button("Barter")
+	for card in [$"%MarketCargo", $"%MarketGearmod"]:
+		if $"%Player".get_money() < card.get_price() - discount:
+			card.disable_button("Buy")
+	if $"%MarketShip".is_used():
+		if $"%Player".get_money() < 5 or $"%Ship".get_price() == 20 or $"%Player".get_money() < $"%MarketShip".get_price() - $"%Ship".get_price():
+			$"%MarketShip".disable_button("Buy")
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
-		$"%MarketCargo".disable_buy()
+		$"%MarketCargo".disable_button("Buy")
 	if $"%Ship".get_damage() == 0:
-		$"%ShipMod".disable_recover()
-		$"%ShipCargomod".disable_recover()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo".get_to():
-		$"%ShipCargo".disable_deliver()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo2".get_to():
-		$"%ShipCargo2".disable_deliver()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargo3".get_to():
-		$"%ShipCargo3".disable_deliver()
-	if $"%Player".current_space.get_node("Label").text != $"%ShipCargomod".get_to():
-		$"%ShipCargomod".disable_deliver()
+		$"%ShipMod".disable_button("Recover")
+		$"%ShipCargomod".disable_button("Recover")
+	for card in ship_cards:
+		if card.is_cargo and $"%Player".current_space.get_node("Label").text != card.get_to():
+			card.disable_button("Deliver")
 	update_card_movement_targets()
 	for card in market_cards:
-		if card.movement_target == null:
-			card.disable_buy()
+		if card.moveable and card.movement_target == null:
+			card.disable_button("Buy")
 	for card in ship_cards:
 		if card.movement_target == null:
-			card.disable_move()
+			card.disable_button("Move")
 	update_market_prices()
 
 func update_card_movement_targets():
 	for card in all_cards:
+		if not card.moveable:
+			continue
 		card.movement_target = null
 		var available_targets = []
 		available_targets.append_array(ship_cards)

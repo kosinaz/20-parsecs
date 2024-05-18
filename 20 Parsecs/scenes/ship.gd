@@ -3,6 +3,7 @@ extends TextureRect
 var _data = {}
 var _damage = 0
 var defeated = false
+var moveable = false
 
 func setup(data):
 	_data = data
@@ -37,6 +38,9 @@ func get_price():
 		return _data.buy
 	return 0
 	
+func is_used():
+	return _data.has("used")
+	
 func get_reduced_price(price):
 	return max(get_price() - price, 0)
 
@@ -69,14 +73,20 @@ func update_armor():
 		defeated = true
 		_damage = get_armor()
 
-func enable_buy():
-	$Buy.disabled = false
+func enable_buttons():
+	for child in get_children():
+		if child is Button:
+			child.disabled = false
 	
-func disable_buy():
-	$Buy.disabled = true
+func disable_buttons():
+	for child in get_children():
+		if child is Button:
+			child.disabled = true
 
-func enable_skip():
-	$Skip.disabled = false
-
-func disable_skip():
-	$Skip.disabled = true
+func enable_button(button):
+	if has_node(button):
+		get_node(button).disabled = true
+		
+func disable_button(button):
+	if has_node(button):
+		get_node(button).disabled = true

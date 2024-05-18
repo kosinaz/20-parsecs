@@ -9,6 +9,7 @@ var is_mod = false
 var is_gear = false
 var is_market = false
 var movement_target = null
+var moveable = true
 
 func setup(data):
 	clear()
@@ -69,38 +70,23 @@ func get_to():
 		return ""
 	return _data.to
 
-func enable_buy():
-	$Buy.disabled = false
+func get_price():
+	return _data.buy
+
+func enable_buttons():
+	for child in get_children():
+		if child is Button:
+			child.disabled = false
 	
-func disable_buy():
-	$Buy.disabled = true
+func disable_buttons():
+	for child in get_children():
+		if child is Button:
+			child.disabled = true
 
-func enable_skip():
-	$Skip.disabled = false
-
-func disable_skip():
-	$Skip.disabled = true
-
-func enable_deliver():
-	$Deliver.disabled = false
-	
-func disable_deliver():
-	$Deliver.disabled = true
-
-func enable_drop():
-	$Drop.disabled = false
-
-func disable_drop():
-	$Drop.disabled = true
-
-func enable_barter():
-	$Barter.disabled = false
-
-func disable_barter():
-	$Barter.disabled = true
-
-func enable_move():
-	$Move.disabled = false
-
-func disable_move():
-	$Move.disabled = true
+func enable_button(button):
+	if has_node(button):
+		get_node(button).disabled = true
+		
+func disable_button(button):
+	if has_node(button):
+		get_node(button).disabled = true
