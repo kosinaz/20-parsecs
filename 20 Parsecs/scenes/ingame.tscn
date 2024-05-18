@@ -1354,6 +1354,112 @@ grow_vertical = 2
 custom_fonts/font = ExtResource( 38 )
 text = "5/5"
 
+[node name="CharacterGear" type="TextureRect" parent="CanvasLayer/Character"]
+unique_name_in_owner = true
+margin_left = 96.0
+margin_right = 192.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 50 )
+
+[node name="Title" type="Label" parent="CanvasLayer/Character/CharacterGear"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Gear"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/Character/CharacterGear"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+autowrap = true
+
+[node name="Drop" type="Button" parent="CanvasLayer/Character/CharacterGear"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -42.0
+margin_top = -24.0
+margin_right = -5.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Character/CharacterGear"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 49.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
+
+[node name="CharacterGear2" type="TextureRect" parent="CanvasLayer/Character"]
+unique_name_in_owner = true
+margin_left = 192.0
+margin_right = 288.0
+margin_bottom = 128.0
+texture = ExtResource( 37 )
+script = ExtResource( 50 )
+
+[node name="Title" type="Label" parent="CanvasLayer/Character/CharacterGear2"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+text = "Gear"
+align = 1
+
+[node name="Data" type="Label" parent="CanvasLayer/Character/CharacterGear2"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 92.0
+margin_bottom = 107.0
+custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
+custom_fonts/font = ExtResource( 36 )
+autowrap = true
+
+[node name="Drop" type="Button" parent="CanvasLayer/Character/CharacterGear2"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -42.0
+margin_top = -24.0
+margin_right = -5.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+text = "Drop"
+
+[node name="Barter" type="Button" parent="CanvasLayer/Character/CharacterGear2"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -24.0
+margin_right = 49.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 6 )
+disabled = true
+toggle_mode = true
+text = "Barter"
+
 [node name="Ship" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1993,6 +2099,10 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip6/Buy" to="." method="_on_used_ship_market_buy6_pressed"]
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip7/Buy" to="." method="_on_used_ship_market_buy7_pressed"]
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip8/Buy" to="." method="_on_used_ship_market_buy8_pressed"]
+[connection signal="pressed" from="CanvasLayer/Character/CharacterGear/Drop" to="." method="_on_character_gear_drop_pressed"]
+[connection signal="toggled" from="CanvasLayer/Character/CharacterGear/Barter" to="." method="_on_ship_cargo_barter_toggled"]
+[connection signal="pressed" from="CanvasLayer/Character/CharacterGear2/Drop" to="." method="_on_character_gear2_drop_pressed"]
+[connection signal="toggled" from="CanvasLayer/Character/CharacterGear2/Barter" to="." method="_on_ship_cargo_barter_toggled"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Deliver" to="." method="_on_ship_cargo_deliver_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Move" to="." method="_on_ship_cargo_move_pressed"]
 [connection signal="pressed" from="CanvasLayer/Ship/ShipCargo/Drop" to="." method="_on_ship_cargo_drop_pressed"]

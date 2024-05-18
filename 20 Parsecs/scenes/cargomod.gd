@@ -5,6 +5,7 @@ var is_empty = true
 var is_ship_cargo = true
 var is_ship_mod = true
 var is_mod = true
+var is_gear = false
 var is_cargo = true
 var is_market = false
 var movement_target = null

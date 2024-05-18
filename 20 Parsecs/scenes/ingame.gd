@@ -27,11 +27,13 @@ var discount = 0
 var skip_encounter = false
 onready var market_cards = [$"%MarketCargo", $"%MarketGearmod"]
 onready var ship_cards = [$"%ShipCargo", $"%ShipCargo2", $"%ShipCargo3", $"%ShipCargomod", $"%ShipMod"]
+onready var character_cards = [$"%CharacterGear", $"%CharacterGear2"]
 onready var all_cards = []
 
 func _ready():
 	all_cards.append_array(market_cards)
 	all_cards.append_array(ship_cards)
+	all_cards.append_array(character_cards)
 	for space in $Spaces.get_children():
 		space.connect("pressed", self, "_on_space_pressed")
 		if space.get_node("Label").text != "":
@@ -292,6 +294,7 @@ func update_card_movement_targets():
 		card.movement_target = null
 		var available_targets = []
 		available_targets.append_array(ship_cards)
+		available_targets.append_array(character_cards)
 		if card.get_data().has("smuggling compartment"):
 			available_targets.erase($"%ShipCargo3")
 		if not card.is_cargo:
@@ -300,7 +303,14 @@ func update_card_movement_targets():
 			available_targets.erase($"%ShipCargo3")
 		if not card.is_mod:
 			available_targets.erase($"%ShipMod")
+		if not card.is_mod and not card.is_cargo:
+			available_targets.erase($"%ShipCargomod")
+		if not card.is_gear:
+			available_targets.erase($"%CharacterGear")
+			available_targets.erase($"%CharacterGear2")
 		if card.is_market:
+			if card.is_gear:
+				print(available_targets)
 			for available_target in available_targets:
 				if not available_target.visible:
 					continue
@@ -830,6 +840,16 @@ func _on_used_ship_market_buy7_pressed():
 
 func _on_used_ship_market_buy8_pressed():
 	buy_used_ship(ship_deck[7])
+
+func _on_character_gear_drop_pressed():
+	market_gearmods.append($"%CharacterGear".get_data())
+	$"%CharacterGear".clear()
+	update_action_buttons()
+
+func _on_character_gear2_drop_pressed():
+	market_gearmods.append($"%CharacterGear2".get_data())
+	$"%CharacterGear2".clear()
+	update_action_buttons()
 
 func _on_ship_cargo_deliver_pressed():
 	deliver_cargo($"%ShipCargo")

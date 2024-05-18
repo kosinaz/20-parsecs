@@ -4,8 +4,8 @@ var _data = {}
 var is_empty = true
 var is_ship_cargo = false
 export var is_ship_mod = false
-var is_mod = true
-var is_gear = true
+var is_mod = false
+var is_gear = false
 var is_cargo = false
 var is_market = false
 var movement_target = null
@@ -26,7 +26,9 @@ func setup(data):
 		is_gear = false
 		$Data.text = "Cargo/Mod\nPrice: 2K\nSmuggling\nCompartment\n+25% success\n+1 Cargo"
 		return
-	$Data.text = data.type + "\n"
+	$Data.text = data.type
+	if data.has("subtype"):
+		$Data.text += ", " + data.subtype
 	if data.type == "Mod":
 		is_mod = true
 		is_gear = false
@@ -35,10 +37,10 @@ func setup(data):
 		is_gear = true
 	if has_node("Buy"):
 		is_market = true
-		$Buy.text = "Buy " + str(data.buy) + "K"
+		$Buy.text = "\nBuy " + str(data.buy) + "K"
 	elif data.name == "shield upgrade":
 		$Recover.show()
-	$Data.text += "Price: " + str(_data.buy) + "K\n"
+	$Data.text += "\nPrice: " + str(_data.buy) + "K\n"
 	$Data.text += data.description
 	if data.has("patrol") and has_node("Buy"):
 		$Data.text += "\nPatrol: " + str(data.move) + data.patrol

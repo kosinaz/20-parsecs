@@ -6,6 +6,7 @@ export var is_ship_cargo = false
 var is_ship_mod = false
 var is_cargo = true
 var is_mod = false
+var is_gear = false
 var is_market = false
 var movement_target = null
 
