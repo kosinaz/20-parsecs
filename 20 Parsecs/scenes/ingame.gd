@@ -88,12 +88,13 @@ func start_planning():
 		$"%TurnIndicator".text += "Move or Gain 2K!"
 		$"%Recover".disabled = true
 	astar.set_point_disabled(13)
-	var patrol_space_ids = []
+	var hostile_patrols = []
 	for r in ["A", "B", "C", "D"]:
 		if $"%Player".get_reputation(r) != 1:
-			var id = get_node("%Patrol" + r).current_space.id
+			var patrol = get_node("%Patrol" + r)
+			var id = patrol.current_space.id
 			astar.set_point_disabled(id)
-			patrol_space_ids.append(id)
+			hostile_patrols.append(patrol)
 	for to_id in astar.get_points():
 		var path = astar.get_id_path($"%Player".current_space.id, to_id)
 		if path.size() > get_speed() + 1 or path.size() == 0:
@@ -114,21 +115,26 @@ func start_planning():
 		get_node("Spaces/Space13/Button").disabled = false
 		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
 		get_node("Spaces/Space" + str(13)).get_node("Faction").add_color_override("font_color", Color.white)
-	for id in patrol_space_ids:
+	for patrol in hostile_patrols:
+		var id = patrol.current_space.id
 		astar.set_point_disabled(id, false)
 		var path = astar.get_id_path($"%Player".current_space.id, id)
 		if path.size() > get_speed() + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = true
 			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
 			get_node("Spaces/Space" + str(id)).get_node("Faction").add_color_override("font_color", Color("9a9a9a"))
+			patrol.frame = 0
 		else:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = false
 			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color.white)
 			get_node("Spaces/Space" + str(id)).get_node("Faction").add_color_override("font_color", Color.white)
+			patrol.frame = 1
 
 func stop_planning():
 	for space in $Spaces.get_children():
 		space.get_node("Button").disabled = true
+	for patrol in patrols:
+		patrol.frame = 0
 	$"%Gain2K".disabled = true
 	$"%Recover".disabled = true
 	start_action()

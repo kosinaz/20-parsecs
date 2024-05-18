@@ -397,24 +397,28 @@ space_1 = 45
 unique_name_in_owner = true
 position = Vector2( 511.25, 288.25 )
 texture = ExtResource( 42 )
+hframes = 2
 script = ExtResource( 44 )
 
 [node name="PatrolB" type="Sprite" parent="."]
 unique_name_in_owner = true
 position = Vector2( 511.25, 288.25 )
 texture = ExtResource( 46 )
+hframes = 2
 script = ExtResource( 44 )
 
 [node name="PatrolC" type="Sprite" parent="."]
 unique_name_in_owner = true
 position = Vector2( 511.25, 288.25 )
 texture = ExtResource( 47 )
+hframes = 2
 script = ExtResource( 44 )
 
 [node name="PatrolD" type="Sprite" parent="."]
 unique_name_in_owner = true
 position = Vector2( 511.25, 288.25 )
 texture = ExtResource( 43 )
+hframes = 2
 script = ExtResource( 44 )
 
 [node name="Player" type="Sprite" parent="."]
