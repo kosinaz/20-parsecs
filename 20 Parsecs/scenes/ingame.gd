@@ -202,6 +202,8 @@ func update_action_buttons():
 			card.disable_buttons()
 		for card in ship_cards:
 			card.disable_button("Barter")
+		for card in character_cards:
+			card.disable_button("Barter")
 	for card in [$"%MarketCargo", $"%MarketGearmod"]:
 		if $"%Player".get_money() < card.get_price() - discount:
 			card.disable_button("Buy")
@@ -247,8 +249,6 @@ func update_card_movement_targets():
 			available_targets.erase($"%CharacterGear")
 			available_targets.erase($"%CharacterGear2")
 		if card.is_market:
-			if card.is_gear:
-				print(available_targets)
 			for available_target in available_targets:
 				if not available_target.visible:
 					continue
@@ -282,19 +282,16 @@ func update_card_movement_targets():
 
 func update_market_prices():
 	discount = 0
-	if $"%ShipCargo".get_node("Barter").pressed:
-		discount += $"%ShipCargo".get_data().buy
-	if $"%ShipCargo2".get_node("Barter").pressed:
-		discount += $"%ShipCargo2".get_data().buy
-	if $"%ShipCargo3".get_node("Barter").pressed:
-		discount += $"%ShipCargo3".get_data().buy
-	if $"%ShipCargomod".get_node("Barter").pressed:
-		discount += $"%ShipCargomod".get_data().buy
-	if $"%ShipMod".get_node("Barter").pressed:
-		discount += $"%ShipMod".get_data().buy
-	$"%MarketCargo".get_node("Buy").text = "Buy " + str(max(0, $"%MarketCargo".get_data().buy - discount)) + "K"
-	$"%MarketGearmod".get_node("Buy").text = "Buy " + str(max(0, $"%MarketGearmod".get_data().buy - discount)) + "K"
-	$"%MarketShip".get_node("Buy").text = "Buy " + str(max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())) + "K"
+	for card in ship_cards:
+		if card.is_bartering():
+			discount += card.get_price()
+	for card in character_cards:
+		if card.is_bartering():
+			discount += card.get_price()
+	for card in market_cards:
+		if not card.is_free:
+			card.set_buy_text("Buy " + str(max(0, $"%MarketCargo".get_data().buy - discount)) + "K")
+	$"%MarketShip".set_buy_text("Buy " + str(max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())) + "K")
 	update_used_ship_prices()
 
 func deliver_cargo(cargo):
@@ -518,17 +515,15 @@ func get_ship_attack():
 
 func get_character_attack():
 	var attack = $"%Character".get_data().attack
-#	if $"%Gear".get_name() == "quad laser":
-#		attack += 1
+	if $"%Gear".get_name() == "blaster pistol":
+		attack += 1
 	return attack
 
 func show_used_ships():
 	$"%UsedShipMarket".show()
 	$"%Market".hide()
-	$"%ShipCargo".disable_deliver()
-	$"%ShipCargo2".disable_deliver()
-	$"%ShipCargo3".disable_deliver()
-	$"%ShipCargomod".disable_deliver()
+	for card in ship_cards:
+		card.disable_button("Deliver")
 	$"%Finish".disabled = true
 	for i in range(8):
 		$"%UsedShipMarket".get_child(i).hide()

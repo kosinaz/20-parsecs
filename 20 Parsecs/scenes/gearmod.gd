@@ -8,6 +8,7 @@ var is_mod = false
 var is_gear = false
 var is_cargo = false
 var is_market = false
+var is_free = false
 var movement_target = null
 var moveable = true
 
@@ -45,6 +46,7 @@ func setup(data):
 	$Data.text += data.description
 	if data.has("patrol") and has_node("Buy"):
 		$Data.text += "\nPatrol: " + str(data.move) + data.patrol
+	$"%Character".update_armor()
 
 func get_data():
 	return _data
@@ -59,6 +61,9 @@ func get_price():
 
 func is_bartering():
 	return $Barter.pressed
+
+func set_buy_text(text):
+	$Buy.text = text
 	
 func clear():
 	movement_target = null
@@ -76,6 +81,7 @@ func clear():
 		$Move.hide()
 	is_mod = true
 	is_gear = true
+	$"%Character".update_armor()
 
 func enable_buttons():
 	for child in get_children():

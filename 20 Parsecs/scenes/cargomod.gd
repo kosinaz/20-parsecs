@@ -59,6 +59,9 @@ func get_name():
 		return _data.name
 	return ""
 
+func get_price():
+	return _data.buy
+
 func is_bartering():
 	return $Barter.pressed
 

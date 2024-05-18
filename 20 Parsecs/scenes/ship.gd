@@ -4,6 +4,7 @@ var _data = {}
 var _damage = 0
 var defeated = false
 var moveable = false
+var is_free = false
 
 func setup(data):
 	_data = data
@@ -37,6 +38,11 @@ func get_price():
 	if _data and _data.has("buy"):
 		return _data.buy
 	return 0
+
+func set_buy_text(text):
+	$Buy.text = text
+	if is_used():
+		$Buy.text = "5K+"
 	
 func is_used():
 	return _data.has("used")
@@ -63,6 +69,8 @@ func repair(amount = 0):
 func get_armor():
 	var armor = _data.armor
 	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipMod".get_name()):
+		armor += 1
+	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipCargomod".get_name()):
 		armor += 1
 	return armor
 

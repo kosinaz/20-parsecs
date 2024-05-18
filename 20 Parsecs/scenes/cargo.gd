@@ -8,6 +8,7 @@ var is_cargo = true
 var is_mod = false
 var is_gear = false
 var is_market = false
+var is_free = false
 var movement_target = null
 var moveable = true
 
@@ -72,6 +73,9 @@ func get_to():
 
 func get_price():
 	return _data.buy
+
+func set_buy_text(text):
+	$Buy.text = text
 
 func enable_buttons():
 	for child in get_children():
