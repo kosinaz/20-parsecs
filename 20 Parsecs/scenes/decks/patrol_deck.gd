@@ -1,5 +1,5 @@
 extends Node
-class_name Patrols
+class_name PatrolDeck
 
 var deck = [
 	{

@@ -1,8 +1,10 @@
 extends Node
-class_name Cargos
+class_name CargoDeck
 
 var deck = [
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"to": "Ganal",
 		"buy": 1,
 		"sell": 5,
@@ -11,6 +13,8 @@ var deck = [
 		"move": 4,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"to": "Bord",
 		"buy": 1,
 		"sell": 5,
@@ -19,6 +23,8 @@ var deck = [
 		"move": 4,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"to": "Haryl",
 		"buy": 1,
 		"sell": 5,
@@ -27,6 +33,8 @@ var deck = [
 		"move": 4,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"to": "Damon",
 		"buy": 1,
 		"sell": 5,
@@ -35,6 +43,8 @@ var deck = [
 		"move": 4,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"to": "Katak",
 		"buy": 1,
 		"sell": 6,
@@ -42,6 +52,8 @@ var deck = [
 		"move": 3,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"illegal": true,
 		"to": "Acan",
 		"buy": 2,
@@ -49,6 +61,8 @@ var deck = [
 		"fame": 1
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"illegal": true,
 		"to": "Ekes",
 		"buy": 2,
@@ -58,6 +72,8 @@ var deck = [
 		"move": 3,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"illegal": true,
 		"to": "Fatat",
 		"buy": 2,
@@ -67,6 +83,8 @@ var deck = [
 		"move": 3,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo,",
 		"illegal": true,
 		"to": "Jakaf",
 		"buy": 3,
@@ -76,6 +94,8 @@ var deck = [
 		"move": 3,
 	},
 	{
+		"deck": "cargo",
+		"type": "cargo",
 		"smuggling compartment": true,
 		"buy": 2,
 	},

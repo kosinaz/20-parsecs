@@ -1,5 +1,5 @@
 extends Node
-class_name StarterShips
+class_name StarterShipDeck
 
 var deck = [
 	{

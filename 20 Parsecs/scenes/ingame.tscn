@@ -827,12 +827,13 @@ disabled = true
 text = "Skip"
 
 [node name="MarketLuxury" type="TextureRect" parent="CanvasLayer/Market"]
+unique_name_in_owner = true
 margin_left = 384.0
 margin_right = 480.0
 margin_bottom = 128.0
 texture = ExtResource( 37 )
 
-[node name="MarketLuxuryTitle" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
+[node name="Title" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
 margin_top = 1.0
 margin_right = 96.0
 margin_bottom = 15.0
@@ -841,7 +842,7 @@ custom_fonts/font = ExtResource( 36 )
 text = "Luxury"
 align = 1
 
-[node name="MarketLuxuryData" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
+[node name="Data" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
 margin_left = 4.0
 margin_top = 14.0
 margin_right = 92.0
@@ -856,7 +857,7 @@ Others can attack
 your ship
 Patrol: 4C"
 
-[node name="MarketLuxuryBuy" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
+[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -867,7 +868,7 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Buy 20K"
 
-[node name="MarketLuxurySkip" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
+[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0

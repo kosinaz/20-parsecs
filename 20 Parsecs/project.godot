@@ -10,29 +10,29 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
-"class": "Cargos",
+"class": "CargoDeck",
 "language": "GDScript",
-"path": "res://scenes/cargos.gd"
+"path": "res://scenes/decks/cargo_deck.gd"
 }, {
 "base": "Node",
-"class": "Characters",
+"class": "CharacterDeck",
 "language": "GDScript",
-"path": "res://scenes/characters.gd"
+"path": "res://scenes/decks/character_deck.gd"
 }, {
 "base": "Node",
-"class": "Gearmods",
+"class": "GearmodDeck",
 "language": "GDScript",
-"path": "res://scenes/gearmods.gd"
+"path": "res://scenes/decks/gearmod_deck.gd"
 }, {
 "base": "Node",
-"class": "Patrols",
+"class": "PatrolDeck",
 "language": "GDScript",
-"path": "res://scenes/patrols.gd"
+"path": "res://scenes/decks/patrol_deck.gd"
 }, {
 "base": "Node",
-"class": "Ships",
+"class": "ShipDeck",
 "language": "GDScript",
-"path": "res://scenes/ships.gd"
+"path": "res://scenes/decks/ship_deck.gd"
 }, {
 "base": "Node2D",
 "class": "Space",
@@ -40,18 +40,18 @@ _global_script_classes=[ {
 "path": "res://scenes/space.gd"
 }, {
 "base": "Node",
-"class": "StarterShips",
+"class": "StarterShipDeck",
 "language": "GDScript",
-"path": "res://scenes/starter_ships.gd"
+"path": "res://scenes/decks/starter_ship_deck.gd"
 } ]
 _global_script_class_icons={
-"Cargos": "",
-"Characters": "",
-"Gearmods": "",
-"Patrols": "",
-"Ships": "",
+"CargoDeck": "",
+"CharacterDeck": "",
+"GearmodDeck": "",
+"PatrolDeck": "",
+"ShipDeck": "",
 "Space": "",
-"StarterShips": ""
+"StarterShipDeck": ""
 }
 
 [application]

@@ -1,5 +1,5 @@
 extends Node
-class_name Characters
+class_name CharacterDeck
 
 var deck = [
 	{
