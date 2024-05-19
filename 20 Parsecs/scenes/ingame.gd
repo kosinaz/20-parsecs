@@ -254,6 +254,8 @@ func update_card_movement_targets():
 					continue
 				if not available_target.is_empty and not available_target.is_bartering():
 					continue
+				if card.is_gear and card.is_armor() and has_armor_gear():
+					continue
 				card.movement_target = available_target
 				break
 		else:
@@ -290,8 +292,14 @@ func update_market_prices():
 			discount += card.get_price()
 	for card in market_cards:
 		if not card.is_free:
-			card.set_buy_text("Buy " + str(max(0, card.get_data().buy - discount)) + "K")
-	$"%MarketShip".set_buy_text("Buy " + str(max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())) + "K")
+			var reduced_price = max(0, card.get_price() - discount)
+			card.set_buy_text("Buy " + str(reduced_price) + "K")
+			if reduced_price <= $"%Player".money:
+				card.enable_button("Buy")
+	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
+	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
+	if reduced_ship_price <= $"%Player".money:
+		$"%MarketShip".enable_button("Buy")
 	update_used_ship_prices()
 
 func deliver_cargo(cargo):
@@ -420,6 +428,12 @@ func drop_mod(mod):
 	update_action_buttons()
 	$"%Ship".update_armor()
 
+func drop_gear(gear):
+	market_gearmods.append(gear.get_data())
+	gear.clear()
+	update_action_buttons()
+	$"%Character".update_armor()
+
 func roll():
 	return dice[randi() % 8]
 
@@ -456,7 +470,15 @@ func has_mod(name):
 func has_gear(name):
 	return $"%CharacterGear".get_name() == name or $"%CharacterGear2".get_name() == name
 
+func has_armor_gear():
+	for gear in [$"%CharacterGear", $"%CharacterGear2"]:
+		if gear.is_armor() and not gear.is_bartering():
+			return true
+	return false
+
 func ground_combat(attack1, attack2):
+	if has_gear("plastoid_armor") and is_skilled("Strength"):
+		attack2 -= 1
 	var result1 = 0
 	var vibroknifed = false
 	var vibroaxed = false
@@ -655,6 +677,10 @@ func drop_barter_pool():
 		drop_mod($"%ShipCargomod")
 	if $"%ShipMod".get_node("Barter").pressed:
 		drop_mod($"%ShipMod")
+	if $"%CharacterGear".is_bartering():
+		drop_gear($"%CharacterGear")
+	if $"%CharacterGear2".is_bartering():
+		drop_gear($"%CharacterGear2")
 	discount = 0
 	
 func move_card(card):
@@ -831,14 +857,10 @@ func _on_used_ship_market_buy8_pressed():
 	buy_used_ship(ship_deck[7])
 
 func _on_character_gear_drop_pressed():
-	market_gearmods.append($"%CharacterGear".get_data())
-	$"%CharacterGear".clear()
-	update_action_buttons()
+	drop_gear($"%CharacterGear")
 
 func _on_character_gear2_drop_pressed():
-	market_gearmods.append($"%CharacterGear2".get_data())
-	$"%CharacterGear2".clear()
-	update_action_buttons()
+	drop_gear($"%CharacterGear2")
 
 func _on_ship_cargo_deliver_pressed():
 	deliver_cargo($"%ShipCargo")

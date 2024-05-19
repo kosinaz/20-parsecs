@@ -62,6 +62,11 @@ func get_price():
 func is_bartering():
 	return $Barter.pressed
 
+func is_armor():
+	if not is_empty and _data.has("subtype"):
+		return true
+	return false
+
 func set_buy_text(text):
 	$Buy.text = text
 	

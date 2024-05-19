@@ -43,9 +43,9 @@ func get_armor():
 	if not _data.has("armor"):
 		return 4
 	var armor = _data.armor
-	if ["armored vest"].has($"%CharacterGear".get_name()):
+	if ["armored vest", "plastoid armor"].has($"%CharacterGear".get_name()):
 		armor += 2
-	if ["armored vest"].has($"%CharacterGear2".get_name()):
+	if ["armored vest", "plastoid armor"].has($"%CharacterGear2".get_name()):
 		armor += 2
 	return armor
 
