@@ -85,4 +85,12 @@ var deck = [
 		"patrol": "D",
 		"move": 4,
 	},
+	{
+		"type": "Gear",
+		"buy": 6,
+		"name": "vibroax",
+		"description": "Attack: +1G\nGround Combat\nWith Strength:\n1 Focus to Crit",
+		"patrol": "A",
+		"move": 3,
+	},
 ]

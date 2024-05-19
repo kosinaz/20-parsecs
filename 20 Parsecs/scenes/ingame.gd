@@ -290,7 +290,7 @@ func update_market_prices():
 			discount += card.get_price()
 	for card in market_cards:
 		if not card.is_free:
-			card.set_buy_text("Buy " + str(max(0, $"%MarketCargo".get_data().buy - discount)) + "K")
+			card.set_buy_text("Buy " + str(max(0, card.get_data().buy - discount)) + "K")
 	$"%MarketShip".set_buy_text("Buy " + str(max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())) + "K")
 	update_used_ship_prices()
 
@@ -459,6 +459,7 @@ func has_gear(name):
 func ground_combat(attack1, attack2):
 	var result1 = 0
 	var vibroknifed = false
+	var vibroaxed = false
 	for _i in range(attack1):
 		var result = roll()
 		if result == "hit":
@@ -471,8 +472,11 @@ func ground_combat(attack1, attack2):
 #				result1 += 1
 #			if result == "crit":
 #				result1 += 2
-		if result == "focus" and has_gear("vibroknife"):
-			if not vibroknifed:
+		if result == "focus":
+			if has_gear("vibroax") and not vibroknifed:
+				vibroaxed = true
+				result1 += 2
+			elif has_gear("vibroknife") and not vibroknifed:
 				vibroknifed = true
 				result1 += 1
 	var result2 = 0
