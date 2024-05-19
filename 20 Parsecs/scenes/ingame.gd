@@ -1,7 +1,6 @@
 extends Node2D
 
 var astar = AStar2D.new()
-var cargo_deck = CargoDeck.new().deck
 var gearmod_deck = GearmodDeck.new().deck
 var ship_deck = ShipDeck.new().deck
 var starter_ship_deck = StarterShipDeck.new().deck
@@ -56,13 +55,10 @@ func _ready():
 	move_to($"%PatrolC", $Spaces/Space44)
 	move_to($"%PatrolD", $Spaces/Space1)
 	randomize()
-	market_cargos.append_array(cargo_deck)
-	market_cargos.shuffle()
 	market_gearmods.append_array(gearmod_deck)
 	market_gearmods.shuffle()
 	market_ships.append_array(ship_deck)
 	market_ships.shuffle()
-	$"%MarketCargo".setup(market_cargos[0])
 	$"%MarketGearmod".setup(market_gearmods[0])
 	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(character_deck[0])

@@ -10,11 +10,6 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
-"class": "CargoDeck",
-"language": "GDScript",
-"path": "res://scenes/decks/cargo_deck.gd"
-}, {
-"base": "Node",
 "class": "CharacterDeck",
 "language": "GDScript",
 "path": "res://scenes/decks/character_deck.gd"
@@ -45,7 +40,6 @@ _global_script_classes=[ {
 "path": "res://scenes/decks/starter_ship_deck.gd"
 } ]
 _global_script_class_icons={
-"CargoDeck": "",
 "CharacterDeck": "",
 "GearmodDeck": "",
 "PatrolDeck": "",
