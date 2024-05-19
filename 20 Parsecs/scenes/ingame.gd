@@ -204,6 +204,20 @@ func update_action_buttons():
 			card.disable_button("Barter")
 		for card in character_cards:
 			card.disable_button("Barter")
+	if $"%Ship".get_damage() == 0:
+		$"%ShipMod".disable_button("Recover")
+		$"%ShipCargomod".disable_button("Recover")
+	for card in ship_cards:
+		if card.is_cargo and $"%Player".current_space.get_node("Label").text != card.get_to():
+			card.disable_button("Deliver")
+	update_card_movement_targets()
+	update_buy_buttons()
+	for card in ship_cards:
+		if card.movement_target == null:
+			card.disable_button("Move")
+	update_market_prices()
+
+func update_buy_buttons():
 	for card in [$"%MarketCargo", $"%MarketGearmod"]:
 		if $"%Player".get_money() < card.get_price() - discount:
 			card.disable_button("Buy")
@@ -212,20 +226,9 @@ func update_action_buttons():
 			$"%MarketShip".disable_button("Buy")
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
 		$"%MarketCargo".disable_button("Buy")
-	if $"%Ship".get_damage() == 0:
-		$"%ShipMod".disable_button("Recover")
-		$"%ShipCargomod".disable_button("Recover")
-	for card in ship_cards:
-		if card.is_cargo and $"%Player".current_space.get_node("Label").text != card.get_to():
-			card.disable_button("Deliver")
-	update_card_movement_targets()
 	for card in market_cards:
 		if card.moveable and card.movement_target == null:
 			card.disable_button("Buy")
-	for card in ship_cards:
-		if card.movement_target == null:
-			card.disable_button("Move")
-	update_market_prices()
 
 func update_card_movement_targets():
 	for card in all_cards:
@@ -294,16 +297,8 @@ func update_market_prices():
 		if not card.is_free:
 			var reduced_price = max(0, card.get_price() - discount)
 			card.set_buy_text("Buy " + str(reduced_price) + "K")
-			if reduced_price <= $"%Player".money:
-				card.enable_button("Buy")
-			else:
-				card.disable_button("Buy")
 	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
 	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
-	if reduced_ship_price <= $"%Player".money:
-		$"%MarketShip".enable_button("Buy")
-	else:
-		$"%MarketShip".disable_button("Buy")
 	update_used_ship_prices()
 
 func deliver_cargo(cargo):
