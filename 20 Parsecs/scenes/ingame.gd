@@ -490,11 +490,11 @@ func ground_combat(attack1, attack2):
 		if result == "crit":
 			result2 += 2
 			has_crit = true
-#	if has_mod("ion cannon"):
-#		if has_crit and is_skilled("Tactics"):
-#			result2 -= 2
-#		elif has_hit:
-#			result2 -= 1
+	if has_gear("jetpack"):
+		if has_crit and is_skilled("Tactics"):
+			result2 -= 2
+		elif has_hit:
+			result2 -= 1
 	if has_gear("blaster rifle"):
 		result2 = min(result2, 2)
 	return {

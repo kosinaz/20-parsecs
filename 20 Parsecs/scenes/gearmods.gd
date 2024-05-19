@@ -93,4 +93,12 @@ var deck = [
 		"patrol": "A",
 		"move": 3,
 	},
+	{
+		"type": "Gear",
+		"buy": 6,
+		"name": "jetpack",
+		"description": "Ground Combat:\n-1 Enemy Hit\nWith Tactics:\n-1 Enemy Crit",
+		"patrol": "A",
+		"move": 4,
+	},
 ]
