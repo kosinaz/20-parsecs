@@ -89,7 +89,7 @@ func disable_buttons():
 
 func enable_button(button):
 	if has_node(button):
-		get_node(button).disabled = true
+		get_node(button).disabled = false
 		
 func disable_button(button):
 	if has_node(button):

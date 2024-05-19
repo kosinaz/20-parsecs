@@ -296,10 +296,14 @@ func update_market_prices():
 			card.set_buy_text("Buy " + str(reduced_price) + "K")
 			if reduced_price <= $"%Player".money:
 				card.enable_button("Buy")
+			else:
+				card.disable_button("Buy")
 	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
 	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
 	if reduced_ship_price <= $"%Player".money:
 		$"%MarketShip".enable_button("Buy")
+	else:
+		$"%MarketShip".disable_button("Buy")
 	update_used_ship_prices()
 
 func deliver_cargo(cargo):
