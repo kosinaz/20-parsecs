@@ -101,4 +101,12 @@ var deck = [
 		"patrol": "A",
 		"move": 4,
 	},
+	{
+		"type": "Gear",
+		"buy": 8,
+		"name": "grenade",
+		"description": "Attack +2G",
+		"patrol": "D",
+		"move": 3,
+	},
 ]

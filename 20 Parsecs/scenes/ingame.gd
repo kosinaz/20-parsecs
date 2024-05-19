@@ -567,8 +567,10 @@ func get_character_attack():
 	var attack = $"%Character".get_data().attack
 	if has_gear("blaster pistol"):
 		attack += 1
-	if has_gear("blaster rigle"):
+	if has_gear("blaster rifle"):
 		attack += 1
+	if has_gear("grenade"):
+		attack += 2
 	if has_gear("vibroknife") and (is_skilled("Stealth") or is_skilled("Strength")):
 		attack += 1
 	return attack
