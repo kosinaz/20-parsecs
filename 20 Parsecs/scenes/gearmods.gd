@@ -77,4 +77,12 @@ var deck = [
 		"patrol": "B",
 		"move": 4,
 	},
+	{
+		"type": "Gear",
+		"buy": 5,
+		"name": "blaster rifle",
+		"description": "Attack: +1G\nWon Ground Combat:\nMax Damage: 2",
+		"patrol": "D",
+		"move": 4,
+	},
 ]

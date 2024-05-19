@@ -491,6 +491,8 @@ func ground_combat(attack1, attack2):
 #			result2 -= 2
 #		elif has_hit:
 #			result2 -= 1
+	if has_gear("blaster rifle"):
+		result2 = min(result2, 2)
 	return {
 		"attacker_won": result2 <= result1,
 		"attacker_damage": result2,
@@ -560,6 +562,8 @@ func get_ship_attack():
 func get_character_attack():
 	var attack = $"%Character".get_data().attack
 	if has_gear("blaster pistol"):
+		attack += 1
+	if has_gear("blaster rigle"):
 		attack += 1
 	if has_gear("vibroknife") and (is_skilled("Stealth") or is_skilled("Strength")):
 		attack += 1
