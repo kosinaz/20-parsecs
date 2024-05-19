@@ -453,7 +453,51 @@ func is_highly_skilled(skill):
 func has_mod(name):
 	return $"%ShipMod".get_name() == name or $"%ShipCargomod".get_name() == name
 
-func combat(attack1, attack2):
+func has_gear(name):
+	return $"%CharacterGear".get_name() == name or $"%CharacterGear2".get_name() == name
+
+func ground_combat(attack1, attack2):
+	var result1 = 0
+	var vibroknifed = false
+	for _i in range(attack1):
+		var result = roll()
+		if result == "hit":
+			result1 += 1
+		if result == "crit":
+			result1 += 2
+#		if result == "blank" and has_mod("targeting computer"):
+#			result = roll()
+#			if result == "hit":
+#				result1 += 1
+#			if result == "crit":
+#				result1 += 2
+		if result == "focus" and has_gear("vibroknife"):
+			if not vibroknifed:
+				vibroknifed = true
+				result1 += 1
+	var result2 = 0
+	var has_hit = false
+	var has_crit = false
+	for _i in range(attack2):
+		var result = roll()
+		if result == "hit":
+			result2 += 1
+			has_hit = true
+		if result == "crit":
+			result2 += 2
+			has_crit = true
+#	if has_mod("ion cannon"):
+#		if has_crit and is_skilled("Tactics"):
+#			result2 -= 2
+#		elif has_hit:
+#			result2 -= 1
+	return {
+		"attacker_won": result2 <= result1,
+		"attacker_damage": result2,
+		"defender_damage": result1,
+	}
+
+func ship_combat(attack1, attack2):
 	if has_mod("maneuvering thrusters") and is_skilled("Tactics"):
 		attack2 -= 1
 	var result1 = 0
@@ -515,7 +559,9 @@ func get_ship_attack():
 
 func get_character_attack():
 	var attack = $"%Character".get_data().attack
-	if $"%Gear".get_name() == "blaster pistol":
+	if has_gear("blaster pistol"):
+		attack += 1
+	if has_gear("vibroknife") and (is_skilled("Stealth") or is_skilled("Strength")):
 		attack += 1
 	return attack
 
@@ -654,7 +700,7 @@ func attack_patrol():
 		attacking_patrol = null
 		$"%Ship".damage(10)
 	else:
-		var combat = combat(get_ship_attack(), attacking_patrol.data.attack)
+		var combat = ship_combat(get_ship_attack(), attacking_patrol.data.attack)
 		$"%Ship".damage(combat.attacker_damage)
 		$"%Alert".show()
 		if combat.attacker_won: 
@@ -839,7 +885,7 @@ func _on_ship_cargomod_recover_pressed():
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Attack 3G":
-		var combat = combat($"%Character".get_data().attack, 3)
+		var combat = ground_combat(get_character_attack(), 3)
 		$"%Character".damage(combat.attacker_damage)
 		if combat.attacker_won: 
 			if $"%Character".defeated:
@@ -861,7 +907,7 @@ func _on_failed_sell_pressed():
 			$"%FailedSell2".text = "End Turn"
 			return
 	elif $"%FailedSell".text == "Attack 3S":
-		var combat = combat(get_ship_attack(), 3)
+		var combat = ship_combat(get_ship_attack(), 3)
 		$"%Ship".damage(combat.attacker_damage)
 		if combat.attacker_won: 
 			if $"%Ship".defeated:

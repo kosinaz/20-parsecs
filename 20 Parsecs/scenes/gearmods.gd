@@ -69,4 +69,12 @@ var deck = [
 		"patrol": "C",
 		"move": 3,
 	},
+	{
+		"type": "Gear",
+		"buy": 4,
+		"name": "vibroknife",
+		"description": "Ground Combat:\n1 Focus to Hit\nWith Strength or Stealth: Attack +1",
+		"patrol": "B",
+		"move": 4,
+	},
 ]
