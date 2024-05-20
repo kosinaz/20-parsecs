@@ -121,7 +121,7 @@ var player = {
 func _ready():
 	randomize()
 	_deck.shuffle()
-	update_view()
+#	update_view()
 
 func front():
 	return _deck.front()
@@ -149,23 +149,23 @@ func update_view():
 func update_buy():
 	var card = _deck.front()
 	var buy = max(0, card.buy - player.discount)
-	$Buy.text = str(buy) + "K"
-	$Buy.disabled = false
+	$"%Buy".text = str(buy) + "K"
+	$"%Buy".disabled = false
 	if player.bought:
-		$Buy.disabled = true
+		$"%Buy".disabled = true
 		return
 	if player.money < buy:
-		$Buy.disabled = true
+		$"%Buy".disabled = true
 		return
 	if card.has("to") and player.space.name == card.to:
-		$Buy.disabled = true
+		$"%Buy".disabled = true
 		return
 	update_target()
 	if _target == null:
-		$Buy.disabled = true
+		$"%Buy".disabled = true
 	
 func update_skip():
-	$Skip.disabled = player.skipped
+	$"%Skip".disabled = player.skipped
 
 func update_target():
 	for slot in player.cargo_slots:

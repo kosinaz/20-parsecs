@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/decks/cargo_deck.gd" type="Script" id=2]
@@ -6,6 +6,13 @@
 [ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://images/card.png" type="Texture" id=5]
 [ext_resource path="res://images/buy.png" type="Texture" id=6]
+[ext_resource path="res://images/skip.png" type="Texture" id=7]
+[ext_resource path="res://images/fame.png" type="Texture" id=8]
+[ext_resource path="res://images/illegal-cargo.png" type="Texture" id=9]
+[ext_resource path="res://images/cargo.png" type="Texture" id=10]
+[ext_resource path="res://images/cargo-bg.png" type="Texture" id=11]
+[ext_resource path="res://images/reward.png" type="Texture" id=12]
+[ext_resource path="res://images/to.png" type="Texture" id=13]
 
 [sub_resource type="DynamicFont" id=1]
 size = 10
@@ -19,52 +26,164 @@ margin_bottom = 128.0
 texture = ExtResource( 5 )
 script = ExtResource( 2 )
 
-[node name="Title" type="Label" parent="."]
-margin_top = 1.0
-margin_right = 96.0
-margin_bottom = 15.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 4 )
-text = "Cargo"
-align = 1
+[node name="Bg" type="TextureRect" parent="."]
+modulate = Color( 1, 1, 1, 0.0392157 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -48.0
+margin_top = -48.0
+margin_right = 48.0
+margin_bottom = 48.0
+texture = ExtResource( 11 )
 
-[node name="Card" type="Label" parent="."]
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer3"]
 margin_left = 4.0
-margin_top = 14.0
+margin_top = 4.0
 margin_right = 92.0
-margin_bottom = 107.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 4 )
-text = "Illegal
-To Jakaf: 9K 1F
-Patrol: 3D
-"
-autowrap = true
+margin_bottom = 124.0
 
-[node name="Buy" type="Button" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3/VBoxContainer"]
+margin_right = 88.0
+margin_bottom = 12.0
+
+[node name="Type" type="TextureRect" parent="MarginContainer3/VBoxContainer/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 10 )
+
+[node name="Trait" type="TextureRect" parent="MarginContainer3/VBoxContainer/HBoxContainer"]
+margin_left = 16.0
+margin_right = 28.0
+margin_bottom = 12.0
+texture = ExtResource( 9 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer3/VBoxContainer"]
+margin_top = 16.0
+margin_right = 88.0
+margin_bottom = 28.0
+
+[node name="ToIcon" type="TextureRect" parent="MarginContainer3/VBoxContainer/HBoxContainer2"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 13 )
+
+[node name="Label" type="Label" parent="MarginContainer3/VBoxContainer/HBoxContainer2"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 4 )
+text = ":"
+
+[node name="To" type="Label" parent="MarginContainer3/VBoxContainer/HBoxContainer2"]
+margin_left = 23.0
+margin_right = 50.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 4 )
+text = "Acan "
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer3/VBoxContainer"]
+margin_top = 32.0
+margin_right = 88.0
+margin_bottom = 44.0
+
+[node name="Reward" type="TextureRect" parent="MarginContainer3/VBoxContainer/HBoxContainer3"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 12 )
+
+[node name="Label" type="Label" parent="MarginContainer3/VBoxContainer/HBoxContainer3"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 4 )
+text = ":"
+
+[node name="Sell" type="Label" parent="MarginContainer3/VBoxContainer/HBoxContainer3"]
+margin_left = 23.0
+margin_right = 36.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 4 )
+text = "7K"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3/VBoxContainer/HBoxContainer3"]
+margin_left = 40.0
+margin_right = 57.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Fame" type="Label" parent="MarginContainer3/VBoxContainer/HBoxContainer3/HBoxContainer"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 4 )
+text = "1"
+
+[node name="FameIcon" type="TextureRect" parent="MarginContainer3/VBoxContainer/HBoxContainer3/HBoxContainer"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 8 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
+margin_top = -27.0
+margin_right = 46.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="Buy" type="Button" parent="MarginContainer"]
+unique_name_in_owner = true
 margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
+margin_top = 4.0
+margin_right = 42.0
+margin_bottom = 23.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_fonts/font = ExtResource( 3 )
 disabled = true
 text = "1K"
 icon = ExtResource( 6 )
 
-[node name="Skip" type="Button" parent="."]
+[node name="MarginContainer2" type="MarginContainer" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -38.0
-margin_top = -24.0
-margin_right = -4.0
-margin_bottom = -5.0
+margin_left = -32.0
+margin_top = -27.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="Skip" type="Button" parent="MarginContainer2"]
+unique_name_in_owner = true
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 28.0
+margin_bottom = 23.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 disabled = true
-text = "Skip"
+icon = ExtResource( 7 )
 
-[connection signal="pressed" from="Buy" to="." method="_on_buy_pressed"]
-[connection signal="pressed" from="Skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="MarginContainer/Buy" to="." method="_on_buy_pressed"]
+[connection signal="pressed" from="MarginContainer2/Skip" to="." method="_on_skip_pressed"]
