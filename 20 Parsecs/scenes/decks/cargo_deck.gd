@@ -149,7 +149,7 @@ func update_view():
 func update_buy():
 	var card = _deck.front()
 	var buy = max(0, card.buy - player.discount)
-	$Buy.text = "Buy " + str(buy) + "K"
+	$Buy.text = str(buy) + "K"
 	$Buy.disabled = false
 	if player.bought:
 		$Buy.disabled = true

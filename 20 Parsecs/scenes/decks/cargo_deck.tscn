@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/decks/cargo_deck.gd" type="Script" id=2]
 [ext_resource path="res://scenes/buttonfont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://images/card.png" type="Texture" id=5]
+[ext_resource path="res://images/buy.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 10
@@ -49,7 +50,8 @@ margin_right = 35.0
 margin_bottom = -5.0
 custom_fonts/font = ExtResource( 3 )
 disabled = true
-text = "Buy 1K"
+text = "1K"
+icon = ExtResource( 6 )
 
 [node name="Skip" type="Button" parent="."]
 anchor_left = 1.0
