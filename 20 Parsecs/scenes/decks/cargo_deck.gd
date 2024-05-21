@@ -128,48 +128,8 @@ func front():
 
 func update_view():
 	var card = _deck.front()
-	if card.has("trait") and card.trait == "Illegal":
-		$"%Trait".show()
-		$"%RollContainer".show()
-		$"%FailContainer".show()
-	else:
-		$"%Trait".hide()
-		$"%RollContainer".hide()
-		$"%FailContainer".hide()
-	if card.has("trait") and card.trait == "Smuggling Compartment":
-		$"%Cargo".hide()
-		$"%CargoMod".show()
-		$"%BuffContainer".show()
-		$"%BuffContainer2".show()
-	else:
-		$"%Cargo".show()
-		$"%CargoMod".hide()
-		$"%BuffContainer".hide()
-		$"%BuffContainer2".hide()
-	$"%BuyLabel".text = str(card.buy) + "K"
-	if card.has("to"):
-		$"%ToContainer".show()
-		$"%To".text = card.to
-	else:
-		$"%ToContainer".hide()
-	if card.has("sell"):
-		$"%SuccessContainer".show()
-		$"%Sell".text = str(card.sell) + "K"
-	else:
-		$"%SuccessContainer".hide()
-	if card.has("rep"):
-		$"%Rep".show()
-		$"%A".hide()
-		$"%B".hide()
-		$"%C".hide()
-		$"%D".hide()
-		get_node("%" + card.rep).show()
-	else:
-		$"%Rep".hide()
-	if card.has("fame"):
-		$"%Fame".show()
-	else:
-		$"%Fame".hide()
+	$"%CargoCard".card = card
+	$"%CargoCard".update_view()
 	update_buy()
 	update_skip()
 
