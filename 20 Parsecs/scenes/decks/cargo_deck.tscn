@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/decks/cargo_deck.gd" type="Script" id=2]
@@ -11,11 +11,13 @@
 [ext_resource path="res://images/illegal-cargo.png" type="Texture" id=9]
 [ext_resource path="res://images/cargo.png" type="Texture" id=10]
 [ext_resource path="res://images/cargo-bg.png" type="Texture" id=11]
-[ext_resource path="res://images/reward.png" type="Texture" id=12]
+[ext_resource path="res://images/encounter.png" type="Texture" id=12]
 [ext_resource path="res://images/to.png" type="Texture" id=13]
 [ext_resource path="res://images/roll.png" type="Texture" id=14]
 [ext_resource path="res://images/hit.png" type="Texture" id=15]
 [ext_resource path="res://images/patrol-a-icon.png" type="Texture" id=16]
+[ext_resource path="res://images/yes.png" type="Texture" id=17]
+[ext_resource path="res://images/no.png" type="Texture" id=18]
 
 [sub_resource type="DynamicFont" id=1]
 size = 10
@@ -41,87 +43,93 @@ margin_right = 48.0
 margin_bottom = 48.0
 texture = ExtResource( 11 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Type" type="TextureRect" parent="."]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 20.0
+margin_bottom = 20.0
+texture = ExtResource( 10 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/separation = 0
-
-[node name="Top" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 96.0
-margin_bottom = 27.0
-
-[node name="Type" type="MarginContainer" parent="VBoxContainer/Top"]
-margin_right = 66.0
-margin_bottom = 27.0
-size_flags_horizontal = 3
 custom_constants/margin_right = 4
-custom_constants/margin_top = 8
-custom_constants/margin_left = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 7
 custom_constants/margin_bottom = 4
 
-[node name="Type" type="HBoxContainer" parent="VBoxContainer/Top/Type"]
-margin_left = 4.0
-margin_top = 8.0
-margin_right = 62.0
-margin_bottom = 23.0
+[node name="Card" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 92.0
+margin_bottom = 124.0
+custom_constants/separation = 0
 
-[node name="Type" type="TextureRect" parent="VBoxContainer/Top/Type/Type"]
+[node name="Top" type="HBoxContainer" parent="MarginContainer/Card"]
+margin_right = 85.0
+margin_bottom = 19.0
+
+[node name="Type" type="MarginContainer" parent="MarginContainer/Card/Top"]
+margin_right = 63.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+custom_constants/margin_top = 4
+custom_constants/margin_left = 27
+
+[node name="Type" type="HBoxContainer" parent="MarginContainer/Card/Top/Type"]
+margin_left = 27.0
+margin_top = 4.0
+margin_right = 63.0
+margin_bottom = 19.0
+
+[node name="Type" type="TextureRect" parent="MarginContainer/Card/Top/Type/Type"]
 margin_right = 12.0
 margin_bottom = 15.0
 texture = ExtResource( 10 )
 
-[node name="Trait" type="TextureRect" parent="VBoxContainer/Top/Type/Type"]
+[node name="Trait" type="TextureRect" parent="MarginContainer/Card/Top/Type/Type"]
 margin_left = 16.0
 margin_right = 28.0
 margin_bottom = 15.0
 texture = ExtResource( 9 )
 
-[node name="Help" type="MarginContainer" parent="VBoxContainer/Top"]
-margin_left = 70.0
-margin_right = 96.0
-margin_bottom = 27.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+[node name="Help" type="MarginContainer" parent="MarginContainer/Card/Top"]
+margin_left = 67.0
+margin_right = 85.0
+margin_bottom = 19.0
 
-[node name="Help" type="Button" parent="VBoxContainer/Top/Help"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 22.0
-margin_bottom = 23.0
+[node name="Help" type="Button" parent="MarginContainer/Card/Top/Help"]
+margin_right = 18.0
+margin_bottom = 19.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 disabled = true
 text = "?"
 
-[node name="Card" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 27.0
-margin_right = 96.0
+[node name="Card" type="MarginContainer" parent="MarginContainer/Card"]
+margin_top = 19.0
+margin_right = 85.0
 margin_bottom = 101.0
 size_flags_vertical = 3
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+custom_constants/margin_top = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Card"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 92.0
-margin_bottom = 70.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Card/Card"]
+margin_top = 8.0
+margin_right = 85.0
+margin_bottom = 82.0
+custom_constants/separation = 2
 
-[node name="Buy" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer"]
-margin_right = 88.0
+[node name="Buy" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer"]
+margin_right = 85.0
 margin_bottom = 12.0
 
-[node name="BuyIcon" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/Buy"]
+[node name="BuyIcon" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Buy"]
 margin_right = 12.0
 margin_bottom = 12.0
 texture = ExtResource( 6 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Card/VBoxContainer/Buy"]
+[node name="Label" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Buy"]
 margin_left = 16.0
 margin_right = 19.0
 margin_bottom = 12.0
@@ -129,7 +137,7 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = ":"
 
-[node name="To" type="Label" parent="VBoxContainer/Card/VBoxContainer/Buy"]
+[node name="To" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Buy"]
 margin_left = 23.0
 margin_right = 35.0
 margin_bottom = 12.0
@@ -137,17 +145,17 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = "1K"
 
-[node name="To" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer"]
-margin_top = 16.0
-margin_right = 88.0
-margin_bottom = 28.0
+[node name="To" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer"]
+margin_top = 14.0
+margin_right = 85.0
+margin_bottom = 26.0
 
-[node name="ToIcon" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/To"]
+[node name="ToIcon" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/To"]
 margin_right = 12.0
 margin_bottom = 12.0
 texture = ExtResource( 13 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Card/VBoxContainer/To"]
+[node name="Label" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/To"]
 margin_left = 16.0
 margin_right = 19.0
 margin_bottom = 12.0
@@ -155,7 +163,7 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = ":"
 
-[node name="To" type="Label" parent="VBoxContainer/Card/VBoxContainer/To"]
+[node name="To" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/To"]
 margin_left = 23.0
 margin_right = 50.0
 margin_bottom = 12.0
@@ -163,17 +171,17 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = "Acan "
 
-[node name="Roll" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer"]
-margin_top = 32.0
-margin_right = 88.0
-margin_bottom = 44.0
+[node name="Roll" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer"]
+margin_top = 28.0
+margin_right = 85.0
+margin_bottom = 40.0
 
-[node name="RollIcon" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/Roll"]
+[node name="RollIcon" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Roll"]
 margin_right = 12.0
 margin_bottom = 12.0
 texture = ExtResource( 14 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Card/VBoxContainer/Roll"]
+[node name="Label" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Roll"]
 margin_left = 16.0
 margin_right = 19.0
 margin_bottom = 12.0
@@ -181,36 +189,36 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = ":"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer/Roll"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer/Roll"]
 margin_left = 23.0
 margin_right = 40.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Hit" type="Label" parent="VBoxContainer/Card/VBoxContainer/Roll/HBoxContainer2"]
+[node name="Hit" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Roll/HBoxContainer2"]
 margin_right = 5.0
 margin_bottom = 12.0
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = "1"
 
-[node name="HitIcon" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/Roll/HBoxContainer2"]
+[node name="HitIcon" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Roll/HBoxContainer2"]
 margin_left = 5.0
 margin_right = 17.0
 margin_bottom = 12.0
 texture = ExtResource( 15 )
 
-[node name="Sell" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer"]
-margin_top = 48.0
-margin_right = 88.0
-margin_bottom = 60.0
+[node name="Success" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer"]
+margin_top = 42.0
+margin_right = 85.0
+margin_bottom = 54.0
 
-[node name="Reward" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/Sell"]
+[node name="Success" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Success"]
 margin_right = 12.0
 margin_bottom = 12.0
-texture = ExtResource( 12 )
+texture = ExtResource( 17 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Card/VBoxContainer/Sell"]
+[node name="Label" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Success"]
 margin_left = 16.0
 margin_right = 19.0
 margin_bottom = 12.0
@@ -218,7 +226,7 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = ":"
 
-[node name="Sell" type="Label" parent="VBoxContainer/Card/VBoxContainer/Sell"]
+[node name="Sell" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Success"]
 margin_left = 23.0
 margin_right = 36.0
 margin_bottom = 12.0
@@ -226,65 +234,83 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = "7K"
 
-[node name="Fame" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer/Sell"]
+[node name="Fame" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer/Success"]
 margin_left = 40.0
 margin_right = 57.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Fame" type="Label" parent="VBoxContainer/Card/VBoxContainer/Sell/Fame"]
+[node name="Fame" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Success/Fame"]
 margin_right = 5.0
 margin_bottom = 12.0
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = "1"
 
-[node name="FameIcon" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/Sell/Fame"]
+[node name="FameIcon" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Success/Fame"]
 margin_left = 5.0
 margin_right = 17.0
 margin_bottom = 12.0
 texture = ExtResource( 8 )
 
-[node name="Rep" type="HBoxContainer" parent="VBoxContainer/Card/VBoxContainer/Sell"]
+[node name="Rep" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer/Success"]
 visible = false
 margin_left = 61.0
 margin_right = 78.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Rep" type="Label" parent="VBoxContainer/Card/VBoxContainer/Sell/Rep"]
+[node name="Rep" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Success/Rep"]
 margin_right = 5.0
 margin_bottom = 12.0
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 4 )
 text = "1"
 
-[node name="RepIcon" type="TextureRect" parent="VBoxContainer/Card/VBoxContainer/Sell/Rep"]
+[node name="RepIcon" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Success/Rep"]
 margin_left = 5.0
 margin_right = 17.0
 margin_bottom = 12.0
 texture = ExtResource( 16 )
 
-[node name="Bottom" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Fail" type="HBoxContainer" parent="MarginContainer/Card/Card/VBoxContainer"]
+margin_top = 56.0
+margin_right = 85.0
+margin_bottom = 68.0
+
+[node name="Fail" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Fail"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 18 )
+
+[node name="Label" type="Label" parent="MarginContainer/Card/Card/VBoxContainer/Fail"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 4 )
+text = ":"
+
+[node name="Encounter" type="TextureRect" parent="MarginContainer/Card/Card/VBoxContainer/Fail"]
+margin_left = 23.0
+margin_right = 35.0
+margin_bottom = 12.0
+texture = ExtResource( 12 )
+
+[node name="Bottom" type="HBoxContainer" parent="MarginContainer/Card"]
 margin_top = 101.0
-margin_right = 96.0
-margin_bottom = 128.0
+margin_right = 85.0
+margin_bottom = 120.0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Bottom"]
-margin_right = 60.0
-margin_bottom = 27.0
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Card/Bottom"]
+margin_right = 57.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
 
-[node name="Buy" type="Button" parent="VBoxContainer/Bottom/MarginContainer"]
+[node name="Buy" type="Button" parent="MarginContainer/Card/Bottom/MarginContainer"]
 unique_name_in_owner = true
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 42.0
-margin_bottom = 23.0
+margin_right = 38.0
+margin_bottom = 19.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 3 )
@@ -292,27 +318,21 @@ disabled = true
 text = "1K"
 icon = ExtResource( 6 )
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/Bottom"]
-margin_left = 64.0
-margin_right = 96.0
-margin_bottom = 27.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Card/Bottom"]
+margin_left = 61.0
+margin_right = 85.0
+margin_bottom = 19.0
 
-[node name="Skip" type="Button" parent="VBoxContainer/Bottom/MarginContainer2"]
+[node name="Skip" type="Button" parent="MarginContainer/Card/Bottom/MarginContainer2"]
 unique_name_in_owner = true
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 28.0
-margin_bottom = 23.0
+margin_right = 24.0
+margin_bottom = 19.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 disabled = true
 icon = ExtResource( 7 )
 
-[connection signal="pressed" from="VBoxContainer/Top/Help/Help" to="." method="_on_skip_pressed"]
-[connection signal="pressed" from="VBoxContainer/Bottom/MarginContainer/Buy" to="." method="_on_buy_pressed"]
-[connection signal="pressed" from="VBoxContainer/Bottom/MarginContainer2/Skip" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="MarginContainer/Card/Top/Help/Help" to="." method="_on_skip_pressed"]
+[connection signal="pressed" from="MarginContainer/Card/Bottom/MarginContainer/Buy" to="." method="_on_buy_pressed"]
+[connection signal="pressed" from="MarginContainer/Card/Bottom/MarginContainer2/Skip" to="." method="_on_skip_pressed"]
