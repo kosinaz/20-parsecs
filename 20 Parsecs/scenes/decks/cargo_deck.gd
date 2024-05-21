@@ -101,9 +101,7 @@ var player = {
 	"skipped": false,
 	"money": 4000,
 	"discount": 0,
-	"space": {
-		"name": "Acan",
-	},
+	"space_name": "Acan",
 	"cargo_slots": [
 		{
 			"visible": true,
@@ -123,16 +121,24 @@ func _ready():
 	randomize()
 	_deck.shuffle()
 	update_view()
-
-func front():
-	return _deck.front()
+	
+func set_player(player_to_set):
+	player = player_to_set
+	update_view()
 
 func update_view():
 	var card = _deck.front()
 	$"%CargoCard".card = card
 	$"%CargoCard".update_view()
+	update_buttons()
+
+func update_buttons():
 	update_buy()
 	update_skip()
+	
+func disable_buttons():
+	$"%Buy".disabled = true
+	$"%Skip".disabled = true
 
 func update_buy():
 	var card = _deck.front()
@@ -145,7 +151,7 @@ func update_buy():
 	if player.money < _price:
 		$"%Buy".disabled = true
 		return
-	if card.has("to") and player.space.name == card.to:
+	if card.has("to") and player.space_name == card.to:
 		$"%Buy".disabled = true
 		return
 	update_target()
@@ -153,6 +159,9 @@ func update_buy():
 		$"%Buy".disabled = true
 	
 func update_skip():
+	if player.bought:
+		$"%Skip".disabled = true
+		return
 	$"%Skip".disabled = player.skipped
 
 func update_target():
@@ -174,6 +183,7 @@ func append(card):
 
 func _on_buy_pressed():
 	emit_signal("bought", pop_front(), _price, _target)
+	update_view()
 
 func _on_skip_pressed():
 	emit_signal("skipped")

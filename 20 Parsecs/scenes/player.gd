@@ -8,11 +8,13 @@ var basyn = 0
 var cimp = 0
 var dreb = 0
 
-var bought = false
-var skipped = false
+var bought = true
+var skipped = true
 var discount = 0
 onready var space = $"../Spaces/Space3"
-onready var cargo_slots = [$"%ShipCargo", $"%ShipCargo2", $"%ShipCargo3", $"%ShipCargomod"]
+var space_name = "Acan"
+onready var cargo_slots = [$"%CargoSlot",$"%CargoSlot2",$"%CargoSlot3"]
+onready var cargo_mod_slots = [$"%CargoSlot"]
 	
 func get_money():
 	return money

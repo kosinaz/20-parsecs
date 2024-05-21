@@ -27,12 +27,13 @@ var skip_encounter = false
 onready var market_slots = [$"%MarketCargo", $"%MarketGearmod", $"%MarketShip"]
 onready var ship_slots = [$"%ShipCargo", $"%ShipCargo2", $"%ShipCargo3", $"%ShipCargomod", $"%ShipMod"]
 onready var character_slots = [$"%CharacterGear", $"%CharacterGear2"]
+onready var decks = [$"%CargoDeck"]
 onready var all_cards = []
 
 func _ready():
-	all_cards.append_array(market_slots)
-	all_cards.append_array(ship_slots)
-	all_cards.append_array(character_slots)
+#	all_cards.append_array(market_slots)
+#	all_cards.append_array(ship_slots)
+#	all_cards.append_array(character_slots)
 	for space in $Spaces.get_children():
 		space.connect("pressed", self, "_on_space_pressed")
 		if space.get_node("Label").text != "":
@@ -65,11 +66,22 @@ func _ready():
 	$"%Player".increase_money(4)
 	$"%Ship".setup(starter_ship_deck[0])
 	start_planning()
-	$"%CargoDeck".player = $"%Player"
+	$"%CargoDeck".set_player($"%Player")
+	$"%CargoSlot".set_player($"%Player")
+	$"%CargoSlot2".set_player($"%Player")
+	$"%CargoSlot3".set_player($"%Player")
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("skipped", self, "_on_skip_pressed")
+# warning-ignore:return_value_discarded
+	$"%CargoSlot".connect("moved", self, "_on_move_pressed")
+# warning-ignore:return_value_discarded
+	$"%CargoSlot2".connect("moved", self, "_on_move_pressed")
+# warning-ignore:return_value_discarded
+	$"%CargoSlot3".connect("moved", self, "_on_move_pressed")
+	all_cards.append_array(decks)
+	all_cards.append_array($"%Player".cargo_slots)
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -144,6 +156,9 @@ func stop_planning():
 
 func move_to(ship, space):
 	ship.current_space = space
+	if ship == $"%Player":
+		ship.space = space
+		ship.space_name = space.get_node("Label").text
 	ship.position = space.position
 
 func move_patrol(patrol, step):
@@ -182,8 +197,8 @@ func start_action():
 	$"%Finish".disabled = false
 	$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
 	$"%TurnIndicator".text += "Perform any number or no actions, then press Finish!"
-	bought = false
-	skipped = false
+	$"%Player".bought = false
+	$"%Player".skipped = false
 	update_action_buttons()
 
 func stop_action():
@@ -193,6 +208,11 @@ func stop_action():
 	start_encounter()
 
 func update_action_buttons():
+	for card in all_cards:
+		card.update_buttons()
+	
+
+func update_action_buttons_old():
 	for card in all_cards:
 		card.enable_buttons()
 	if skipped:
@@ -784,6 +804,7 @@ func _on_finish_pressed():
 
 func _on_skip_pressed():
 	$"%Player".skipped = true
+	print("skip")
 #	update_action_buttons()
 
 func _on_cargo_deck_buy_pressed(card, price, target):
@@ -792,12 +813,12 @@ func _on_cargo_deck_buy_pressed(card, price, target):
 	if card.has("trait") and card.trait == "smuggling compartment":
 		smuggling_compartment = true
 		$"%ShipCargo3".show()
-	target.setup(card)
+	target.set_card(card)
 	var front = $"%CargoDeck".pop_front()
 	if front.has("patrol"):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true
-#	update_action_buttons()
+	update_action_buttons()
 
 func _on_market_cargo_buy_pressed():
 	$"%Player".decrease_money(max(0, market_cargos[0].buy - discount))
@@ -907,6 +928,16 @@ func _on_ship_mod_drop_pressed():
 	drop_mod($"%ShipMod")
 	
 func _on_ship_cargo_barter_toggled(_pressed):
+	update_action_buttons()
+
+func _on_move_pressed(source, target):
+	var other_card = null
+	if not target.empty:
+		other_card = target.get_card()
+	target.set_card(source.get_card())
+	source.remove_card()
+	if other_card:
+		source.set_card(other_card)
 	update_action_buttons()
 
 func _on_ship_cargo_move_pressed():
