@@ -94,6 +94,7 @@ var _deck = [
 	},
 ]
 var _target = null
+var _price = 0
 
 var player = {
 	"bought": false,
@@ -135,13 +136,13 @@ func update_view():
 
 func update_buy():
 	var card = _deck.front()
-	var buy = max(0, card.buy - player.discount)
-	$"%Buy".text = str(buy) + "K"
+	_price = max(0, card.buy - player.discount)
+	$"%Buy".text = str(_price) + "K"
 	$"%Buy".disabled = false
 	if player.bought:
 		$"%Buy".disabled = true
 		return
-	if player.money < buy:
+	if player.money < _price:
 		$"%Buy".disabled = true
 		return
 	if card.has("to") and player.space.name == card.to:
@@ -172,7 +173,7 @@ func append(card):
 	_deck.append(card)
 
 func _on_buy_pressed():
-	emit_signal("bought", pop_front(), _target, self)
+	emit_signal("bought", pop_front(), _price, _target)
 
 func _on_skip_pressed():
 	emit_signal("skipped")

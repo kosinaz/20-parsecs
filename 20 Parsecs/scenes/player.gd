@@ -7,6 +7,12 @@ var ahut = 0
 var basyn = 0
 var cimp = 0
 var dreb = 0
+
+var bought = false
+var skipped = false
+var discount = 0
+onready var space = $"../Spaces/Space3"
+onready var cargo_slots = [$"%ShipCargo", $"%ShipCargo2", $"%ShipCargo3", $"%ShipCargomod"]
 	
 func get_money():
 	return money

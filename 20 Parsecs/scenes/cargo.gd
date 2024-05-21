@@ -12,6 +12,9 @@ var is_free = false
 var movement_target = null
 var moveable = true
 
+var empty = true
+var bartering = false
+
 func setup(data):
 	clear()
 	is_empty = false

@@ -65,6 +65,11 @@ func _ready():
 	$"%Player".increase_money(4)
 	$"%Ship".setup(starter_ship_deck[0])
 	start_planning()
+	$"%CargoDeck".player = $"%Player"
+# warning-ignore:return_value_discarded
+	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
+# warning-ignore:return_value_discarded
+	$"%CargoDeck".connect("skipped", self, "_on_skip_pressed")
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -490,7 +495,7 @@ func ground_combat(attack1, attack2):
 #			if result == "crit":
 #				result1 += 2
 		if result == "focus":
-			if has_gear("vibroax") and not vibroknifed:
+			if has_gear("vibroax") and not vibroaxed:
 				vibroaxed = true
 				result1 += 2
 			elif has_gear("vibroknife") and not vibroknifed:
@@ -776,6 +781,23 @@ func _on_repair_pressed():
 
 func _on_finish_pressed():
 	stop_action()
+
+func _on_skip_pressed():
+	$"%Player".skipped = true
+#	update_action_buttons()
+
+func _on_cargo_deck_buy_pressed(card, price, target):
+	$"%Player".decrease_money(price)
+	drop_barter_pool()
+	if card.has("trait") and card.trait == "smuggling compartment":
+		smuggling_compartment = true
+		$"%ShipCargo3".show()
+	target.setup(card)
+	var front = $"%CargoDeck".pop_front()
+	if front.has("patrol"):
+		move_patrol(get_node("%Patrol" + front.patrol), front.move)
+	$"%Player".bought = true
+#	update_action_buttons()
 
 func _on_market_cargo_buy_pressed():
 	$"%Player".decrease_money(max(0, market_cargos[0].buy - discount))
