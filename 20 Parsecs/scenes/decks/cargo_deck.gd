@@ -121,28 +121,55 @@ var player = {
 func _ready():
 	randomize()
 	_deck.shuffle()
-#	update_view()
+	update_view()
 
 func front():
 	return _deck.front()
 
 func update_view():
 	var card = _deck.front()
-	$Card.text = card.type
-	if card.has("trait"):
-		$Card.text += ", " + card.trait
+	if card.has("trait") and card.trait == "Illegal":
+		$"%Trait".show()
+		$"%RollContainer".show()
+		$"%FailContainer".show()
+	else:
+		$"%Trait".hide()
+		$"%RollContainer".hide()
+		$"%FailContainer".hide()
+	if card.has("trait") and card.trait == "Smuggling Compartment":
+		$"%Cargo".hide()
+		$"%CargoMod".show()
+		$"%BuffContainer".show()
+		$"%BuffContainer2".show()
+	else:
+		$"%Cargo".show()
+		$"%CargoMod".hide()
+		$"%BuffContainer".hide()
+		$"%BuffContainer2".hide()
+	$"%BuyLabel".text = str(card.buy) + "K"
 	if card.has("to"):
-		$Card.text += "\nTo: " + card.to + ": "
+		$"%ToContainer".show()
+		$"%To".text = card.to
+	else:
+		$"%ToContainer".hide()
 	if card.has("sell"):
-		$Card.text += str(card.sell) + "K"
+		$"%SuccessContainer".show()
+		$"%Sell".text = str(card.sell) + "K"
+	else:
+		$"%SuccessContainer".hide()
 	if card.has("rep"):
-		$Card.text += " 1" + card.rep + "R"
+		$"%Rep".show()
+		$"%A".hide()
+		$"%B".hide()
+		$"%C".hide()
+		$"%D".hide()
+		get_node("%" + card.rep).show()
+	else:
+		$"%Rep".hide()
 	if card.has("fame"):
-		$Card.text += " " + str(card.fame) + "F"
-	if card.has("patrol"):
-		$Card.text += "\nPatrol: " + str(card.move) + card.patrol
-	if card.has("description"):
-		$Card.text += "\n" + card.description
+		$"%Fame".show()
+	else:
+		$"%Fame".hide()
 	update_buy()
 	update_skip()
 

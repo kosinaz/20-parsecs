@@ -10,7 +10,7 @@
    xml:space="preserve"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    sodipodi:docname="yes.svg"
-   inkscape:export-filename="20 Parsecs\images\fame.png"
+   inkscape:export-filename="20 Parsecs\images\yes.png"
    inkscape:export-xdpi="2.4000001"
    inkscape:export-ydpi="2.4000001"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -28,8 +28,8 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="1.0544998"
-     inkscape:cx="163.11051"
-     inkscape:cy="373.63687"
+     inkscape:cx="151.73071"
+     inkscape:cy="374.58518"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -47,7 +47,6 @@
      inkscape:label="Réteg 1"
      inkscape:groupmode="layer"
      id="layer1"><path
-       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:10.5833;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke;stop-color:#000000"
-       d="M 26.458333,79.375001 68.791667,100.54167 111.125,15.875"
-       id="path413"
-       sodipodi:nodetypes="ccc" /></g></svg>
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:21.1667;stroke-linecap:round;stroke-linejoin:round;paint-order:markers fill stroke;stop-color:#000000"
+       d="M 105.83333,21.166667 63.499999,105.83333 21.166667,84.666666"
+       id="path5909" /></g></svg>
