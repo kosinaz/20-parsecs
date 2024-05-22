@@ -1,0 +1,506 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://images/ground-attack.png" type="Texture" id=2]
+[ext_resource path="res://images/mod.png" type="Texture" id=3]
+[ext_resource path="res://images/info.png" type="Texture" id=4]
+[ext_resource path="res://scenes/cards/gear_card.gd" type="Script" id=5]
+[ext_resource path="res://images/ground-combat.png" type="Texture" id=6]
+[ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=7]
+[ext_resource path="res://images/focus.png" type="Texture" id=8]
+[ext_resource path="res://images/convert.png" type="Texture" id=9]
+[ext_resource path="res://images/stealth.png" type="Texture" id=10]
+[ext_resource path="res://images/strength.png" type="Texture" id=11]
+[ext_resource path="res://images/hit.png" type="Texture" id=12]
+[ext_resource path="res://images/cirt.png" type="Texture" id=13]
+[ext_resource path="res://images/tactics.png" type="Texture" id=14]
+[ext_resource path="res://images/yes.png" type="Texture" id=15]
+[ext_resource path="res://images/roll.png" type="Texture" id=16]
+[ext_resource path="res://images/armor.png" type="Texture" id=18]
+[ext_resource path="res://images/buy.png" type="Texture" id=21]
+[ext_resource path="res://images/buff.png" type="Texture" id=23]
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="GearCard" type="VBoxContainer"]
+unique_name_in_owner = true
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 92.0
+margin_bottom = 124.0
+custom_constants/separation = 0
+script = ExtResource( 5 )
+
+[node name="Top" type="HBoxContainer" parent="."]
+margin_right = 85.0
+margin_bottom = 19.0
+
+[node name="Type" type="MarginContainer" parent="Top"]
+margin_right = 63.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+custom_constants/margin_top = 4
+custom_constants/margin_left = 27
+
+[node name="Type" type="HBoxContainer" parent="Top/Type"]
+margin_left = 27.0
+margin_top = 4.0
+margin_right = 63.0
+margin_bottom = 19.0
+
+[node name="Icon" type="TextureRect" parent="Top/Type/Type"]
+unique_name_in_owner = true
+margin_right = 12.0
+margin_bottom = 15.0
+texture = ExtResource( 3 )
+
+[node name="Trait" type="TextureRect" parent="Top/Type/Type"]
+unique_name_in_owner = true
+margin_left = 16.0
+margin_right = 28.0
+margin_bottom = 15.0
+texture = ExtResource( 18 )
+
+[node name="Help" type="MarginContainer" parent="Top"]
+margin_left = 67.0
+margin_right = 85.0
+margin_bottom = 19.0
+
+[node name="Help" type="Button" parent="Top/Help"]
+margin_right = 18.0
+margin_bottom = 19.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 1 )
+disabled = true
+text = "?"
+
+[node name="Card" type="MarginContainer" parent="."]
+margin_top = 19.0
+margin_right = 85.0
+margin_bottom = 120.0
+size_flags_vertical = 3
+custom_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Card"]
+margin_top = 8.0
+margin_right = 85.0
+margin_bottom = 101.0
+custom_constants/separation = 2
+
+[node name="Buy" type="HBoxContainer" parent="Card/VBoxContainer"]
+margin_right = 85.0
+margin_bottom = 12.0
+
+[node name="BuyIcon" type="TextureRect" parent="Card/VBoxContainer/Buy"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 21 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Buy"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="BuyLabel" type="Label" parent="Card/VBoxContainer/Buy"]
+unique_name_in_owner = true
+margin_left = 23.0
+margin_right = 35.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1K"
+
+[node name="Buff" type="HBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 14.0
+margin_right = 85.0
+margin_bottom = 26.0
+
+[node name="BuffIcon" type="TextureRect" parent="Card/VBoxContainer/Buff"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 23 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Buff"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="Attack" type="HBoxContainer" parent="Card/VBoxContainer/Buff"]
+unique_name_in_owner = true
+visible = false
+margin_left = 23.0
+margin_right = 40.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="AttackLabel" type="Label" parent="Card/VBoxContainer/Buff/Attack"]
+unique_name_in_owner = true
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Buff/Attack"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 2 )
+
+[node name="Armor" type="HBoxContainer" parent="Card/VBoxContainer/Buff"]
+unique_name_in_owner = true
+margin_left = 23.0
+margin_right = 42.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Buff/Armor"]
+margin_right = 7.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "2"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Buff/Armor"]
+margin_left = 7.0
+margin_right = 19.0
+margin_bottom = 12.0
+texture = ExtResource( 18 )
+
+[node name="KnifeSkill" type="HBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 72.0
+margin_right = 85.0
+margin_bottom = 84.0
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/KnifeSkill"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 23 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/KnifeSkill"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/KnifeSkill"]
+margin_left = 23.0
+margin_right = 52.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/KnifeSkill/HBoxContainer2"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/KnifeSkill/HBoxContainer2"]
+margin_left = 12.0
+margin_right = 17.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "/"
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/KnifeSkill/HBoxContainer2"]
+margin_left = 17.0
+margin_right = 29.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+
+[node name="Label3" type="Label" parent="Card/VBoxContainer/KnifeSkill"]
+margin_left = 56.0
+margin_right = 61.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "="
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Card/VBoxContainer/KnifeSkill"]
+margin_left = 65.0
+margin_right = 82.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label2" type="Label" parent="Card/VBoxContainer/KnifeSkill/HBoxContainer"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="Icon3" type="TextureRect" parent="Card/VBoxContainer/KnifeSkill/HBoxContainer"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 2 )
+
+[node name="Info" type="HBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 28.0
+margin_right = 85.0
+margin_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Info"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Info"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="ArmorInfo" type="HBoxContainer" parent="Card/VBoxContainer/Info"]
+unique_name_in_owner = true
+margin_left = 23.0
+margin_right = 82.0
+margin_bottom = 12.0
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Info/ArmorInfo"]
+margin_right = 27.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "Max 1"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Info/ArmorInfo"]
+margin_left = 31.0
+margin_right = 43.0
+margin_bottom = 12.0
+texture = ExtResource( 3 )
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Info/ArmorInfo"]
+margin_left = 47.0
+margin_right = 59.0
+margin_bottom = 12.0
+texture = ExtResource( 18 )
+
+[node name="Combat" type="HBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 42.0
+margin_right = 85.0
+margin_bottom = 54.0
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Combat"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Combat"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="Knife" type="HBoxContainer" parent="Card/VBoxContainer/Combat"]
+unique_name_in_owner = true
+margin_left = 23.0
+margin_right = 72.0
+margin_bottom = 12.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/Combat/Knife"]
+margin_right = 17.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Combat/Knife/HBoxContainer2"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Combat/Knife/HBoxContainer2"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 8 )
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Combat/Knife"]
+margin_left = 21.0
+margin_right = 33.0
+margin_bottom = 12.0
+texture = ExtResource( 9 )
+
+[node name="Icon3" type="TextureRect" parent="Card/VBoxContainer/Combat/Knife"]
+margin_left = 37.0
+margin_right = 49.0
+margin_bottom = 12.0
+texture = ExtResource( 12 )
+
+[node name="Rifle" type="HBoxContainer" parent="Card/VBoxContainer/Combat"]
+unique_name_in_owner = true
+visible = false
+margin_left = 23.0
+margin_right = 83.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Combat/Rifle"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 15 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Combat/Rifle"]
+margin_left = 12.0
+margin_right = 48.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "= Max 2"
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Combat/Rifle"]
+margin_left = 48.0
+margin_right = 60.0
+margin_bottom = 12.0
+texture = ExtResource( 12 )
+
+[node name="Ax" type="HBoxContainer" parent="Card/VBoxContainer/Combat"]
+unique_name_in_owner = true
+visible = false
+margin_left = 23.0
+margin_right = 83.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Combat/Ax"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+
+[node name="Label3" type="Label" parent="Card/VBoxContainer/Combat/Ax"]
+margin_left = 12.0
+margin_right = 24.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "= 1"
+
+[node name="Icon3" type="TextureRect" parent="Card/VBoxContainer/Combat/Ax"]
+margin_left = 24.0
+margin_right = 36.0
+margin_bottom = 12.0
+texture = ExtResource( 8 )
+
+[node name="Icon4" type="TextureRect" parent="Card/VBoxContainer/Combat/Ax"]
+margin_left = 36.0
+margin_right = 48.0
+margin_bottom = 12.0
+texture = ExtResource( 9 )
+
+[node name="Icon5" type="TextureRect" parent="Card/VBoxContainer/Combat/Ax"]
+margin_left = 48.0
+margin_right = 60.0
+margin_bottom = 12.0
+texture = ExtResource( 12 )
+
+[node name="Jet" type="HBoxContainer" parent="Card/VBoxContainer/Combat"]
+unique_name_in_owner = true
+visible = false
+margin_left = 23.0
+margin_right = 64.0
+margin_bottom = 28.0
+custom_constants/separation = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Card/VBoxContainer/Combat/Jet"]
+margin_right = 41.0
+margin_bottom = 28.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer"]
+margin_right = 41.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label3" type="Label" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer/HBoxContainer"]
+margin_right = 10.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "-1"
+
+[node name="Icon5" type="TextureRect" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer/HBoxContainer"]
+margin_left = 10.0
+margin_right = 22.0
+margin_bottom = 12.0
+texture = ExtResource( 12 )
+
+[node name="Label4" type="Label" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer/HBoxContainer"]
+margin_left = 22.0
+margin_right = 27.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "/"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer"]
+margin_top = 16.0
+margin_right = 41.0
+margin_bottom = 28.0
+custom_constants/separation = 0
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer/HBoxContainer2"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 14 )
+
+[node name="Label5" type="Label" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer/HBoxContainer2"]
+margin_left = 12.0
+margin_right = 29.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "= -1"
+
+[node name="Icon4" type="TextureRect" parent="Card/VBoxContainer/Combat/Jet/VBoxContainer/HBoxContainer2"]
+margin_left = 29.0
+margin_right = 41.0
+margin_bottom = 12.0
+texture = ExtResource( 13 )
+
+[node name="Plast" type="HBoxContainer" parent="Card/VBoxContainer/Combat"]
+unique_name_in_owner = true
+visible = false
+margin_left = 23.0
+margin_right = 64.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Combat/Plast"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+
+[node name="Label3" type="Label" parent="Card/VBoxContainer/Combat/Plast"]
+margin_left = 12.0
+margin_right = 29.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "= -1"
+
+[node name="Icon3" type="TextureRect" parent="Card/VBoxContainer/Combat/Plast"]
+margin_left = 29.0
+margin_right = 41.0
+margin_bottom = 12.0
+texture = ExtResource( 16 )
