@@ -68,10 +68,10 @@ func repair(amount = 0):
 
 func get_armor():
 	var armor = _data.armor
-	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipMod".get_name()):
-		armor += 1
-	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipCargomod".get_name()):
-		armor += 1
+#	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipMod".get_name()):
+#		armor += 1
+#	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipCargomod".get_name()):
+#		armor += 1
 	return armor
 
 func update_armor():
