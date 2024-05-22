@@ -5,6 +5,7 @@
 [ext_resource path="res://images/mod.png" type="Texture" id=3]
 [ext_resource path="res://images/blank.png" type="Texture" id=4]
 [ext_resource path="res://scenes/cards/cargo_card.gd" type="Script" id=5]
+[ext_resource path="res://images/cargo-plus.png" type="Texture" id=6]
 [ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=7]
 [ext_resource path="res://images/roll.png" type="Texture" id=8]
 [ext_resource path="res://images/patrol-c-icon.png" type="Texture" id=9]
@@ -16,7 +17,6 @@
 [ext_resource path="res://images/yes.png" type="Texture" id=15]
 [ext_resource path="res://images/fame.png" type="Texture" id=16]
 [ext_resource path="res://images/to.png" type="Texture" id=17]
-[ext_resource path="res://images/illegal-cargo.png" type="Texture" id=19]
 [ext_resource path="res://images/patrol-b-icon.png" type="Texture" id=20]
 [ext_resource path="res://images/buy.png" type="Texture" id=21]
 [ext_resource path="res://images/no.png" type="Texture" id=22]
@@ -90,7 +90,7 @@ unique_name_in_owner = true
 margin_left = 16.0
 margin_right = 28.0
 margin_bottom = 15.0
-texture = ExtResource( 19 )
+texture = ExtResource( 8 )
 
 [node name="Help" type="MarginContainer" parent="Top"]
 margin_left = 67.0
@@ -336,10 +336,9 @@ texture = ExtResource( 14 )
 
 [node name="BuffContainer" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
-margin_top = 14.0
+margin_top = 28.0
 margin_right = 85.0
-margin_bottom = 26.0
+margin_bottom = 40.0
 
 [node name="BuffIcon" type="TextureRect" parent="Card/VBoxContainer/BuffContainer"]
 margin_right = 12.0
@@ -356,61 +355,59 @@ text = ":"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Card/VBoxContainer/BuffContainer"]
 margin_left = 23.0
-margin_right = 40.0
+margin_right = 42.0
 margin_bottom = 12.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/BuffContainer/VBoxContainer"]
-margin_right = 17.0
+margin_right = 19.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
 [node name="Hit" type="Label" parent="Card/VBoxContainer/BuffContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 5.0
+margin_right = 7.0
 margin_bottom = 12.0
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
-text = "1"
+text = "1 "
 
 [node name="HitIcon" type="TextureRect" parent="Card/VBoxContainer/BuffContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 5.0
-margin_right = 17.0
+margin_left = 7.0
+margin_right = 19.0
 margin_bottom = 12.0
-texture = ExtResource( 11 )
+texture = ExtResource( 6 )
 
 [node name="BuffContainer2" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
-margin_top = 28.0
+margin_top = 42.0
 margin_right = 85.0
-margin_bottom = 40.0
+margin_bottom = 54.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/BuffContainer2"]
-margin_right = 24.0
+margin_right = 28.0
 margin_bottom = 12.0
-custom_constants/separation = 0
 
 [node name="Illegal" type="TextureRect" parent="Card/VBoxContainer/BuffContainer2/HBoxContainer2"]
 margin_right = 12.0
 margin_bottom = 12.0
-texture = ExtResource( 19 )
+texture = ExtResource( 11 )
 
 [node name="Roll" type="TextureRect" parent="Card/VBoxContainer/BuffContainer2/HBoxContainer2"]
-margin_left = 12.0
-margin_right = 24.0
+margin_left = 16.0
+margin_right = 28.0
 margin_bottom = 12.0
 texture = ExtResource( 8 )
 
 [node name="Label" type="Label" parent="Card/VBoxContainer/BuffContainer2"]
-margin_left = 28.0
-margin_right = 31.0
+margin_left = 32.0
+margin_right = 35.0
 margin_bottom = 12.0
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = ":"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Card/VBoxContainer/BuffContainer2"]
-margin_left = 35.0
-margin_right = 71.0
+margin_left = 39.0
+margin_right = 75.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -53,6 +53,7 @@
 [ext_resource path="res://scenes/cargomod.gd" type="Script" id=51]
 [ext_resource path="res://scenes/decks/cargo_deck.tscn" type="PackedScene" id=52]
 [ext_resource path="res://scenes/slots/cargo_slot.tscn" type="PackedScene" id=53]
+[ext_resource path="res://images/cargo-plus.png" type="Texture" id=54]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -1550,6 +1551,9 @@ margin_right = 288.0
 margin_left = 288.0
 margin_right = 384.0
 
+[node name="DeckType" parent="CanvasLayer/Ship/CargoSlot3" index="1"]
+texture = ExtResource( 54 )
+
 [node name="ShipCargo" type="TextureRect" parent="CanvasLayer/Ship"]
 unique_name_in_owner = true
 visible = false
@@ -2161,3 +2165,5 @@ text = "Ok"
 [editable path="Spaces/Space38"]
 [editable path="Spaces/Space39"]
 [editable path="Spaces/Space42"]
+[editable path="CanvasLayer/Ship/CargoSlot3"]
+[editable path="CanvasLayer/Ship/CargoSlot3/MarginContainer/VBoxContainer/CargoCard"]

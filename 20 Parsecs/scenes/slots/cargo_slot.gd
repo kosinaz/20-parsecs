@@ -84,7 +84,6 @@ func update_target():
 	if has_trait("Smuggling Compartment"):
 		targets.remove(2)
 		targets.append_array(player.cargo_mod_slots)
-		print(targets)
 	var i = targets.find(self)
 	var ordered_targets = targets.slice(i + 1, targets.size())
 	if i > 0:
@@ -92,9 +91,7 @@ func update_target():
 	for target in ordered_targets:
 		if not target.visible:
 			continue
-		print(target.has_trait("Smuggling Compartment"), self.name)
 		if target.has_trait("Smuggling Compartment") and self.name == "CargoSlot3":
-			print("true")
 			continue
 		_target = target
 		break

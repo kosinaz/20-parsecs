@@ -63,12 +63,6 @@ margin_right = 85.0
 margin_bottom = 97.0
 size_flags_vertical = 3
 
-[node name="Card" parent="MarginContainer/VBoxContainer/CargoCard" index="1"]
-margin_bottom = 97.0
-
-[node name="VBoxContainer" parent="MarginContainer/VBoxContainer/CargoCard/Card" index="0"]
-margin_bottom = 78.0
-
 [node name="Bottom" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 101.0
 margin_right = 85.0
@@ -107,5 +101,3 @@ icon = ExtResource( 7 )
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Bottom/MarginContainer/Buy" to="." method="_on_buy_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Bottom/MarginContainer2/Skip" to="." method="_on_skip_pressed"]
-
-[editable path="MarginContainer/VBoxContainer/CargoCard"]
