@@ -4,118 +4,115 @@ signal bought
 signal skipped
 
 var _deck = [
+	{
+		"type": "Mod",
+		"buy": 2,
+		"name": "targeting computer",
+		"patrol": "D",
+		"move": 3,
+	},
+	{
+		"type": "Mod",
+		"buy": 2,
+		"name": "quad laser",
+		"attack": 1,
+		"patrol": "C",
+		"move": 3,
+	},
+	{
+		"type": "Mod",
+		"buy": 3,
+		"name": "nav computer",
+		"speed": 1,
+	},
+	{
+		"type": "Mod",
+		"buy": 3,
+		"name": "shield upgrade",
+		"armor": 1,
+	},
+	{
+		"type": "Mod",
+		"buy": 5,
+		"name": "maneuvering thrusters",
+		"armor": 1,
+	},
+	{
+		"type": "Mod",
+		"buy": 5,
+		"name": "ion cannon",
+		"patrol": "A",
+		"move": 3,
+	},
+	{
+		"type": "Mod",
+		"buy": 7,
+		"name": "autoblaster",
+		"patrol": "B",
+		"move": 3,
+	},
 #	{
-#		"type": "Mod",
-#		"buy": 2,
-#		"name": "targeting computer",
-#		"description": "Ship Combat:\n1 reroll per Blank",
-#		"patrol": "D",
+#		"type": "Gear",
+#		"buy": 3,
+#		"name": "blaster pistol",
+#		"attack": 1,
+#		"patrol": "B",
 #		"move": 3,
 #	},
 #	{
-#		"type": "Mod",
-#		"buy": 2,
-#		"name": "quad laser",
-#		"description": "Attack: +1S",
+#		"type": "Gear",
+#		"trait": "Armor",
+#		"buy": 3,
+#		"name": "armored vest",
 #		"patrol": "C",
 #		"move": 3,
 #	},
 #	{
-#		"type": "Mod",
-#		"buy": 3,
-#		"name": "nav computer",
-#		"description": "Speed: +1",
+#		"type": "Gear",
+#		"buy": 4,
+#		"name": "vibroknife",
+#		"patrol": "B",
+#		"move": 4,
 #	},
 #	{
-#		"type": "Mod",
-#		"buy": 3,
-#		"name": "shield upgrade",
-#		"description": "Armor: +1S\nAction: Recover 1 Ship Damage",
-#	},
-#	{
-#		"type": "Mod",
+#		"type": "Gear",
 #		"buy": 5,
-#		"name": "maneuvering thrusters",
-#		"description": "Armor: +1S\nShip Combat\nWith Tactics:\n-1 Enemy Attack",
+#		"name": "blaster rifle",
+#		"attack": 1,
+#		"patrol": "D",
+#		"move": 4,
 #	},
 #	{
-#		"type": "Mod",
-#		"buy": 5,
-#		"name": "ion cannon",
-#		"description": "Ship Combat:\n-1 Enemy Hit\nWith Tactics:\n-1 Enemy Crit",
+#		"type": "Gear",
+#		"buy": 6,
+#		"name": "vibroax",
+#		"attack": 1,
 #		"patrol": "A",
 #		"move": 3,
 #	},
 #	{
-#		"type": "Mod",
-#		"buy": 7,
-#		"name": "autoblaster",
-#		"description": "Ship Combat:\n2 Focus to Hit\nWith Tactics:\n1 Focus to Crit",
-#		"patrol": "B",
+#		"type": "Gear",
+#		"buy": 6,
+#		"name": "jetpack",
+#		"patrol": "A",
+#		"move": 4,
+#	},
+#	{
+#		"type": "Gear",
+#		"buy": 8,
+#		"name": "grenade",
+#		"attack": 2,
+#		"patrol": "D",
 #		"move": 3,
 #	},
-	{
-		"type": "Gear",
-		"buy": 3,
-		"name": "blaster pistol",
-		"attack": 1,
-		"patrol": "B",
-		"move": 3,
-	},
-	{
-		"type": "Gear",
-		"trait": "Armor",
-		"buy": 3,
-		"name": "armored vest",
-		"patrol": "C",
-		"move": 3,
-	},
-	{
-		"type": "Gear",
-		"buy": 4,
-		"name": "vibroknife",
-		"patrol": "B",
-		"move": 4,
-	},
-	{
-		"type": "Gear",
-		"buy": 5,
-		"name": "blaster rifle",
-		"attack": 1,
-		"patrol": "D",
-		"move": 4,
-	},
-	{
-		"type": "Gear",
-		"buy": 6,
-		"name": "vibroax",
-		"attack": 1,
-		"patrol": "A",
-		"move": 3,
-	},
-	{
-		"type": "Gear",
-		"buy": 6,
-		"name": "jetpack",
-		"patrol": "A",
-		"move": 4,
-	},
-	{
-		"type": "Gear",
-		"buy": 8,
-		"name": "grenade",
-		"attack": 2,
-		"patrol": "D",
-		"move": 3,
-	},
-	{
-		"type": "Gear",
-		"trait": "Armor",
-		"buy": 8,
-		"name": "plastoid armor",
-		"patrol": "C",
-		"move": 4,
-	},
+#	{
+#		"type": "Gear",
+#		"trait": "Armor",
+#		"buy": 8,
+#		"name": "plastoid armor",
+#		"patrol": "C",
+#		"move": 4,
+#	},
 ]
 var _target = null
 var _price = 0
@@ -164,8 +161,16 @@ func set_player(player_to_set):
 
 func update_view():
 	var card = _deck.front()
-	$"%GearCard".card = card
-	$"%GearCard".update_view()
+	if card.type == "Gear":
+		$"%GearCard".show()
+		$"%ModCard".hide()
+		$"%GearCard".card = card
+		$"%GearCard".update_view()
+	else:
+		$"%GearCard".hide()
+		$"%ModCard".show()
+		$"%ModCard".card = card
+		$"%ModCard".update_view()
 	update_buttons()
 
 func update_buttons():
