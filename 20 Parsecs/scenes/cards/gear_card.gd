@@ -9,16 +9,20 @@ var card = {
 	"move": 3,
 }
 
+var armor = false
+
 func _ready():
 	update_view()
 
 func update_view():
 	if card.has("trait") and card.trait == "Armor":
+		armor = true
 		$"%Trait".show()
 		$"%Armor".show()
 		$"%Info".show()
 		$"%ArmorInfo".show()
 	else:
+		armor = false
 		$"%Trait".hide()
 		$"%Armor".hide()
 		$"%Info".hide()

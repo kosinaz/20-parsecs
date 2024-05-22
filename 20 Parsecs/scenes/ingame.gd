@@ -24,9 +24,7 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
-onready var market_slots = [$"%MarketCargo", $"%MarketGearmod", $"%MarketShip"]
-onready var character_slots = [$"%CharacterGear", $"%CharacterGear2"]
-onready var decks = [$"%CargoDeck"]
+onready var decks = [$"%CargoDeck", $"%GearModDeck"]
 onready var all_cards = []
 
 func _ready():
@@ -56,7 +54,6 @@ func _ready():
 	market_gearmods.shuffle()
 	market_ships.append_array(ship_deck)
 	market_ships.shuffle()
-	$"%MarketGearmod".setup(market_gearmods[0])
 	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(character_deck[0])
 	$"%Player".increase_money(4)
@@ -66,11 +63,20 @@ func _ready():
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("skipped", self, "_on_skip_pressed")
+# warning-ignore:return_value_discarded
+	$"%GearModDeck".connect("bought", self, "_on_gear_mod_deck_buy_pressed")
+# warning-ignore:return_value_discarded
+	$"%GearModDeck".connect("skipped", self, "_on_skip_pressed")
 	all_cards.append_array(decks)
+	all_cards.append_array($"%Player".gear_slots)
 	all_cards.append_array($"%Player".cargo_slots)
 	all_cards.append($"%Player".cargo_mod_slot)
 	all_cards.append($"%Player".mod_slot)
-	$"%CargoDeck".set_player($"%Player")
+	for deck in decks:
+		deck.set_player($"%Player")
+		deck.set_player($"%Player")
+	for card in $"%Player".gear_slots:
+		card.set_player($"%Player")
 	for card in $"%Player".cargo_slots:
 		card.set_player($"%Player")
 		card.connect("moved", self, "_on_move_pressed")
@@ -80,7 +86,6 @@ func _ready():
 	$"%ModSlot".set_player($"%Player")
 # warning-ignore:return_value_discarded
 	$"%ModSlot".connect("moved", self, "_on_move_pressed")
-		
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -209,25 +214,6 @@ func stop_action():
 func update_action_buttons():
 	for card in all_cards:
 		card.update_buttons()
-	
-
-func update_action_buttons_old():
-	for card in all_cards:
-		card.enable_buttons()
-	if skipped:
-		for card in market_slots:
-			card.disable_button("Skip")
-	if bought or not planets.has($"%Player".current_space.id):
-		for card in market_slots:
-			card.disable_buttons()
-		for card in character_slots:
-			card.disable_button("Barter")
-	if $"%Ship".get_damage() == 0:
-		$"%ShipMod".disable_button("Recover")
-		$"%ShipCargomod".disable_button("Recover")
-	update_card_movement_targets()
-	update_buy_buttons()
-	update_market_prices()
 
 func update_buy_buttons():
 	for card in [$"%MarketCargo", $"%MarketGearmod"]:
@@ -238,75 +224,18 @@ func update_buy_buttons():
 			$"%MarketShip".disable_button("Buy")
 	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
 		$"%MarketCargo".disable_button("Buy")
-	for card in market_slots:
-		if card.moveable and card.movement_target == null:
-			card.disable_button("Buy")
-
-func update_card_movement_targets():
-	for card in all_cards:
-		if not card.moveable:
-			continue
-		card.movement_target = null
-		var available_targets = []
-		available_targets.append_array(character_slots)
-		if card.get_data().has("smuggling compartment"):
-			available_targets.erase($"%ShipCargo3")
-		if not card.is_cargo:
-			available_targets.erase($"%ShipCargo")
-			available_targets.erase($"%ShipCargo2")
-			available_targets.erase($"%ShipCargo3")
-		if not card.is_mod:
-			available_targets.erase($"%ShipMod")
-		if not card.is_mod and not card.is_cargo:
-			available_targets.erase($"%ShipCargomod")
-		if not card.is_gear:
-			available_targets.erase($"%CharacterGear")
-			available_targets.erase($"%CharacterGear2")
-		if card.is_market:
-			for available_target in available_targets:
-				if not available_target.visible:
-					continue
-				if not available_target.is_empty and not available_target.is_bartering():
-					continue
-				if card.is_gear and card.is_armor() and has_armor_gear():
-					continue
-				card.movement_target = available_target
-				break
-		else:
-			var i = available_targets.find(card)
-			var available_targets_ordered = []
-			available_targets_ordered.append_array(available_targets)
-			available_targets_ordered.erase(card)
-			if i > 0:
-				available_targets_ordered = available_targets.slice(i + 1, available_targets.size())
-				available_targets_ordered.append_array(available_targets.slice(0, i - 1))
-			for available_target in available_targets_ordered:
-				if not available_target.visible:
-					continue
-				if not available_target.is_empty:
-					if available_target.get_data().has("smuggling compartment") and card == $"%ShipCargo3":
-						continue
-					if available_target.is_cargo and card.is_ship_cargo:
-						card.movement_target = available_target
-						break
-					if available_target.is_mod and card.is_ship_mod:
-						card.movement_target = available_target
-						break
-				else:
-					card.movement_target = available_target
-					break
 
 func update_market_prices():
-	discount = 0
-	for card in character_slots:
-		if card.is_bartering():
-			discount += card.get_price()
-	for card in market_slots:
-		if not card.is_free:
-			var reduced_price = max(0, card.get_price() - discount)
-			card.set_buy_text("Buy " + str(reduced_price) + "K")
-	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
-	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
+#	discount = 0
+#	for card in character_slots:
+#		if card.is_bartering():
+#			discount += card.get_price()
+#	for card in market_slots:
+#		if not card.is_free:
+#			var reduced_price = max(0, card.get_price() - discount)
+#			card.set_buy_text("Buy " + str(reduced_price) + "K")
+#	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
+#	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
 	update_used_ship_prices()
 
 func deliver_cargo(cargo):
@@ -800,6 +729,16 @@ func _on_cargo_deck_buy_pressed(card, price, target):
 		$"%ShipCargo3".show()
 	target.set_card(card)
 	var front = $"%CargoDeck".pop_front()
+	if front.has("patrol"):
+		move_patrol(get_node("%Patrol" + front.patrol), front.move)
+	$"%Player".bought = true
+	update_action_buttons()
+	
+func _on_gear_mod_deck_buy_pressed(card, price, target):
+	$"%Player".decrease_money(price)
+	drop_barter_pool()
+	target.set_card(card)
+	var front = $"%GearModDeck".pop_front()
 	if front.has("patrol"):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true

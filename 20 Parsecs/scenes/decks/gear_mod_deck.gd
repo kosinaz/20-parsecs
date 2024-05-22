@@ -126,6 +126,20 @@ var player = {
 	"money": 4000,
 	"discount": 0,
 	"space_name": "Acan",
+	"gear_slots": [
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+			"armor": false,
+		},
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+			"armor": false,
+		}
+	],
 	"mod_slot": {
 		"visible": true,
 		"empty": true,
@@ -187,12 +201,22 @@ func update_skip():
 	$"%Skip".disabled = player.skipped
 
 func update_target():
-	if player.mod_slot.visible and (player.mod_slot.empty or player.mod_slot.bartering):
-		_target = player.mod_slot
-	elif player.cargo_mod_slot.visible and (player.cargo_mod_slot.empty or player.cargo_mod_slot.bartering):
-		_target = player.cargo_mod_slot
-	else:
+	if $"%GearCard".visible:
+		for slot in player.gear_slots:
+			if not slot.empty and not slot.bartering:
+				continue
+			if $"%GearCard".armor and (player.gear_slots[0].armor or player.gear_slots[1].armor):
+				continue
+			_target = slot
+			return
 		_target = null
+	else:
+		if player.mod_slot.visible and (player.mod_slot.empty or player.mod_slot.bartering):
+			_target = player.mod_slot
+		elif player.cargo_mod_slot.visible and (player.cargo_mod_slot.empty or player.cargo_mod_slot.bartering):
+			_target = player.cargo_mod_slot
+		else:
+			_target = null
 
 func pop_front():
 	var card = _deck.pop_front()

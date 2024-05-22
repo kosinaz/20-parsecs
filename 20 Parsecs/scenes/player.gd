@@ -13,6 +13,7 @@ var skipped = true
 var discount = 0
 onready var space = $"../Spaces/Space3"
 var space_name = "Acan"
+onready var gear_slots = [$"%GearSlot",$"%GearSlot2"]
 onready var cargo_slots = [$"%CargoSlot",$"%CargoSlot2",$"%CargoSlot3"]
 onready var cargo_mod_slot = $"%CargoModSlot"
 onready var mod_slot = $"%ModSlot"
