@@ -89,7 +89,6 @@ var _deck = [
 	{
 		"type": "Cargo/Mod",
 		"trait": "Smuggling Compartment",
-		"description": "+1 Cargo\nDeliver Illegal Cargo: Blank to Hit",
 		"buy": 2,
 	},
 ]

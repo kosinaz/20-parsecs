@@ -38,9 +38,6 @@ var player = {
 var empty = true
 var bartering = false
 var _target = null
-
-#func _ready():
-#	update_view()
 	
 func set_player(player_to_set):
 	player = player_to_set
@@ -83,10 +80,11 @@ func disable_buttons():
 
 func update_target():
 	var targets = []
-	if $"%CargoCard".card.has("trait") and $"%CargoCard".card.trait == "smuggling compartment":
+	targets.append_array(player.cargo_slots)
+	if has_trait("Smuggling Compartment"):
+		targets.remove(2)
 		targets.append_array(player.cargo_mod_slots)
-	else:
-		targets.append_array(player.cargo_slots)
+		print(targets)
 	var i = targets.find(self)
 	var ordered_targets = targets.slice(i + 1, targets.size())
 	if i > 0:
@@ -94,7 +92,9 @@ func update_target():
 	for target in ordered_targets:
 		if not target.visible:
 			continue
-		if target.has_trait("smuggling compartment") and self == $"%ShipCargo3":
+		print(target.has_trait("Smuggling Compartment"), self.name)
+		if target.has_trait("Smuggling Compartment") and self.name == "CargoSlot3":
+			print("true")
 			continue
 		_target = target
 		break
