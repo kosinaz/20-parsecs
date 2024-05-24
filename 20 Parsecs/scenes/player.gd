@@ -10,6 +10,7 @@ var dreb = 0
 
 var bought = true
 var skipped = true
+var repaired = false
 var discount = 0
 onready var space = $"../Spaces/Space3"
 var space_name = "Acan"

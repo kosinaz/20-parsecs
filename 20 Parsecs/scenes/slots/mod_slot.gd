@@ -2,6 +2,7 @@ extends TextureRect
 
 signal bartered
 signal moved
+signal repaired
 
 var player = {
 	"bought": false,
@@ -78,10 +79,13 @@ func update_buttons():
 	update_move()
 
 func disable_buttons():
+	$"%Repair".disabled = true
 	$"%Barter".disabled = true
+	$"%Move".disabled = true
 
 func update_repair():
-	$"%Repair".hide()
+	$"%Repair".visible = $"%ModCard".visible and $"%ModCard".card.name == "shield upgrade"
+	$"%Repair".disabled = player.repaired
 
 func update_barter():
 	$"%Barter".disabled = player.bought
@@ -99,3 +103,7 @@ func _on_barter_toggled(pressed):
 
 func _on_move_pressed():
 	emit_signal("moved", self, _target)
+
+func _on_repair_pressed():
+	$"%Repair".disabled = true
+	emit_signal("repaired")

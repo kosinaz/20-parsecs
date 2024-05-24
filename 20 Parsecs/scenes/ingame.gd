@@ -83,9 +83,13 @@ func _ready():
 	$"%CargoModSlot".set_player($"%Player")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("moved", self, "_on_move_pressed")
+# warning-ignore:return_value_discarded
+	$"%CargoModSlot".connect("repaired", self, "_on_repair_pressed")
 	$"%ModSlot".set_player($"%Player")
 # warning-ignore:return_value_discarded
 	$"%ModSlot".connect("moved", self, "_on_move_pressed")
+# warning-ignore:return_value_discarded
+	$"%ModSlot".connect("repaired", self, "_on_repair_pressed")
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -574,7 +578,7 @@ func buy_used_ship(ship):
 	$"%Finish".disabled = false
 	update_ship_cargos_and_mods()
 	bought = true
-	$"%Ship".damage(3)
+	$"%Ship".suffer_damage(3)
 	update_action_buttons()
 
 func update_ship_cargos_and_mods():
@@ -669,10 +673,10 @@ func attack_patrol():
 		var spaces = astar.get_point_connections($"%Player".current_space.id)
 		move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 		attacking_patrol = null
-		$"%Ship".damage(10)
+		$"%Ship".suffer_damage(10)
 	else:
 		var combat = ship_combat(get_ship_attack(), attacking_patrol.data.attack)
-		$"%Ship".damage(combat.attacker_damage)
+		$"%Ship".suffer_damage(combat.attacker_damage)
 		$"%Alert".show()
 		if combat.attacker_won: 
 			if $"%Ship".defeated:
@@ -702,16 +706,6 @@ func _on_space_pressed(space):
 
 func _on_work_pressed():
 	$"%Player".increase_money(2)
-	stop_planning()
-
-func _on_heal_pressed():
-	$"%Character".heal()
-	$"%Ship".repair()
-	stop_planning()
-
-func _on_repair_pressed():
-	$"%Character".heal()
-	$"%Ship".repair()
 	stop_planning()
 
 func _on_finish_pressed():
@@ -883,9 +877,9 @@ func _on_ship_mod_recover_pressed():
 	$"%Ship".repair(1)
 	$"%ShipMod".disable_recover()
 
-func _on_ship_cargomod_recover_pressed():
+func _on_repair_pressed():
 	$"%Ship".repair(1)
-	$"%ShipCargomod".disable_recover()
+	$"%Player".repaired = true
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Attack 3G":
@@ -912,7 +906,7 @@ func _on_failed_sell_pressed():
 			return
 	elif $"%FailedSell".text == "Attack 3S":
 		var combat = ship_combat(get_ship_attack(), 3)
-		$"%Ship".damage(combat.attacker_damage)
+		$"%Ship".suffer_damage(combat.attacker_damage)
 		if combat.attacker_won: 
 			if $"%Ship".defeated:
 				$"%FailedLabel".text = "You would have won the combat,\nbut suffered too much damage.\nYou are defeated!"

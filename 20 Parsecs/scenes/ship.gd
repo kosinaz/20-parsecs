@@ -1,6 +1,7 @@
 extends TextureRect
 
 var _data = {}
+var damage = 0
 var _damage = 0
 var defeated = false
 var moveable = false
@@ -50,13 +51,14 @@ func is_used():
 func get_reduced_price(price):
 	return max(get_price() - price, 0)
 
-func damage(amount):
+func suffer_damage(amount):
 	_damage += amount
 	if _damage >= get_armor():
 		defeated = true
 		_damage = get_armor()
 	$"%ShipDamage".value = _damage
 	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
+	damage = _damage
 
 func repair(amount = 0):
 	defeated = false

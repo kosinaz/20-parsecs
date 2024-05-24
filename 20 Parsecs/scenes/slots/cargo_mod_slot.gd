@@ -3,6 +3,7 @@ extends TextureRect
 signal delivered
 signal bartered
 signal moved
+signal repaired
 
 var player = {
 	"bought": false,
@@ -33,6 +34,10 @@ var player = {
 			"bartering": false,
 		},
 	],
+}
+
+var ship = {
+	"damage": 1,
 }
 
 var empty = true
@@ -86,11 +91,13 @@ func update_buttons():
 	if empty:
 		return
 	update_deliver()
+	update_repair()
 	update_barter()
 	update_move()
 
 func disable_buttons():
 	$"%Deliver".disabled = true
+	$"%Repair".disabled = true
 	$"%Barter".disabled = true
 	$"%Move".disabled = true
 
@@ -137,6 +144,10 @@ func update_deliver():
 	else:
 		$"%Deliver".hide()
 
+func update_repair():
+	$"%Repair".visible = $"%ModCard".visible and $"%ModCard".card.name == "shield upgrade"
+	$"%Repair".disabled = player.repaired and ship.damage > 0
+
 func update_barter():
 	$"%Barter".disabled = player.bought
 
@@ -156,3 +167,7 @@ func _on_barter_toggled(pressed):
 
 func _on_move_pressed():
 	emit_signal("moved", self, _target)
+
+func _on_repair_pressed():
+	$"%Repair".disabled = true
+	emit_signal("repaired")

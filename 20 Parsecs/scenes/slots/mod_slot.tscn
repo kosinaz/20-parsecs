@@ -136,6 +136,8 @@ custom_fonts/font = SubResource( 1 )
 disabled = true
 icon = ExtResource( 7 )
 
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer/Repair" to="." method="_on_repair_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Buttons/MarginContainer2/Barter" to="." method="_on_barter_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer4/Move" to="." method="_on_move_pressed"]
 
 [editable path="MarginContainer/VBoxContainer/CargoCard"]
