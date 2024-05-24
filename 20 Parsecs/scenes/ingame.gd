@@ -81,11 +81,13 @@ func _ready():
 		card.set_player($"%Player")
 		card.connect("moved", self, "_on_move_pressed")
 	$"%CargoModSlot".set_player($"%Player")
+	$"%CargoModSlot".set_ship($"%Ship")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("moved", self, "_on_move_pressed")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("repaired", self, "_on_repair_pressed")
 	$"%ModSlot".set_player($"%Player")
+	$"%ModSlot".set_ship($"%Ship")
 # warning-ignore:return_value_discarded
 	$"%ModSlot".connect("moved", self, "_on_move_pressed")
 # warning-ignore:return_value_discarded
@@ -207,6 +209,7 @@ func start_action():
 	$"%TurnIndicator".text += "Perform any number or no actions, then press Finish!"
 	$"%Player".bought = false
 	$"%Player".skipped = false
+	$"%Ship".repaired = false
 	update_action_buttons()
 
 func stop_action():
@@ -879,7 +882,7 @@ func _on_ship_mod_recover_pressed():
 
 func _on_repair_pressed():
 	$"%Ship".repair(1)
-	$"%Player".repaired = true
+	$"%Ship".repaired = true
 
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Attack 3G":

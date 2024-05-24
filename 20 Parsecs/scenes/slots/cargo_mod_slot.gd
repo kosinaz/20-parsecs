@@ -38,6 +38,7 @@ var player = {
 
 var ship = {
 	"damage": 1,
+	"repaired": false,
 }
 
 var empty = true
@@ -47,6 +48,9 @@ var _target = null
 func set_player(player_to_set):
 	player = player_to_set
 
+func set_ship(ship_to_set):
+	ship = ship_to_set
+	
 func get_card():
 	if $"%CargoCard".visible:
 		return $"%CargoCard".card
@@ -146,7 +150,7 @@ func update_deliver():
 
 func update_repair():
 	$"%Repair".visible = $"%ModCard".visible and $"%ModCard".card.name == "shield upgrade"
-	$"%Repair".disabled = player.repaired and ship.damage > 0
+	$"%Repair".disabled = ship.repaired or ship.damage == 0
 
 func update_barter():
 	$"%Barter".disabled = player.bought

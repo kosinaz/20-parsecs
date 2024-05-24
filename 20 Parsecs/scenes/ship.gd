@@ -6,6 +6,7 @@ var _damage = 0
 var defeated = false
 var moveable = false
 var is_free = false
+var repaired = false
 
 func setup(data):
 	_data = data
@@ -67,6 +68,8 @@ func repair(amount = 0):
 	_damage -= amount
 	$"%ShipDamage".value = _damage
 	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
+	damage = _damage
+	repaired = true
 
 func get_armor():
 	var armor = _data.armor
