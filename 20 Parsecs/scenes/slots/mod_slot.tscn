@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/slots/mod_slot.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/cards/mod_card.tscn" type="PackedScene" id=6]
 [ext_resource path="res://images/convert.png" type="Texture" id=7]
 [ext_resource path="res://images/repair.png" type="Texture" id=8]
+[ext_resource path="res://scenes/cards/cargo_card.tscn" type="PackedScene" id=9]
 [ext_resource path="res://images/cargo-bg.png" type="Texture" id=11]
 
 [sub_resource type="DynamicFont" id=1]
@@ -56,6 +57,20 @@ margin_top = 4.0
 margin_right = 92.0
 margin_bottom = 124.0
 alignment = 2
+
+[node name="CargoCard" parent="MarginContainer/VBoxContainer" instance=ExtResource( 9 )]
+visible = false
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 85.0
+margin_bottom = 116.0
+size_flags_vertical = 3
+
+[node name="Card" parent="MarginContainer/VBoxContainer/CargoCard" index="1"]
+margin_bottom = 116.0
+
+[node name="VBoxContainer" parent="MarginContainer/VBoxContainer/CargoCard/Card" index="0"]
+margin_bottom = 97.0
 
 [node name="ModCard" parent="MarginContainer/VBoxContainer" instance=ExtResource( 6 )]
 visible = false
@@ -122,3 +137,5 @@ disabled = true
 icon = ExtResource( 7 )
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer4/Move" to="." method="_on_move_pressed"]
+
+[editable path="MarginContainer/VBoxContainer/CargoCard"]

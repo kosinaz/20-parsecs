@@ -20,18 +20,29 @@ func set_player(player_to_set):
 	player = player_to_set
 
 func get_card():
+	if $"%CargoCard".visible:
+		return $"%CargoCard".card
 	return $"%ModCard".card
 
 func set_card(card_to_set):
 	empty = false
-	$"%ModCard".card = card_to_set
-	$"%ModCard".show()
-	$"%ModCard".update_view()
+	if card_to_set.type == "Cargo" or card_to_set.type == "Cargo/Mod":
+		$"%CargoCard".card = card_to_set
+		$"%CargoCard".show()
+		$"%ModCard".hide()
+		$"%CargoCard".update_view()
+	else:
+		$"%ModCard".card = card_to_set
+		$"%CargoCard".hide()
+		$"%ModCard".show()
+		$"%ModCard".update_view()
 	$"%Buttons".show()
 	update_buttons()
 
 func remove_card():
 	empty = true
+	$"%CargoCard".card = null
+	$"%CargoCard".hide()
 	$"%ModCard".card = null
 	$"%ModCard".hide()
 	$"%Buttons".hide()
@@ -44,22 +55,20 @@ func has_trait(trait):
 	return $"%ModCard".card.trait == trait
 
 func update_target():
-	var targets = []
-	if player.cargo_mod_slot.empty or player.cargo_mod_slot.get_card().type == "Mod":
+	_target = null
+	if $"%CargoCard".visible:
+		var targets = []
+		targets.append(player.cargo_slots[0])
+		targets.append(player.cargo_slots[1])
 		targets.append(player.cargo_mod_slot)
-	if has_trait("Smuggling Compartment"):
-		if player.cargo_slots[0].empty:
-			targets.append(player.cargo_slots[0])
-		if player.cargo_slots[1].empty:
-			targets.append(player.cargo_slots[1])
-	if targets.size() == 0:
-		_target = null
-		return
-	for target in targets:
-		if not target.visible:
-			continue
-		_target = target
-		break
+		for target in targets:
+			if not target.visible:
+				continue
+			_target = target
+			break
+	else:
+		if player.cargo_mod_slot.visible and (player.cargo_mod_slot.empty or player.cargo_mod_slot.get_card().type == "Mod"):
+			_target = player.cargo_mod_slot
 
 func update_buttons():
 	if empty:
