@@ -81,10 +81,12 @@ func disable_buttons():
 func update_target():
 	var targets = []
 	targets.append_array(player.cargo_slots)
-	targets.append(player.cargo_mod_slot)
+	if player.cargo_mod_slot.empty:
+		targets.append(player.cargo_mod_slot)
 	if has_trait("Smuggling Compartment"):
 		targets.remove(2)
-		targets.append(player.mod_slot)
+		if player.cargo_mod_slot.empty:
+			targets.append(player.mod_slot)
 	var i = targets.find(self)
 	var ordered_targets = targets.slice(i + 1, targets.size())
 	if i > 0:

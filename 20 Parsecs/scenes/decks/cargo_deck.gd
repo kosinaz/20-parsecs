@@ -90,6 +90,7 @@ var _deck = [
 		"type": "Cargo/Mod",
 		"trait": "Smuggling Compartment",
 		"buy": 2,
+		"name": "smuggling compartment",
 	},
 ]
 var _target = null

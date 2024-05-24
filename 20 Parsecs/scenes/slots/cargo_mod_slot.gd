@@ -43,13 +43,22 @@ func set_player(player_to_set):
 	player = player_to_set
 
 func get_card():
-	return $"%CargoCard".card
+	if $"%CargoCard".visible:
+		return $"%CargoCard".card
+	return $"%ModCard".card
 
 func set_card(card_to_set):
 	empty = false
-	$"%CargoCard".card = card_to_set
-	$"%CargoCard".show()
-	$"%CargoCard".update_view()
+	if card_to_set.type == "Cargo" or card_to_set.type == "Cargo/Mod":
+		$"%CargoCard".card = card_to_set
+		$"%CargoCard".show()
+		$"%ModCard".hide()
+		$"%CargoCard".update_view()
+	else:
+		$"%ModCard".card = card_to_set
+		$"%CargoCard".hide()
+		$"%ModCard".show()
+		$"%ModCard".update_view()
 	$"%Buttons".show()
 	update_buttons()
 
@@ -57,14 +66,21 @@ func remove_card():
 	empty = true
 	$"%CargoCard".card = null
 	$"%CargoCard".hide()
+	$"%ModCard".card = null
+	$"%ModCard".hide()
 	$"%Buttons".hide()
 	
 func has_trait(trait):
 	if empty:
 		return false
-	if not $"%CargoCard".card.has("trait"):
+	var card = null
+	if $"%CargoCard".visible:
+		card = $"%CargoCard".card
+	else:
+		card = $"%ModCard".card
+	if not card.has("trait"):
 		return false
-	return $"%CargoCard".card.trait == trait
+	return card.trait == trait
 
 func update_buttons():
 	if empty:
@@ -79,25 +95,42 @@ func disable_buttons():
 	$"%Move".disabled = true
 
 func update_target():
-	var targets = []
-	targets.append_array(player.cargo_slots)
-	targets.append(player.cargo_mod_slot)
-	if has_trait("Smuggling Compartment"):
-		targets.remove(2)
-		targets.append(player.mod_slot)
-	var i = targets.find(self)
-	var ordered_targets = targets.slice(i + 1, targets.size())
-	if i > 0:
-		ordered_targets.append_array(targets.slice(0, i - 1))
-	for target in ordered_targets:
-		if not target.visible:
-			continue
-		if target.has_trait("Smuggling Compartment") and self.name == "CargoSlot3":
-			continue
-		_target = target
-		break
+	if $"%CargoCard".visible:
+		var targets = []
+		targets.append_array(player.cargo_slots)
+		targets.append(player.cargo_mod_slot)
+		if has_trait("Smuggling Compartment"):
+			targets.remove(2)
+			targets.append(player.mod_slot)
+		var i = targets.find(self)
+		var ordered_targets = targets.slice(i + 1, targets.size())
+		if i > 0:
+			ordered_targets.append_array(targets.slice(0, i - 1))
+		for target in ordered_targets:
+			if not target.visible:
+				continue
+			if target.has_trait("Smuggling Compartment") and self.name == "CargoSlot3":
+				continue
+			_target = target
+			break
+	else:
+		var targets = [player.mod_slot, player.cargo_mod_slot]
+		if has_trait("Smuggling Compartment"):
+			targets.append_array([player.cargo_slots[0], player.cargo_slots[1]])
+		var i = targets.find(self)
+		var ordered_targets = targets.slice(i + 1, targets.size())
+		if i > 0:
+			ordered_targets.append_array(targets.slice(0, i - 1))
+		for target in ordered_targets:
+			if not target.visible:
+				continue
+			_target = target
+			break
 
 func update_deliver():
+	if not $"%CargoCard".visible:
+		$"%Deliver".hide()
+		return
 	if $"%CargoCard".card.has("to"):
 		$"%Deliver".show()
 		$"%Deliver".disabled = player.space_name != $"%CargoCard".card.to

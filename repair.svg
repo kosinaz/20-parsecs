@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="480"
+   height="480"
+   viewBox="0 0 127 127"
+   version="1.1"
+   id="svg5"
+   xml:space="preserve"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="repair.svg"
+   inkscape:export-filename="20 Parsecs\images\ship-attack.png"
+   inkscape:export-xdpi="2.4000001"
+   inkscape:export-ydpi="2.4000001"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview7"
+     pagecolor="#353535"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="0.5272499"
+     inkscape:cx="-366.05033"
+     inkscape:cy="149.83407"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"><inkscape:grid
+       type="xygrid"
+       id="grid419"
+       spacingx="5.2916667"
+       spacingy="5.2916667"
+       empspacing="2"
+       originx="0"
+       originy="0" /></sodipodi:namedview><defs
+     id="defs2" /><g
+     inkscape:label="Réteg 1"
+     inkscape:groupmode="layer"
+     id="layer1"><path
+       id="rect798"
+       style="fill:#ffffff;fill-rule:evenodd;stroke-width:20.6566;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;stop-color:#000000"
+       d="M 10.583333,10.583333 V 52.916667 H 31.75 V 63.5 H 10.583333 v 10.583333 h 31.75 V 52.916667 L 52.916667,42.333333 h 21.166666 42.333337 v -31.75 H 63.5 V 31.75 H 52.916667 V 10.583333 Z m 10.583334,0 L 42.333334,31.75 31.75,42.333334 10.583333,21.166667 Z M 95.25,21.166667 h 10.58333 V 31.75 H 95.25 Z m -42.333333,31.75 V 63.5 l 52.916663,52.91667 h 10.58334 V 105.83333 L 63.5,52.916667 Z m 31.75,0 31.750003,31.75 v -31.75 z m -74.083334,31.75 v 31.750003 h 74.083334 l -31.75,-31.750003 z M 21.166667,95.25 H 31.75 v 10.58333 H 21.166667 Z"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccc" /></g></svg>

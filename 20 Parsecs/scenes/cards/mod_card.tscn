@@ -34,11 +34,11 @@ custom_constants/separation = 0
 script = ExtResource( 5 )
 
 [node name="Top" type="HBoxContainer" parent="."]
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 19.0
 
 [node name="Type" type="MarginContainer" parent="Top"]
-margin_right = 106.0
+margin_right = 63.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 custom_constants/margin_top = 4
@@ -47,7 +47,7 @@ custom_constants/margin_left = 27
 [node name="Type" type="HBoxContainer" parent="Top/Type"]
 margin_left = 27.0
 margin_top = 4.0
-margin_right = 106.0
+margin_right = 63.0
 margin_bottom = 19.0
 
 [node name="Icon" type="TextureRect" parent="Top/Type/Type"]
@@ -57,8 +57,8 @@ margin_bottom = 15.0
 texture = ExtResource( 17 )
 
 [node name="Help" type="MarginContainer" parent="Top"]
-margin_left = 110.0
-margin_right = 128.0
+margin_left = 67.0
+margin_right = 85.0
 margin_bottom = 19.0
 
 [node name="Help" type="Button" parent="Top/Help"]
@@ -72,19 +72,19 @@ text = "?"
 
 [node name="Card" type="MarginContainer" parent="."]
 margin_top = 19.0
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 120.0
 size_flags_vertical = 3
 custom_constants/margin_top = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Card"]
 margin_top = 8.0
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 101.0
 custom_constants/separation = 2
 
 [node name="Buy" type="HBoxContainer" parent="Card/VBoxContainer"]
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 12.0
 
 [node name="BuyIcon" type="TextureRect" parent="Card/VBoxContainer/Buy"]
@@ -112,7 +112,7 @@ text = "1K"
 [node name="Buff" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 14.0
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 26.0
 
 [node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Buff"]
@@ -191,7 +191,7 @@ texture = ExtResource( 6 )
 [node name="Shield" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 28.0
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 40.0
 
 [node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Shield"]
@@ -229,7 +229,7 @@ texture = ExtResource( 12 )
 [node name="Combat" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 42.0
-margin_right = 128.0
+margin_right = 85.0
 margin_bottom = 68.0
 
 [node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Combat"]
@@ -361,6 +361,7 @@ texture = ExtResource( 13 )
 
 [node name="Blaster" type="HBoxContainer" parent="Card/VBoxContainer/Combat"]
 unique_name_in_owner = true
+visible = false
 margin_left = 68.0
 margin_right = 128.0
 margin_bottom = 26.0
