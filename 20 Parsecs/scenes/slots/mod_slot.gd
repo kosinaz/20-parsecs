@@ -33,6 +33,15 @@ func get_card():
 		return $"%CargoCard".card
 	return $"%ModCard".card
 
+func get_armor():
+	if empty:
+		return 0
+	if $"%CargoCard".visible:
+		return 0
+	if $"%ModCard".card.has("armor"):
+		return 1
+	return 0
+
 func set_card(card_to_set):
 	empty = false
 	if card_to_set.type == "Cargo" or card_to_set.type == "Cargo/Mod":
@@ -50,26 +59,36 @@ func set_card(card_to_set):
 
 func remove_card():
 	empty = true
+	bartering = false
 	$"%CargoCard".card = null
 	$"%CargoCard".hide()
 	$"%ModCard".card = null
 	$"%ModCard".hide()
 	$"%Buttons".hide()
+	$"%Barter".pressed = false
 	
 func has_trait(trait):
 	if empty:
 		return false
-	if not $"%ModCard".card.has("trait"):
+	var card = null
+	if $"%CargoCard".visible:
+		card = $"%CargoCard".card
+	else:
+		card = $"%ModCard".card
+	if not card.has("trait"):
 		return false
-	return $"%ModCard".card.trait == trait
+	return card.trait == trait
 
 func update_target():
 	_target = null
 	if $"%CargoCard".visible:
 		var targets = []
-		targets.append(player.cargo_slots[0])
-		targets.append(player.cargo_slots[1])
-		targets.append(player.cargo_mod_slot)
+		if player.cargo_slots[0].empty:
+			targets.append(player.cargo_slots[0])
+		if player.cargo_slots[1].empty:
+			targets.append(player.cargo_slots[1])
+		if player.cargo_mod_slot.empty or player.cargo_mod_slot.get_card().type == "Mod":
+			targets.append(player.cargo_mod_slot)
 		for target in targets:
 			if not target.visible:
 				continue
@@ -106,8 +125,8 @@ func update_move():
 		$"%Move".disabled = false
 
 func _on_barter_toggled(pressed):
-	emit_signal("bartered")
 	bartering = pressed
+	emit_signal("bartered")
 
 func _on_move_pressed():
 	emit_signal("moved", self, _target)

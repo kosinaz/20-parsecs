@@ -77,13 +77,18 @@ func _ready():
 		deck.set_player($"%Player")
 	for card in $"%Player".gear_slots:
 		card.set_player($"%Player")
+		card.connect("bartered", self, "_on_barter_toggled")
 	for card in $"%Player".cargo_slots:
 		card.set_player($"%Player")
 		card.connect("moved", self, "_on_move_pressed")
+		card.connect("delivered", self, "_on_deliver_pressed")
+		card.connect("bartered", self, "_on_barter_toggled")
 	$"%CargoModSlot".set_player($"%Player")
 	$"%CargoModSlot".set_ship($"%Ship")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("moved", self, "_on_move_pressed")
+# warning-ignore:return_value_discarded
+	$"%CargoModSlot".connect("bartered", self, "_on_barter_toggled")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("repaired", self, "_on_repair_pressed")
 	$"%ModSlot".set_player($"%Player")
@@ -92,6 +97,8 @@ func _ready():
 	$"%ModSlot".connect("moved", self, "_on_move_pressed")
 # warning-ignore:return_value_discarded
 	$"%ModSlot".connect("repaired", self, "_on_repair_pressed")
+# warning-ignore:return_value_discarded
+	$"%ModSlot".connect("bartered", self, "_on_barter_toggled")
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -117,11 +124,11 @@ func start_planning():
 	for r in ["A", "B", "C", "D"]:
 		if $"%Player".get_reputation(r) != 1:
 			var patrol = get_node("%Patrol" + r)
-			var id = patrol.current_space.id
+			var id = patrol.space.id
 			astar.set_point_disabled(id)
 			hostile_patrols.append(patrol)
 	for to_id in astar.get_points():
-		var path = astar.get_id_path($"%Player".current_space.id, to_id)
+		var path = astar.get_id_path($"%Player".space.id, to_id)
 		if path.size() > get_speed() + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = true
 			get_node("Spaces/Space" + str(to_id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
@@ -131,7 +138,7 @@ func start_planning():
 			get_node("Spaces/Space" + str(to_id)).get_node("Label").add_color_override("font_color", Color.white)
 			get_node("Spaces/Space" + str(to_id)).get_node("Faction").add_color_override("font_color", Color.white)
 	astar.set_point_disabled(13, false)
-	var path13 = astar.get_id_path($"%Player".current_space.id, 13)
+	var path13 = astar.get_id_path($"%Player".space.id, 13)
 	if path13.size() > get_speed() + 1 or path13.size() == 0:
 		get_node("Spaces/Space13/Button").disabled = true
 		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
@@ -141,9 +148,9 @@ func start_planning():
 		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
 		get_node("Spaces/Space" + str(13)).get_node("Faction").add_color_override("font_color", Color.white)
 	for patrol in hostile_patrols:
-		var id = patrol.current_space.id
+		var id = patrol.space.id
 		astar.set_point_disabled(id, false)
-		var path = astar.get_id_path($"%Player".current_space.id, id)
+		var path = astar.get_id_path($"%Player".space.id, id)
 		if path.size() > get_speed() + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = true
 			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
@@ -165,18 +172,16 @@ func stop_planning():
 	start_action()
 
 func move_to(ship, space):
-	ship.current_space = space
-	if ship == $"%Player":
-		ship.space = space
-		ship.space_name = space.get_node("Label").text
+	ship.space = space
+	ship.space_name = space.get_node("Label").text
 	ship.position = space.position
 
 func move_patrol(patrol, step):
-	var path = astar.get_id_path(patrol.current_space.id, $"%Player".current_space.id)
+	var path = astar.get_id_path(patrol.space.id, $"%Player".space.id)
 	if path.size() > step + 1:
 		move_to(patrol, get_node("Spaces/Space" + str(path[step])))
 	else:
-		move_to(patrol, $"%Player".current_space)
+		move_to(patrol, $"%Player".space)
 
 func upgrade_patrol(patrol):
 	if patrol.name.ends_with("A"):
@@ -219,41 +224,34 @@ func stop_action():
 	start_encounter()
 
 func update_action_buttons():
+	$"%Player".update_discount()
 	for card in all_cards:
 		card.update_buttons()
 
-func update_buy_buttons():
-	for card in [$"%MarketCargo", $"%MarketGearmod"]:
-		if $"%Player".get_money() < card.get_price() - discount:
-			card.disable_button("Buy")
-	if $"%MarketShip".is_used():
-		if $"%Player".get_money() < 5 or $"%Ship".get_price() == 20 or $"%Player".get_money() < $"%MarketShip".get_price() - $"%Ship".get_price():
-			$"%MarketShip".disable_button("Buy")
-	if $"%Player".current_space.get_node("Label").text == $"%MarketCargo".get_to():
-		$"%MarketCargo".disable_button("Buy")
-
-func update_market_prices():
-#	discount = 0
-#	for card in character_slots:
-#		if card.is_bartering():
-#			discount += card.get_price()
-#	for card in market_slots:
-#		if not card.is_free:
-#			var reduced_price = max(0, card.get_price() - discount)
-#			card.set_buy_text("Buy " + str(reduced_price) + "K")
+#func update_buy_buttons():
+#
+#	for card in [$"%MarketCargo", $"%MarketGearmod"]:
+#		if $"%Player".get_money() < card.get_price() - discount:
+#			card.disable_button("Buy")
+#	if $"%MarketShip".is_used():
+#		if $"%Player".get_money() < 5 or $"%Ship".get_price() == 20 or $"%Player".get_money() < $"%MarketShip".get_price() - $"%Ship".get_price():
+#			$"%MarketShip".disable_button("Buy")
+#	if $"%Player".space.get_node("Label").text == $"%MarketCargo".get_to():
+#		$"%MarketCargo".disable_button("Buy")
+#
 #	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
 #	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
-	update_used_ship_prices()
+#	update_used_ship_prices()
 
-func deliver_cargo(cargo):
-	if cargo.get_data().has("illegal"):
+func _on_deliver_pressed(cargo):
+	if cargo.has_trait("Illegal"):
 		failed_cargo = cargo
 		var result = roll()
 		failed_card = randi() % 4
-		if result == "hit" or (result == "blank" and smuggling_compartment):
-			$"%Player".increase_fame(cargo.get_data().fame)
-			$"%Player".increase_money(cargo.get_data().sell)
-			remove_cargo(cargo)
+		if result == "hit" or (result == "blank" and $"%CargoSlot3".visible):
+			$"%Player".increase_fame(cargo.get_card().fame)
+			$"%Player".increase_money(cargo.get_card().sell)
+			remove_card(cargo)
 		else:
 			skip_encounter = true
 			$"%Prompt".show()
@@ -287,7 +285,7 @@ func deliver_cargo(cargo):
 						$"%FailedSell2".hide()
 					else:
 						$"%FailedLabel".text += "\nStealth Test failed!"
-						var faction = $"%Player".current_space.faction
+						var faction = $"%Player".space.faction
 						if faction == "":
 							$"%FailedSell".text = "Keep Cargo"
 						else:
@@ -316,7 +314,7 @@ func deliver_cargo(cargo):
 						$"%FailedSell2".hide()
 					else:
 						$"%FailedLabel".text += "\nPiloting Test failed!"
-						var faction = $"%Player".current_space.faction
+						var faction = $"%Player".space.faction
 						if faction == "":
 							$"%FailedSell".text = "Keep Cargo"
 						else:
@@ -337,45 +335,45 @@ func deliver_cargo(cargo):
 							$"%FailedSell".text = "Keep Cargo -1CR"
 							$"%FailedSell2".hide()
 	else:
-		$"%Player".increase_money(cargo.get_data().sell)
-		if cargo.get_data().has("rep"):
-			$"%Player".increase_reputation(cargo.get_data().rep)
-		remove_cargo(cargo)
+		$"%Player".increase_money(cargo.get_card().sell)
+		if cargo.get_card().has("rep"):
+			$"%Player".increase_reputation(cargo.get_card().rep)
+		remove_card(cargo)
 
-func remove_cargo(cargo):
-	market_cargos.append(cargo.get_data())
-	cargo.clear()
-	update_action_buttons()
+func drop_barter_pool():
+	for slot in $"%Player".slots:
+		if slot.bartering:
+			remove_card(slot)
+	discount = 0
 
-func drop_cargo(cargo):
-	if cargo.get_data().has("smuggling compartment"):
-		smuggling_compartment = false
-		$"%ShipCargo3".hide()
-		remove_cargo(cargo)
-#		if $"%ShipCargo3".has_cargo:
-#			cargo.setup($"%ShipCargo3".get_data())
-#			remove_cargo($"%ShipCargo3")
-	else:
-		remove_cargo(cargo)
-
-func drop_mod(mod):
-	if mod.get_data().has("smuggling compartment"):
-		smuggling_compartment = false
-		$"%ShipCargo3".hide()
-#		if $"%ShipCargo3".has_cargo:
-#			remove_cargo($"%ShipCargo3")
-#		remove_cargo(mod)
-	else:
-		market_gearmods.append(mod.get_data())
-		mod.clear()
-	update_action_buttons()
-	$"%Ship".update_armor()
-
-func drop_gear(gear):
-	market_gearmods.append(gear.get_data())
-	gear.clear()
-	update_action_buttons()
-	$"%Character".update_armor()
+func remove_card(slot):
+	var card = slot.get_card()
+	var deck = card.deck
+	get_node("%" + deck).append(card)
+	if slot.has_trait("Smuggling Compartment"):
+		$"%CargoSlot3".hide()
+		if not $"%CargoSlot3".empty:
+			if slot == $"%ModSlot":
+				$"%CargoSlot3".update_target()
+				var target = $"%CargoSlot3".get_target()
+				if target == null:
+					$"%CargoSlot3".remove_card()
+				else:
+					move_card($"%CargoSlot3", target)
+			else:
+				move_card($"%CargoSlot3", slot)
+	slot.remove_card()
+#	update_action_buttons()
+	
+func move_card(source, target):
+	var other_card = null
+	if not target.empty:
+		other_card = target.get_card()
+	target.set_card(source.get_card())
+	source.remove_card()
+	if other_card:
+		source.set_card(other_card)
+#	update_action_buttons()
 
 func roll():
 	return dice[randi() % 8]
@@ -409,7 +407,7 @@ func is_highly_skilled(skill):
 
 func has_mod(_name):
 	return false
-#	return $"%ShipMod".get_name() == name or $"%ShipCargomod".get_name() == name
+#	return $"%ModSlot".get_name() == name or $"%CargoModSlot".get_name() == name
 
 func has_gear(name):
 	return $"%CharacterGear".get_name() == name or $"%CharacterGear2".get_name() == name
@@ -608,31 +606,6 @@ func buy_ship(ship):
 	bought = true
 	update_action_buttons()
 
-func drop_barter_pool():
-#	if $"%ShipCargo".get_node("Barter").pressed:
-#		drop_cargo($"%ShipCargo")
-#	if $"%ShipCargo2".get_node("Barter").pressed:
-#		drop_cargo($"%ShipCargo2")
-#	if $"%ShipCargo3".get_node("Barter").pressed:
-#		drop_cargo($"%ShipCargo3")
-#	if $"%ShipCargomod".get_node("Barter").pressed:
-#		drop_mod($"%ShipCargomod")
-#	if $"%ShipMod".get_node("Barter").pressed:
-#		drop_mod($"%ShipMod")
-#	if $"%CharacterGear".is_bartering():
-#		drop_gear($"%CharacterGear")
-#	if $"%CharacterGear2".is_bartering():
-#		drop_gear($"%CharacterGear2")
-	discount = 0
-	
-func move_card(card):
-	var other_data = card.movement_target.get_data()
-	card.movement_target.setup(card.get_data())
-	card.clear()
-	if other_data:
-		card.setup(other_data)
-	update_action_buttons()
-
 func start_encounter():
 	if skip_encounter:
 		stop_encounter()
@@ -644,13 +617,13 @@ func start_encounter():
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Encounter Step\n"
 		for r in ["A", "B", "C", "D"]:
 			var patrol = get_node("%Patrol" + r)
-			if patrol.current_space == $"%Player".current_space:
+			if patrol.space == $"%Player".space:
 				$"%Attack".disabled = false
 				attacking_patrol = patrol
 				if $"%Player".get_reputation(r) == -1:
 					$"%Contact".disabled = true
 					$"%Explore".disabled = true
-		if not planets.has($"%Player".current_space.id):
+		if not planets.has($"%Player".space.id):
 			$"%Contact".disabled = true
 		if $"%Contact".disabled and $"%Explore".disabled:
 			$"%TurnIndicator".text += "You must Attack the hostile patrol!"
@@ -673,7 +646,7 @@ func attack_patrol():
 	if attacking_patrol.data.has("invulnerable"):
 		$"%Alert".show()
 		$"%AlertSummary".text = "You failed the combat against\nthe undefeatable patrol!"
-		var spaces = astar.get_point_connections($"%Player".current_space.id)
+		var spaces = astar.get_point_connections($"%Player".space.id)
 		move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 		attacking_patrol = null
 		$"%Ship".suffer_damage(10)
@@ -695,7 +668,7 @@ func attack_patrol():
 			attacking_patrol = null
 		else:
 			$"%AlertSummary".text = "You failed the combat against the patrol!\n(" + str(combat.defender_damage) + " vs " + str(combat.attacker_damage) + ")"
-			var spaces = astar.get_point_connections($"%Player".current_space.id)
+			var spaces = astar.get_point_connections($"%Player".space.id)
 			move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 			attacking_patrol = null
 
@@ -716,16 +689,15 @@ func _on_finish_pressed():
 
 func _on_skip_pressed():
 	$"%Player".skipped = true
-#	update_action_buttons()
+	update_action_buttons()
 
 func _on_cargo_deck_buy_pressed(card, price, target):
 	$"%Player".decrease_money(price)
 	drop_barter_pool()
-	if card.has("trait") and card.trait == "smuggling compartment":
-		smuggling_compartment = true
-		$"%ShipCargo3".show()
+	if card.has("trait") and card.trait == "Smuggling Compartment":
+		$"%CargoSlot3".show()
 	target.set_card(card)
-	var front = $"%CargoDeck".pop_front()
+	var front = $"%CargoDeck".front()
 	if front.has("patrol"):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true
@@ -735,48 +707,10 @@ func _on_gear_mod_deck_buy_pressed(card, price, target):
 	$"%Player".decrease_money(price)
 	drop_barter_pool()
 	target.set_card(card)
-	var front = $"%GearModDeck".pop_front()
+	var front = $"%GearModDeck".front()
 	if front.has("patrol"):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true
-	update_action_buttons()
-
-func _on_market_cargo_buy_pressed():
-	$"%Player".decrease_money(max(0, market_cargos[0].buy - discount))
-	drop_barter_pool()
-	if market_cargos[0].has("smuggling compartment"):
-		smuggling_compartment = true
-		$"%ShipCargo3".show()
-	$"%MarketCargo".movement_target.setup(market_cargos[0])
-	market_cargos.pop_front()
-	$"%MarketCargo".setup(market_cargos[0])
-	if market_cargos[0].has("patrol"):
-		move_patrol(get_node("%Patrol" + market_cargos[0].patrol), market_cargos[0].move)
-	bought = true
-	update_action_buttons()
-
-func _on_market_cargo_skip_pressed():
-	market_cargos.append(market_cargos.pop_front())
-	$"%MarketCargo".setup(market_cargos[0])
-	skipped = true
-	update_action_buttons()
-
-func _on_market_gearmod_buy_pressed():
-	$"%Player".decrease_money(max(0, market_gearmods[0].buy - discount))
-	drop_barter_pool()
-	$"%MarketGearmod".movement_target.setup(market_gearmods[0])
-	$"%Ship".update_armor()
-	market_gearmods.pop_front()
-	$"%MarketGearmod".setup(market_gearmods[0])
-	if market_gearmods[0].has("patrol"):
-		move_patrol(get_node("%Patrol" + market_gearmods[0].patrol), market_gearmods[0].move)
-	bought = true
-	update_action_buttons()
-
-func _on_market_gearmod_skip_pressed():
-	market_gearmods.append(market_gearmods.pop_front())
-	$"%MarketGearmod".setup(market_gearmods[0])
-	skipped = true
 	update_action_buttons()
 
 func _on_market_ship_buy_pressed():
@@ -814,71 +748,17 @@ func _on_used_ship_market_buy7_pressed():
 
 func _on_used_ship_market_buy8_pressed():
 	buy_used_ship(ship_deck[7])
-
-func _on_character_gear_drop_pressed():
-	drop_gear($"%CharacterGear")
-
-func _on_character_gear2_drop_pressed():
-	drop_gear($"%CharacterGear2")
-
-func _on_ship_cargo_deliver_pressed():
-	deliver_cargo($"%ShipCargo")
 	
-func _on_ship_cargo_deliver2_pressed():
-	deliver_cargo($"%ShipCargo2")
-	
-func _on_ship_cargo_deliver3_pressed():
-	deliver_cargo($"%ShipCargo3")
-	
-func _on_ship_cargo_drop_pressed():
-	drop_cargo($"%ShipCargo")
-
-func _on_ship_cargo_drop2_pressed():
-	drop_cargo($"%ShipCargo2")
-
-func _on_ship_cargo_drop3_pressed():
-	drop_cargo($"%ShipCargo3")
-
-func _on_ship_cargomod_deliver_pressed():
-	deliver_cargo($"%ShipCargomod")
-
-func _on_ship_cargomod_drop_pressed():
-	drop_cargo($"%ShipCargomod")
-	
-func _on_ship_mod_drop_pressed():
-	drop_mod($"%ShipMod")
-	
-func _on_ship_cargo_barter_toggled(_pressed):
+func _on_barter_toggled():
 	update_action_buttons()
 
 func _on_move_pressed(source, target):
-	var other_card = null
-	if not target.empty:
-		other_card = target.get_card()
-	target.set_card(source.get_card())
-	source.remove_card()
-	if other_card:
-		source.set_card(other_card)
-	update_action_buttons()
+	move_card(source, target)
 
-func _on_ship_cargo_move_pressed():
-	move_card($"%ShipCargo")
-	
-func _on_ship_cargo2_move_pressed():
-	move_card($"%ShipCargo2")
-	
-func _on_ship_cargo3_move_pressed():
-	move_card($"%ShipCargo3")
-	
-func _on_ship_cargomod_move_pressed():
-	move_card($"%ShipCargomod")
-	
-func _on_ship_mod_move_pressed():
-	move_card($"%ShipMod")
-
-func _on_ship_mod_recover_pressed():
-	$"%Ship".repair(1)
-	$"%ShipMod".disable_recover()
+func _on_heal_pressed():
+	$"%Character".heal()
+	$"%Ship".repair()
+	stop_planning()
 
 func _on_repair_pressed():
 	$"%Ship".repair(1)
@@ -942,19 +822,19 @@ func _on_failed_sell_pressed():
 			$"%Player".decrease_reputation("B")
 		if $"%FailedSell".text == "Deliver -1DR":
 			$"%Player".decrease_reputation("D")
-		$"%Player".increase_fame(failed_cargo.get_data().fame)
-		$"%Player".increase_money(failed_cargo.get_data().sell)
-		remove_cargo(failed_cargo)
+		$"%Player".increase_fame(failed_cargo.get_card().fame)
+		$"%Player".increase_money(failed_cargo.get_card().sell)
+		remove_card(failed_cargo)
 	$"%Prompt".hide()
 	stop_action()
 
 func _on_failed_sell2_pressed():
 	if $"%FailedSell2".text == "Deliver -6K":
-		$"%Player".increase_fame(failed_cargo.get_data().fame)
-		$"%Player".increase_money(failed_cargo.get_data().sell - 6)
-		remove_cargo(failed_cargo)
+		$"%Player".increase_fame(failed_cargo.get_card().fame)
+		$"%Player".increase_money(failed_cargo.get_card().sell - 6)
+		remove_card(failed_cargo)
 	if $"%FailedSell2".text == "Drop":
-		remove_cargo(failed_cargo)
+		remove_card(failed_cargo)
 	$"%Prompt".hide()
 	stop_action()
 

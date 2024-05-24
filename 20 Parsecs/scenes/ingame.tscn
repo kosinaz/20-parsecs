@@ -1392,6 +1392,7 @@ margin_left = 192.0
 margin_right = 288.0
 
 [node name="CargoSlot3" parent="CanvasLayer/Ship" instance=ExtResource( 53 )]
+visible = false
 margin_left = 288.0
 margin_right = 384.0
 
@@ -1399,12 +1400,12 @@ margin_right = 384.0
 texture = ExtResource( 54 )
 
 [node name="CargoModSlot" parent="CanvasLayer/Ship" instance=ExtResource( 51 )]
-margin_left = 384.0
-margin_right = 480.0
+margin_left = 288.0
+margin_right = 384.0
 
 [node name="ModSlot" parent="CanvasLayer/Ship" instance=ExtResource( 56 )]
-margin_left = 480.0
-margin_right = 576.0
+margin_left = 384.0
+margin_right = 480.0
 
 [node name="Prompt" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true

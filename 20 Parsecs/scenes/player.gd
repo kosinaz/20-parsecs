@@ -1,6 +1,5 @@
 extends Node2D
 
-var current_space = null
 var fame = 0
 var money = 0
 var ahut = 0
@@ -17,10 +16,17 @@ onready var gear_slots = [$"%GearSlot",$"%GearSlot2"]
 onready var cargo_slots = [$"%CargoSlot",$"%CargoSlot2",$"%CargoSlot3"]
 onready var cargo_mod_slot = $"%CargoModSlot"
 onready var mod_slot = $"%ModSlot"
+onready var ship_slots = [$"%CargoSlot",$"%CargoSlot2",$"%CargoSlot3", $"%CargoModSlot", $"%ModSlot"]
+onready var slots = [$"%GearSlot",$"%GearSlot2", $"%CargoSlot",$"%CargoSlot2",$"%CargoSlot3", $"%CargoModSlot", $"%ModSlot"]
 	
 func get_money():
 	return money
-	
+
+func get_price(slot):
+	if slot.empty:
+		return 0
+	return slot.get_card().buy
+
 func get_reputation(rep):
 	if rep == "A":
 		return ahut
@@ -30,7 +36,13 @@ func get_reputation(rep):
 		return cimp
 	if rep == "D":
 		return dreb
-	
+
+func update_discount():
+	discount = 0
+	for slot in slots:
+		if slot.bartering:
+			discount += get_price(slot)
+
 func increase_money(amount):
 	money += amount
 	$"%Money".text = "Money: " + str(money) + "K"
@@ -70,3 +82,4 @@ func decrease_reputation(reputation):
 	if reputation == "D" and dreb > -1:
 		dreb -= 1
 	$"%Reputations".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBasyn: " + str(basyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
+

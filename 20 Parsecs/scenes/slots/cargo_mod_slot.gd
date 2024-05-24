@@ -56,6 +56,15 @@ func get_card():
 		return $"%CargoCard".card
 	return $"%ModCard".card
 
+func get_armor():
+	if empty:
+		return 0
+	if $"%CargoCard".visible:
+		return 0
+	if $"%ModCard".card.has("armor"):
+		return 1
+	return 0
+
 func set_card(card_to_set):
 	empty = false
 	if card_to_set.type == "Cargo" or card_to_set.type == "Cargo/Mod":
@@ -73,11 +82,13 @@ func set_card(card_to_set):
 
 func remove_card():
 	empty = true
+	bartering = false
 	$"%CargoCard".card = null
 	$"%CargoCard".hide()
 	$"%ModCard".card = null
 	$"%ModCard".hide()
 	$"%Buttons".hide()
+	$"%Barter".pressed = false
 	
 func has_trait(trait):
 	if empty:
@@ -166,8 +177,8 @@ func _on_deliver_pressed():
 	emit_signal("delivered")
 
 func _on_barter_toggled(pressed):
-	emit_signal("bartered")
 	bartering = pressed
+	emit_signal("bartered")
 
 func _on_move_pressed():
 	emit_signal("moved", self, _target)

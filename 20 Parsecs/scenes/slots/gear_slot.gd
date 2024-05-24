@@ -43,9 +43,11 @@ func set_card(card_to_set):
 
 func remove_card():
 	empty = true
+	bartering = false
 	$"%GearCard".card = null
 	$"%GearCard".hide()
 	$"%Buttons".hide()
+	$"%Barter".pressed = false
 	
 func has_trait(trait):
 	if empty:
@@ -66,5 +68,5 @@ func update_barter():
 	$"%Barter".disabled = player.bought
 
 func _on_barter_toggled(pressed):
-	emit_signal("bartered")
 	bartering = pressed
+	emit_signal("bartered")

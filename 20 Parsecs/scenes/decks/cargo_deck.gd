@@ -5,6 +5,7 @@ signal skipped
 
 var _deck = [
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"to": "Ganal",
 		"buy": 1,
@@ -14,6 +15,7 @@ var _deck = [
 		"move": 4,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"to": "Bord",
 		"buy": 1,
@@ -23,6 +25,7 @@ var _deck = [
 		"move": 4,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"to": "Haryl",
 		"buy": 1,
@@ -32,6 +35,7 @@ var _deck = [
 		"move": 4,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"to": "Damon",
 		"buy": 1,
@@ -41,6 +45,7 @@ var _deck = [
 		"move": 4,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"to": "Katak",
 		"buy": 1,
@@ -49,6 +54,7 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"trait": "Illegal",
 		"to": "Acan",
@@ -57,6 +63,7 @@ var _deck = [
 		"fame": 1
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"trait": "Illegal",
 		"to": "Ekes",
@@ -67,6 +74,7 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"trait": "Illegal",
 		"to": "Fatat",
@@ -77,6 +85,7 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo",
 		"trait": "Illegal",
 		"to": "Jakaf",
@@ -87,6 +96,7 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "CargoDeck",
 		"type": "Cargo/Mod",
 		"trait": "Smuggling Compartment",
 		"buy": 2,
@@ -114,6 +124,16 @@ var player = {
 			"bartering": false,
 		},
 	],
+	"cargo_mod_slot": {
+		"visible": true,
+		"empty": true,
+		"bartering": false,
+	},
+	"mod_slot": {
+		"visible": true,
+		"empty": true,
+		"bartering": false,
+	}
 }
 
 
@@ -144,6 +164,8 @@ func update_buy():
 	var card = _deck.front()
 	_price = max(0, card.buy - player.discount)
 	$"%Buy".text = str(_price) + "K"
+	if player.discount > 0:
+		$"%Buy".text += "*"
 	$"%Buy".disabled = false
 	if player.bought:
 		$"%Buy".disabled = true
@@ -165,13 +187,22 @@ func update_skip():
 	$"%Skip".disabled = player.skipped
 
 func update_target():
-	for slot in player.cargo_slots:
-		if not slot.visible:
+	_target = null
+	var targets = []
+	targets.append_array(player.cargo_slots)
+	targets.append(player.cargo_mod_slot)
+	if front().type == "Cargo/Mod":
+		targets.append(player.mod_slot)
+	for target in targets:
+		if not target.visible:
 			continue
-		if not slot.empty and not slot.bartering:
+		if not target.empty and not target.bartering:
 			continue
-		_target = slot
-		break
+		_target = target
+		return
+
+func front():
+	return _deck.front()
 
 func pop_front():
 	var card = _deck.pop_front()
@@ -182,9 +213,11 @@ func append(card):
 	_deck.append(card)
 
 func _on_buy_pressed():
-	emit_signal("bought", pop_front(), _price, _target)
-	update_view()
+	var target = _target
+	var price = _price
+	var card = pop_front()
+	emit_signal("bought", card, price, target)
 
 func _on_skip_pressed():
 	emit_signal("skipped")
-	_deck.append(pop_front())
+	append(pop_front())

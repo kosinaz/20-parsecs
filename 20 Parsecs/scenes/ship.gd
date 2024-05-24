@@ -2,7 +2,6 @@ extends TextureRect
 
 var _data = {}
 var damage = 0
-var _damage = 0
 var defeated = false
 var moveable = false
 var is_free = false
@@ -34,7 +33,7 @@ func get_data():
 	return _data
 
 func get_damage():
-	return _damage
+	return damage
 	
 func get_price():
 	if _data and _data.has("buy"):
@@ -53,38 +52,31 @@ func get_reduced_price(price):
 	return max(get_price() - price, 0)
 
 func suffer_damage(amount):
-	_damage += amount
-	if _damage >= get_armor():
+	damage += amount
+	if damage >= get_armor():
 		defeated = true
-		_damage = get_armor()
-	$"%ShipDamage".value = _damage
-	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
-	damage = _damage
+		damage = get_armor()
+	$"%ShipDamage".value = damage
+	$"%ShipDamageLabel".text = str(get_armor() - damage) + "/" + str(get_armor())
 
 func repair(amount = 0):
 	defeated = false
 	if amount == 0:
-		amount = _damage
-	_damage -= amount
-	$"%ShipDamage".value = _damage
-	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
-	damage = _damage
+		amount = damage
+	damage -= amount
+	$"%ShipDamage".value = damage
+	$"%ShipDamageLabel".text = str(get_armor() - damage) + "/" + str(get_armor())
 	repaired = true
 
 func get_armor():
-	var armor = _data.armor
-#	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipMod".get_name()):
-#		armor += 1
-#	if ["shield upgrade", "maneuvering thrusters"].has($"%ShipCargomod".get_name()):
-#		armor += 1
-	return armor
+	return _data.armor + $"%ModSlot".get_armor() + $"%CargoModSlot".get_armor()
 
 func update_armor():
 	$"%ShipDamage".max_value = get_armor()
-	$"%ShipDamageLabel".text = str(get_armor() - _damage) + "/" + str(get_armor())
-	if _damage >= get_armor():
+	$"%ShipDamageLabel".text = str(get_armor() - damage) + "/" + str(get_armor())
+	if damage >= get_armor():
 		defeated = true
-		_damage = get_armor()
+		damage = get_armor()
 
 func enable_buttons():
 	for child in get_children():

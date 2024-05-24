@@ -5,6 +5,7 @@ signal skipped
 
 var _deck = [
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 2,
 		"name": "targeting computer",
@@ -12,6 +13,7 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 2,
 		"name": "quad laser",
@@ -20,24 +22,28 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 3,
 		"name": "nav computer",
 		"speed": 1,
 	},
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 3,
 		"name": "shield upgrade",
 		"armor": 1,
 	},
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 5,
 		"name": "maneuvering thrusters",
 		"armor": 1,
 	},
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 5,
 		"name": "ion cannon",
@@ -45,74 +51,83 @@ var _deck = [
 		"move": 3,
 	},
 	{
+		"deck": "GearModDeck",
 		"type": "Mod",
 		"buy": 7,
 		"name": "autoblaster",
 		"patrol": "B",
 		"move": 3,
 	},
-#	{
-#		"type": "Gear",
-#		"buy": 3,
-#		"name": "blaster pistol",
-#		"attack": 1,
-#		"patrol": "B",
-#		"move": 3,
-#	},
-#	{
-#		"type": "Gear",
-#		"trait": "Armor",
-#		"buy": 3,
-#		"name": "armored vest",
-#		"patrol": "C",
-#		"move": 3,
-#	},
-#	{
-#		"type": "Gear",
-#		"buy": 4,
-#		"name": "vibroknife",
-#		"patrol": "B",
-#		"move": 4,
-#	},
-#	{
-#		"type": "Gear",
-#		"buy": 5,
-#		"name": "blaster rifle",
-#		"attack": 1,
-#		"patrol": "D",
-#		"move": 4,
-#	},
-#	{
-#		"type": "Gear",
-#		"buy": 6,
-#		"name": "vibroax",
-#		"attack": 1,
-#		"patrol": "A",
-#		"move": 3,
-#	},
-#	{
-#		"type": "Gear",
-#		"buy": 6,
-#		"name": "jetpack",
-#		"patrol": "A",
-#		"move": 4,
-#	},
-#	{
-#		"type": "Gear",
-#		"buy": 8,
-#		"name": "grenade",
-#		"attack": 2,
-#		"patrol": "D",
-#		"move": 3,
-#	},
-#	{
-#		"type": "Gear",
-#		"trait": "Armor",
-#		"buy": 8,
-#		"name": "plastoid armor",
-#		"patrol": "C",
-#		"move": 4,
-#	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"buy": 3,
+		"name": "blaster pistol",
+		"attack": 1,
+		"patrol": "B",
+		"move": 3,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"trait": "Armor",
+		"buy": 3,
+		"name": "armored vest",
+		"patrol": "C",
+		"move": 3,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"buy": 4,
+		"name": "vibroknife",
+		"patrol": "B",
+		"move": 4,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"buy": 5,
+		"name": "blaster rifle",
+		"attack": 1,
+		"patrol": "D",
+		"move": 4,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"buy": 6,
+		"name": "vibroax",
+		"attack": 1,
+		"patrol": "A",
+		"move": 3,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"buy": 6,
+		"name": "jetpack",
+		"patrol": "A",
+		"move": 4,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"buy": 8,
+		"name": "grenade",
+		"attack": 2,
+		"patrol": "D",
+		"move": 3,
+	},
+	{
+		"deck": "GearModDeck",
+		"type": "Gear",
+		"trait": "Armor",
+		"buy": 8,
+		"name": "plastoid armor",
+		"patrol": "C",
+		"move": 4,
+	},
 ]
 var _target = null
 var _price = 0
@@ -185,6 +200,8 @@ func update_buy():
 	var card = _deck.front()
 	_price = max(0, card.buy - player.discount)
 	$"%Buy".text = str(_price) + "K"
+	if player.discount > 0:
+		$"%Buy".text += "*"
 	$"%Buy".disabled = false
 	if player.bought:
 		$"%Buy".disabled = true
@@ -206,6 +223,7 @@ func update_skip():
 	$"%Skip".disabled = player.skipped
 
 func update_target():
+	_target = null
 	if $"%GearCard".visible:
 		for slot in player.gear_slots:
 			if not slot.empty and not slot.bartering:
@@ -223,6 +241,9 @@ func update_target():
 		else:
 			_target = null
 
+func front():
+	return _deck.front()
+	
 func pop_front():
 	var card = _deck.pop_front()
 	update_view()
@@ -232,9 +253,12 @@ func append(card):
 	_deck.append(card)
 
 func _on_buy_pressed():
-	emit_signal("bought", pop_front(), _price, _target)
+	var price = _price
+	var target = _target
+	var card = pop_front()
+	emit_signal("bought", card, price, target)
 	update_view()
 
 func _on_skip_pressed():
 	emit_signal("skipped")
-	_deck.append(pop_front())
+	append(pop_front())

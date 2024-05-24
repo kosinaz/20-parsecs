@@ -44,6 +44,9 @@ func set_player(player_to_set):
 
 func get_card():
 	return $"%CargoCard".card
+	
+func get_target():
+	return _target
 
 func set_card(card_to_set):
 	empty = false
@@ -55,9 +58,11 @@ func set_card(card_to_set):
 
 func remove_card():
 	empty = true
+	bartering = false
 	$"%CargoCard".card = null
 	$"%CargoCard".hide()
 	$"%Buttons".hide()
+	$"%Barter".pressed = false
 	
 func has_trait(trait):
 	if empty:
@@ -79,13 +84,14 @@ func disable_buttons():
 	$"%Move".disabled = true
 
 func update_target():
+	_target = null
 	var targets = []
 	targets.append_array(player.cargo_slots)
 	if player.cargo_mod_slot.empty:
 		targets.append(player.cargo_mod_slot)
 	if has_trait("Smuggling Compartment"):
-		targets.remove(2)
-		if player.cargo_mod_slot.empty:
+		targets.erase(player.cargo_slots[2])
+		if player.mod_slot.empty:
 			targets.append(player.mod_slot)
 	var i = targets.find(self)
 	var ordered_targets = targets.slice(i + 1, targets.size())
@@ -117,11 +123,11 @@ func update_move():
 		$"%Move".disabled = false
 
 func _on_deliver_pressed():
-	emit_signal("delivered")
+	emit_signal("delivered", self)
 
 func _on_barter_toggled(pressed):
-	emit_signal("bartered")
 	bartering = pressed
+	emit_signal("bartered")
 
 func _on_move_pressed():
 	emit_signal("moved", self, _target)
