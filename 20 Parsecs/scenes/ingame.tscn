@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -56,6 +56,7 @@
 [ext_resource path="res://images/cargo-plus.png" type="Texture" id=54]
 [ext_resource path="res://scenes/slots/gear_slot.tscn" type="PackedScene" id=55]
 [ext_resource path="res://scenes/slots/mod_slot.tscn" type="PackedScene" id=56]
+[ext_resource path="res://scenes/valign.gd" type="Script" id=58]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -80,6 +81,9 @@ font_data = ExtResource( 29 )
 [sub_resource type="NoiseTexture" id=11]
 width = 1024
 height = 576
+
+[sub_resource type="RichTextEffect" id=12]
+script = ExtResource( 58 )
 
 [node name="Map" type="Node2D"]
 script = ExtResource( 3 )
@@ -1409,7 +1413,6 @@ margin_right = 480.0
 
 [node name="Prompt" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
-visible = false
 self_modulate = Color( 1, 1, 1, 0.784314 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1459,7 +1462,23 @@ margin_top = 39.0
 margin_right = 183.0
 margin_bottom = 58.0
 custom_fonts/font = ExtResource( 38 )
-text = "Deliver (Attack: 3S)"
+
+[node name="Deliver-1AR" type="RichTextLabel" parent="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -82.5
+margin_top = -7.5
+margin_right = 82.5
+margin_bottom = 8.5
+custom_fonts/normal_font = ExtResource( 38 )
+bbcode_enabled = true
+bbcode_text = "[img]res://images/yes.png[/img][valign px=2] Deliver: -1[img]res://images/patrol-a-icon.png[/img] Ahut Reputation"
+text = " Deliver: -1 Ahut Reputation"
+fit_content_height = true
+scroll_active = false
+custom_effects = [ SubResource( 12 ) ]
 
 [node name="FailedSell2" type="Button" parent="CanvasLayer/Prompt/Window/VBoxContainer"]
 unique_name_in_owner = true
@@ -1467,7 +1486,23 @@ margin_top = 62.0
 margin_right = 183.0
 margin_bottom = 81.0
 custom_fonts/font = ExtResource( 38 )
-text = "Keep Cargo"
+
+[node name="KeepCargo" type="RichTextLabel" parent="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -37.5
+margin_top = -8.0
+margin_right = 37.5
+margin_bottom = 8.0
+custom_fonts/normal_font = ExtResource( 38 )
+bbcode_enabled = true
+bbcode_text = "[img]res://images/no.png[/img][valign px=2] Keep Cargo"
+text = " Keep Cargo"
+fit_content_height = true
+scroll_active = false
+custom_effects = [ SubResource( 12 ) ]
 
 [node name="Alert" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
