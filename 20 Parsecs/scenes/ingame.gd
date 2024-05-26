@@ -1,8 +1,6 @@
 extends Node2D
 
 var astar = AStar2D.new()
-var gearmod_deck = GearmodDeck.new().deck
-var ship_deck = ShipDeck.new().deck
 var starter_ship_deck = StarterShipDeck.new().deck
 var character_deck = CharacterDeck.new().deck
 var patrol_deck = PatrolDeck.new().deck
@@ -50,14 +48,9 @@ func _ready():
 	move_to($"%PatrolC", $Spaces/Space44)
 	move_to($"%PatrolD", $Spaces/Space1)
 	randomize()
-	market_gearmods.append_array(gearmod_deck)
-	market_gearmods.shuffle()
-	market_ships.append_array(ship_deck)
-	market_ships.shuffle()
-	$"%MarketShip".setup(market_ships[0])
 	$"%Character".setup(character_deck[0])
 	$"%Player".increase_money(4)
-	$"%Ship".setup(starter_ship_deck[0])
+	$"%Ship".set_card(starter_ship_deck[0])
 	start_planning()
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
@@ -114,7 +107,7 @@ func start_planning():
 		$"%Gain2K".disabled = true
 		$"%Player".decrease_money(3)
 		return
-	elif $"%Character".get_damage() > 0 or $"%Ship".get_damage() > 0:
+	elif $"%Character".get_damage() > 0 or $"%Ship".damage > 0:
 		$"%TurnIndicator".text += "Move or Gain 2K or Recover!"
 	else:
 		$"%TurnIndicator".text += "Move or Gain 2K!"
@@ -516,7 +509,7 @@ func ship_combat(attack1, attack2):
 	}
 
 func get_speed():
-	var speed = $"%Ship".get_data().speed
+	var speed = $"%Ship".get_card().speed
 	if has_mod("nav computer"):
 		speed += 1
 	return speed
@@ -539,32 +532,32 @@ func get_character_attack():
 		attack += 1
 	return attack
 
-func show_used_ships():
-	$"%UsedShipMarket".show()
-	$"%Market".hide()
-	$"%Finish".disabled = true
-	for i in range(8):
-		$"%UsedShipMarket".get_child(i).hide()
-	var start = $"%Ship".get_price() / 2.5
-	for i in range(start, 8):
-#		if ship_deck[i] == $"%Enemy".get_data():
-#			continue
-		var ship = $"%UsedShipMarket".get_child(i)
-		ship.show()
-		ship.setup(ship_deck[i])
-		if ship_deck[i].buy - $"%Ship".get_price() - discount > $"%Player".money:
-			ship.get_node("Buy").disabled = true
-		else:
-			ship.get_node("Buy").disabled = false
+#func show_used_ships():
+#	$"%UsedShipMarket".show()
+#	$"%Market".hide()
+#	$"%Finish".disabled = true
+#	for i in range(8):
+#		$"%UsedShipMarket".get_child(i).hide()
+#	var start = $"%Ship".get_price() / 2.5
+#	for i in range(start, 8):
+##		if ship_deck[i] == $"%Enemy".get_data():
+##			continue
+#		var ship = $"%UsedShipMarket".get_child(i)
+#		ship.show()
+#		ship.setup(ship_deck[i])
+#		if ship_deck[i].buy - $"%Ship".get_price() - discount > $"%Player".money:
+#			ship.get_node("Buy").disabled = true
+#		else:
+#			ship.get_node("Buy").disabled = false
 
-func update_used_ship_prices():
-	for i in range(8):
-		var ship = $"%UsedShipMarket".get_child(i)
-		ship.get_node("Buy").text = "Buy " + str(ship_deck[i].buy - $"%Ship".get_price() - discount) + "K"
-		if ship_deck[i].buy - $"%Ship".get_price() - discount > $"%Player".money:
-			ship.get_node("Buy").disabled = true
-		else:
-			ship.get_node("Buy").disabled = false
+#func update_used_ship_prices():
+#	for i in range(8):
+#		var ship = $"%UsedShipMarket".get_child(i)
+#		ship.get_node("Buy").text = "Buy " + str(ship_deck[i].buy - $"%Ship".get_price() - discount) + "K"
+#		if ship_deck[i].buy - $"%Ship".get_price() - discount > $"%Player".money:
+#			ship.get_node("Buy").disabled = true
+#		else:
+#			ship.get_node("Buy").disabled = false
 		
 func buy_used_ship(ship):
 	$"%Player".decrease_money(max(0, ship.buy - discount - $"%Ship".get_price()))
@@ -713,41 +706,29 @@ func _on_gear_mod_deck_buy_pressed(card, price, target):
 	$"%Player".bought = true
 	update_action_buttons()
 
-func _on_market_ship_buy_pressed():
-	if market_ships[0].has("used"):
-		show_used_ships()
-	else:
-		buy_ship(market_ships[0])
-	
-func _on_market_ship_skip_pressed():
-	market_ships.append(market_ships.pop_front())
-	$"%MarketShip".setup(market_ships[0])
-	skipped = true
-	update_action_buttons()
-
-func _on_used_ship_market_buy_pressed():
-	buy_used_ship(ship_deck[0])
-
-func _on_used_ship_market_buy2_pressed():
-	buy_used_ship(ship_deck[1])
-
-func _on_used_ship_market_buy3_pressed():
-	buy_used_ship(ship_deck[2])
-
-func _on_used_ship_market_buy4_pressed():
-	buy_used_ship(ship_deck[3])
-
-func _on_used_ship_market_buy5_pressed():
-	buy_used_ship(ship_deck[4])
-
-func _on_used_ship_market_buy6_pressed():
-	buy_used_ship(ship_deck[5])
-
-func _on_used_ship_market_buy7_pressed():
-	buy_used_ship(ship_deck[6])
-
-func _on_used_ship_market_buy8_pressed():
-	buy_used_ship(ship_deck[7])
+#func _on_used_ship_market_buy_pressed():
+#	buy_used_ship(ship_deck[0])
+#
+#func _on_used_ship_market_buy2_pressed():
+#	buy_used_ship(ship_deck[1])
+#
+#func _on_used_ship_market_buy3_pressed():
+#	buy_used_ship(ship_deck[2])
+#
+#func _on_used_ship_market_buy4_pressed():
+#	buy_used_ship(ship_deck[3])
+#
+#func _on_used_ship_market_buy5_pressed():
+#	buy_used_ship(ship_deck[4])
+#
+#func _on_used_ship_market_buy6_pressed():
+#	buy_used_ship(ship_deck[5])
+#
+#func _on_used_ship_market_buy7_pressed():
+#	buy_used_ship(ship_deck[6])
+#
+#func _on_used_ship_market_buy8_pressed():
+#	buy_used_ship(ship_deck[7])
 	
 func _on_barter_toggled():
 	update_action_buttons()
