@@ -22,6 +22,8 @@ func set_card(card_to_set):
 	$"%ShipCard".card = card_to_set
 	$"%ShipCard".update_view()
 	$"%ShipDamage".value = 0
+	damage = 0
+	update_armor()
 	buy = card_to_set.buy
 
 func suffer_damage(amount):

@@ -49,10 +49,11 @@ func _ready():
 	move_to($"%PatrolC", $Spaces/Space44)
 	move_to($"%PatrolD", $Spaces/Space1)
 	randomize()
+	$"%Character".set_player($"%Player")
 	$"%Character".set_card(character_deck[0])
 	$"%Player".increase_money(4)
-	$"%Ship".set_card(starter_ship_deck[0])
 	$"%Ship".set_player($"%Player")
+	$"%Ship".set_card(starter_ship_deck[0])
 	start_planning()
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
@@ -233,21 +234,6 @@ func update_action_buttons():
 	for card in all_cards:
 		card.update_buttons()
 
-#func update_buy_buttons():
-#
-#	for card in [$"%MarketCargo", $"%MarketGearmod"]:
-#		if $"%Player".get_money() < card.get_price() - discount:
-#			card.disable_button("Buy")
-#	if $"%MarketShip".is_used():
-#		if $"%Player".get_money() < 5 or $"%Ship".get_price() == 20 or $"%Player".get_money() < $"%MarketShip".get_price() - $"%Ship".get_price():
-#			$"%MarketShip".disable_button("Buy")
-#	if $"%Player".space.get_node("Label").text == $"%MarketCargo".get_to():
-#		$"%MarketCargo".disable_button("Buy")
-#
-#	var reduced_ship_price = max(0, $"%MarketShip".get_price() - discount - $"%Ship".get_price())
-#	$"%MarketShip".set_buy_text("Buy " + str(reduced_ship_price) + "K")
-#	update_used_ship_prices()
-
 func _on_deliver_pressed(cargo):
 	if cargo.has_trait("Illegal"):
 		failed_cargo = cargo
@@ -368,7 +354,6 @@ func remove_card(slot):
 			else:
 				move_card($"%CargoSlot3", slot)
 	slot.remove_card()
-#	update_action_buttons()
 	
 func move_card(source, target):
 	var other_card = null
@@ -378,7 +363,6 @@ func move_card(source, target):
 	source.remove_card()
 	if other_card:
 		source.set_card(other_card)
-#	update_action_buttons()
 
 func roll():
 	return dice[randi() % 8]
@@ -393,33 +377,30 @@ func skill_test(skill):
 		return true
 	return false
 
-func is_skilled(skill):
-	if $"%Character".get_data().skill1 == skill:
-		return true
-	if $"%Character".get_data().skill2 == skill:
-		return
+func is_skilled(skill_test):
+	for skill in $"%Character".get_card().skills:
+		if skill == skill_test:
+			return true
 # todo crew
 	return false
 
-func is_highly_skilled(skill):
+func is_highly_skilled(skill_test):
 	var count = 0
-	if $"%Character".get_data().skill1 == skill:
-		count += 1
-	if $"%Character".get_data().skill2 == skill:
-		count += 1
+	for skill in $"%Character".get_card().skills:
+		if skill == skill_test:
+			count += 1
 # todo crew
 	return count > 1
 
-func has_mod(_name):
-	return false
-#	return $"%ModSlot".get_name() == name or $"%CargoModSlot".get_name() == name
+func has_mod(mod_name):
+	return $"%ModSlot".has_mod(mod_name) or $"%CargoModSlot".has_mod(mod_name)
 
-func has_gear(name):
-	return $"%CharacterGear".get_name() == name or $"%CharacterGear2".get_name() == name
+func has_gear(gear_name):
+	return $"%GearSlot".has_gear(gear_name) or $"%GearSlot2".has_gear(gear_name)
 
 func has_armor_gear():
-	for gear in [$"%CharacterGear", $"%CharacterGear2"]:
-		if gear.is_armor() and not gear.is_bartering():
+	for gear in [$"%GearSlot", $"%GearSlot2"]:
+		if gear.armor and not gear.bartering:
 			return true
 	return false
 
@@ -435,12 +416,12 @@ func ground_combat(attack1, attack2):
 			result1 += 1
 		if result == "crit":
 			result1 += 2
-#		if result == "blank" and has_mod("targeting computer"):
-#			result = roll()
-#			if result == "hit":
-#				result1 += 1
-#			if result == "crit":
-#				result1 += 2
+		if result == "blank" and has_mod("targeting computer"):
+			result = roll()
+			if result == "hit":
+				result1 += 1
+			if result == "crit":
+				result1 += 2
 		if result == "focus":
 			if has_gear("vibroax") and not vibroaxed:
 				vibroaxed = true
@@ -710,6 +691,8 @@ func _on_gear_mod_deck_buy_pressed(card, price, target):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true
 	update_action_buttons()
+	$"%Character".update_armor()
+	$"%Ship".update_armor()
 	
 func _on_ship_deck_buy_pressed(card, price):
 	if card.has("used"):

@@ -27,7 +27,7 @@ func update_view():
 		$"%Armor".hide()
 		$"%Info".hide()
 		$"%ArmorInfo".hide()
-	if card.has("attack"):
+	if card.has("attack") or (card.has("trait") and card.trait == "Armor"):
 		$"%Buff".show()
 	else:
 		$"%Buff".hide()

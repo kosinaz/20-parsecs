@@ -67,6 +67,13 @@ func get_armor():
 	if $"%ModCard".card.has("armor"):
 		return 1
 	return 0
+	
+func has_mod(mod_name):
+	if empty:
+		return false
+	if $"%CargoCard".visible:
+		return false
+	return $"%ModCard".card.name == mod_name
 
 func set_card(card_to_set):
 	empty = false

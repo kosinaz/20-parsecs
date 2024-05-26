@@ -74,6 +74,7 @@ var _deck = [
 		"buy": 3,
 		"name": "armored vest",
 		"patrol": "C",
+		"armor": 2,
 		"move": 3,
 	},
 	{
@@ -126,6 +127,7 @@ var _deck = [
 		"buy": 8,
 		"name": "plastoid armor",
 		"patrol": "C",
+		"armor": 2,
 		"move": 4,
 	},
 ]
@@ -209,9 +211,6 @@ func update_buy():
 	if player.money < _price:
 		$"%Buy".disabled = true
 		return
-	if card.has("to") and player.space_name == card.to:
-		$"%Buy".disabled = true
-		return
 	update_target()
 	if _target == null:
 		$"%Buy".disabled = true
@@ -228,7 +227,7 @@ func update_target():
 		for slot in player.gear_slots:
 			if not slot.empty and not slot.bartering:
 				continue
-			if $"%GearCard".armor and (player.gear_slots[0].armor or player.gear_slots[1].armor):
+			if $"%GearCard".armor and (player.gear_slots[0].armor or player.gear_slots[1].armor) and not slot.bartering:
 				continue
 			_target = slot
 			return

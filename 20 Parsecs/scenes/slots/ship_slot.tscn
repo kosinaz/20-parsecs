@@ -81,4 +81,4 @@ margin_bottom = 6.5
 grow_horizontal = 2
 grow_vertical = 2
 custom_fonts/font = ExtResource( 9 )
-text = "5/5"
+text = "4/4"

@@ -81,6 +81,13 @@ func has_trait(trait):
 	if not card.has("trait"):
 		return false
 	return card.trait == trait
+	
+func has_mod(mod_name):
+	if empty:
+		return false
+	if $"%CargoCard".visible:
+		return false
+	return $"%ModCard".card.name == mod_name
 
 func update_target():
 	_target = null
