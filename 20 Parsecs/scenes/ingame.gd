@@ -23,6 +23,7 @@ var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
 onready var decks = [$"%CargoDeck", $"%GearModDeck", $"%ShipDeck"]
+onready var used_ships = [$"%UsedShip", $"%UsedShip2", $"%UsedShip3", $"%UsedShip4", $"%UsedShip5", $"%UsedShip6", $"%UsedShip7", $"%UsedShip8"]
 onready var all_cards = []
 
 func _ready():
@@ -51,6 +52,7 @@ func _ready():
 	$"%Character".setup(character_deck[0])
 	$"%Player".increase_money(4)
 	$"%Ship".set_card(starter_ship_deck[0])
+	$"%Ship".set_player($"%Player")
 	start_planning()
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
@@ -71,6 +73,12 @@ func _ready():
 	all_cards.append($"%Player".mod_slot)
 	for deck in decks:
 		deck.set_player($"%Player")
+	for i in range(8):
+		var ship = used_ships[i]
+		ship.set_card(i)
+		ship.set_player($"%Player")
+		ship.set_ship($"%Ship")
+		ship.connect("bought", self, "_on_used_ship_buy_pressed")
 	$"%ShipDeck".set_ship($"%Ship")
 	for card in $"%Player".gear_slots:
 		card.set_player($"%Player")
@@ -536,46 +544,40 @@ func get_character_attack():
 		attack += 1
 	return attack
 
-#func show_used_ships():
-#	$"%UsedShipMarket".show()
-#	$"%Market".hide()
-#	$"%Finish".disabled = true
-#	for i in range(8):
-#		$"%UsedShipMarket".get_child(i).hide()
-#	var start = $"%Ship".get_price() / 2.5
-#	for i in range(start, 8):
-##		if ship_deck[i] == $"%Enemy".get_data():
-##			continue
-#		var ship = $"%UsedShipMarket".get_child(i)
-#		ship.show()
-#		ship.setup(ship_deck[i])
-#		if ship_deck[i].buy - $"%Ship".get_price() - discount > $"%Player".money:
-#			ship.get_node("Buy").disabled = true
-#		else:
-#			ship.get_node("Buy").disabled = false
+func show_used_ships():
+	$"%UsedShipMarket".show()
+	$"%Market".hide()
+	$"%Finish".disabled = true
+	for i in range(8):
+		$"%UsedShipMarket".get_child(i).hide()
+	var start = $"%Ship".get_price() / 2.5
+	for i in range(start, 8):
+#		if ship_deck[i] == $"%Enemy".get_data():
+#			remove enemy ship from the set
+#			continue
+		var ship = $"%UsedShipMarket".get_child(i)
+		ship.show()
+		ship.update_view()
 
-#func update_used_ship_prices():
-#	for i in range(8):
-#		var ship = $"%UsedShipMarket".get_child(i)
-#		ship.get_node("Buy").text = "Buy " + str(ship_deck[i].buy - $"%Ship".get_price() - discount) + "K"
-#		if ship_deck[i].buy - $"%Ship".get_price() - discount > $"%Player".money:
-#			ship.get_node("Buy").disabled = true
-#		else:
-#			ship.get_node("Buy").disabled = false
-		
-func buy_used_ship(ship):
-	$"%Player".decrease_money(max(0, ship.buy - discount - $"%Ship".get_price()))
+func buy_ship(card, price):
+	$"%Player".decrease_money(price)
 	drop_barter_pool()
-	$"%Ship".setup(ship)
-	market_ships.erase(ship)
-	market_ships.append(market_ships.pop_front())
-	market_ships.shuffle()
-	$"%MarketShip".setup(market_ships[0])
+	$"%Ship".set_card(card)
+	$"%Player".bought = true
+	update_ship_cargos_and_mods()
+	update_action_buttons()
+
+func buy_used_ship(card, price):
+	$"%Player".decrease_money(price)
+	drop_barter_pool()
+	$"%Ship".set_card(card)
+	$"%ShipDeck".erase(card)
+	$"%ShipDeck".shuffle()
 	$"%UsedShipMarket".hide()
 	$"%Market".show()
 	$"%Finish".disabled = false
+	$"%Player".bought = true
 	update_ship_cargos_and_mods()
-	bought = true
 	$"%Ship".suffer_damage(3)
 	update_action_buttons()
 
@@ -601,14 +603,6 @@ func update_ship_cargos_and_mods():
 			$"%ModSlot".remove_card()
 		else:
 			move_card($"%ModSlot", $"%ModSlot".get_target())
-
-func buy_ship(card, price):
-	$"%Player".decrease_money(price)
-	drop_barter_pool()
-	$"%Ship".set_card(card)
-	$"%Player".bought = true
-	update_ship_cargos_and_mods()
-	update_action_buttons()
 
 func start_encounter():
 	if skip_encounter:
@@ -718,31 +712,13 @@ func _on_gear_mod_deck_buy_pressed(card, price, target):
 	update_action_buttons()
 	
 func _on_ship_deck_buy_pressed(card, price):
-	buy_ship(card, price)
+	if card.has("used"):
+		show_used_ships()
+	else:
+		buy_ship(card, price)
 
-#func _on_used_ship_market_buy_pressed():
-#	buy_used_ship(ship_deck[0])
-#
-#func _on_used_ship_market_buy2_pressed():
-#	buy_used_ship(ship_deck[1])
-#
-#func _on_used_ship_market_buy3_pressed():
-#	buy_used_ship(ship_deck[2])
-#
-#func _on_used_ship_market_buy4_pressed():
-#	buy_used_ship(ship_deck[3])
-#
-#func _on_used_ship_market_buy5_pressed():
-#	buy_used_ship(ship_deck[4])
-#
-#func _on_used_ship_market_buy6_pressed():
-#	buy_used_ship(ship_deck[5])
-#
-#func _on_used_ship_market_buy7_pressed():
-#	buy_used_ship(ship_deck[6])
-#
-#func _on_used_ship_market_buy8_pressed():
-#	buy_used_ship(ship_deck[7])
+func _on_used_ship_buy_pressed(card, price):
+	buy_used_ship(card, price)
 	
 func _on_barter_toggled():
 	update_action_buttons()

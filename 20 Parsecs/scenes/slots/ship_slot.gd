@@ -11,15 +11,18 @@ func get_card():
 
 func get_armor():
 	return $"%ShipCard".card.armor + player.mod_slot.get_armor() + player.cargo_mod_slot.get_armor()
+	
+func get_price():
+	return $"%ShipCard".card.buy
+
+func set_player(player_to_set):
+	player = player_to_set
 
 func set_card(card_to_set):
 	$"%ShipCard".card = card_to_set
 	$"%ShipCard".update_view()
 	$"%ShipDamage".value = 0
 	buy = card_to_set.buy
-	
-func is_used():
-	return $"%ShipCard".card.has("used")
 
 func suffer_damage(amount):
 	damage += amount
