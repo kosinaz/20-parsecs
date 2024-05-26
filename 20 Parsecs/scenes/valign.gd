@@ -1,7 +1,7 @@
 tool class_name RichTextVAlign extends RichTextEffect
 
 # Custom Effects: Array[1]: RichTextVAlign
-# [img=16]icon.png[/img][valign px=8]Hello World[/valign]
+# [img]res://images/yes.png[/img][valign px=2] Deliver:[/valign]
 
 var bbcode := "valign"
 

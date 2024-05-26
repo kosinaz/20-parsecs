@@ -101,7 +101,7 @@ var player = {
 }
 
 var ship = {
-	"buy": 5,
+	"buy": 0,
 }
 
 func _ready():
@@ -112,6 +112,9 @@ func _ready():
 func set_player(player_to_set):
 	player = player_to_set
 	update_view()
+
+func set_ship(ship_to_set):
+	ship = ship_to_set
 
 func update_view():
 	var card = _deck.front()
@@ -129,8 +132,12 @@ func disable_buttons():
 
 func update_buy():
 	var card = _deck.front()
-	_price = max(0, card.buy - ship.buy - player.discount)
-	$"%Buy".text = str(_price) + "K"
+	if card.has("used"):
+		_price = 5
+		$"%Buy".text = "5K+"
+	else:
+		_price = max(0, card.buy - ship.buy - player.discount)
+		$"%Buy".text = str(_price) + "K"
 	if player.discount > 0:
 		$"%Buy".text += "*"
 	$"%Buy".disabled = false
@@ -138,9 +145,6 @@ func update_buy():
 		$"%Buy".disabled = true
 		return
 	if player.money < _price:
-		$"%Buy".disabled = true
-		return
-	if card.has("to") and player.space_name == card.to:
 		$"%Buy".disabled = true
 		return
 	

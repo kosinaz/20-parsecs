@@ -22,7 +22,7 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
-onready var decks = [$"%CargoDeck", $"%GearModDeck"]
+onready var decks = [$"%CargoDeck", $"%GearModDeck", $"%ShipDeck"]
 onready var all_cards = []
 
 func _ready():
@@ -60,6 +60,10 @@ func _ready():
 	$"%GearModDeck".connect("bought", self, "_on_gear_mod_deck_buy_pressed")
 # warning-ignore:return_value_discarded
 	$"%GearModDeck".connect("skipped", self, "_on_skip_pressed")
+# warning-ignore:return_value_discarded
+	$"%ShipDeck".connect("bought", self, "_on_ship_deck_buy_pressed")
+# warning-ignore:return_value_discarded
+	$"%ShipDeck".connect("skipped", self, "_on_skip_pressed")
 	all_cards.append_array(decks)
 	all_cards.append_array($"%Player".gear_slots)
 	all_cards.append_array($"%Player".cargo_slots)
@@ -67,7 +71,7 @@ func _ready():
 	all_cards.append($"%Player".mod_slot)
 	for deck in decks:
 		deck.set_player($"%Player")
-		deck.set_player($"%Player")
+	$"%ShipDeck".set_ship($"%Ship")
 	for card in $"%Player".gear_slots:
 		card.set_player($"%Player")
 		card.connect("bartered", self, "_on_barter_toggled")
@@ -576,27 +580,34 @@ func buy_used_ship(ship):
 	update_action_buttons()
 
 func update_ship_cargos_and_mods():
-	if $"%Ship".get_data().cargo == 2:
-		$"%ShipCargo2".show()
-	else:
-		$"%ShipCargo2".hide()
-	if $"%Ship".get_data().has("cargomod"):
-		$"%ShipCargomod".show()
-	else:
-		$"%ShipCargomod".hide()
-	if $"%Ship".get_data().has("mod"):
-		$"%ShipMod".show()
-	else:
-		$"%ShipMod".hide()
+	$"%CargoSlot2".visible = $"%Ship".get_card().cargo == 2
+	$"%CargoModSlot".visible = $"%Ship".get_card().has("cargomod")
+	$"%ModSlot".visible = $"%Ship".get_card().has("mod")
+	if not $"%CargoSlot2".empty and not $"%CargoSlot2".visible:
+		$"%CargoSlot2".update_target()
+		if $"%CargoSlot2".get_target() == null:
+			$"%CargoSlot2".remove_card()
+		else:
+			move_card($"%CargoSlot2", $"%CargoSlot2".get_target())
+	if not $"%CargoModSlot".empty and not $"%CargoModSlot".visible:
+		$"%CargoModSlot".update_target()
+		if $"%CargoModSlot".get_target() == null:
+			$"%CargoModSlot".remove_card()
+		else:
+			move_card($"%CargoModSlot", $"%CargoModSlot".get_target())
+	if not $"%ModSlot".empty and not $"%ModSlot".visible:
+		$"%ModSlot".update_target()
+		if $"%ModSlot".get_target() == null:
+			$"%ModSlot".remove_card()
+		else:
+			move_card($"%ModSlot", $"%ModSlot".get_target())
 
-func buy_ship(ship):
-	$"%Player".decrease_money(max(0, ship.buy - discount - $"%Ship".get_price()))
+func buy_ship(card, price):
+	$"%Player".decrease_money(price)
 	drop_barter_pool()
-	$"%Ship".setup(ship)
-	market_ships.pop_front()
-	$"%MarketShip".setup(market_ships[0])
+	$"%Ship".set_card(card)
+	$"%Player".bought = true
 	update_ship_cargos_and_mods()
-	bought = true
 	update_action_buttons()
 
 func start_encounter():
@@ -705,6 +716,9 @@ func _on_gear_mod_deck_buy_pressed(card, price, target):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true
 	update_action_buttons()
+	
+func _on_ship_deck_buy_pressed(card, price):
+	buy_ship(card, price)
 
 #func _on_used_ship_market_buy_pressed():
 #	buy_used_ship(ship_deck[0])

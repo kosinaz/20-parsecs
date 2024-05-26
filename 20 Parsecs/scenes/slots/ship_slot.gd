@@ -4,6 +4,7 @@ var damage = 0
 var defeated = false
 var repaired = false
 var player = null
+var buy = 0
 
 func get_card():
 	return $"%ShipCard".card
@@ -15,6 +16,7 @@ func set_card(card_to_set):
 	$"%ShipCard".card = card_to_set
 	$"%ShipCard".update_view()
 	$"%ShipDamage".value = 0
+	buy = card_to_set.buy
 	
 func is_used():
 	return $"%ShipCard".card.has("used")

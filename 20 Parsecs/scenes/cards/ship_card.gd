@@ -13,6 +13,12 @@ var card = {
 }
 
 func update_view():
+	if card.has("used"):
+		$"%Used".show()
+		$"%Data".hide()
+		return
+	$"%Used".hide()
+	$"%Data".show()
 	$"%BuyLabel".text = str(card.buy) + "K"
 	$"%Speed".text = str(card.speed)
 	$"%Attack".text = str(card.attack)

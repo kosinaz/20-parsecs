@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=2]
+[gd_scene load_steps=66 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -58,6 +58,7 @@
 [ext_resource path="res://scenes/slots/mod_slot.tscn" type="PackedScene" id=56]
 [ext_resource path="res://scenes/slots/ship_slot.tscn" type="PackedScene" id=57]
 [ext_resource path="res://scenes/valign.gd" type="Script" id=58]
+[ext_resource path="res://scenes/decks/ship_deck.tscn" type="PackedScene" id=59]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -836,61 +837,9 @@ custom_fonts/font = SubResource( 6 )
 disabled = true
 text = "Skip"
 
-[node name="MarketShip" type="TextureRect" parent="CanvasLayer/Market"]
-unique_name_in_owner = true
+[node name="ShipDeck" parent="CanvasLayer/Market" instance=ExtResource( 59 )]
 margin_left = 480.0
 margin_right = 576.0
-margin_bottom = 128.0
-texture = ExtResource( 37 )
-script = ExtResource( 4 )
-
-[node name="Title" type="Label" parent="CanvasLayer/Market/MarketShip"]
-margin_top = 1.0
-margin_right = 96.0
-margin_bottom = 15.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 36 )
-text = "Ship"
-align = 1
-
-[node name="Data" type="Label" parent="CanvasLayer/Market/MarketShip"]
-margin_left = 4.0
-margin_top = 14.0
-margin_right = 92.0
-margin_bottom = 107.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 36 )
-text = "Speed: 6
-Attack: 4
-Armor: 5
-Cargo: 1
-Mod: 1
-Crew: 2"
-autowrap = true
-
-[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketShip"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
-custom_fonts/font = ExtResource( 38 )
-disabled = true
-text = "Buy 10K"
-
-[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketShip"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -38.0
-margin_top = -24.0
-margin_right = -4.0
-margin_bottom = -5.0
-custom_fonts/font = SubResource( 6 )
-disabled = true
-text = "Skip"
 
 [node name="UsedShipMarket" type="HBoxContainer" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -1516,8 +1465,6 @@ text = "Ok"
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Buy" to="." method="_on_market_cargo_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/Market/MarketCargo/Skip" to="." method="_on_market_cargo_skip_pressed"]
-[connection signal="pressed" from="CanvasLayer/Market/MarketShip/Buy" to="." method="_on_market_ship_buy_pressed"]
-[connection signal="pressed" from="CanvasLayer/Market/MarketShip/Skip" to="." method="_on_market_ship_skip_pressed"]
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip/Buy" to="." method="_on_used_ship_market_buy_pressed"]
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip2/Buy" to="." method="_on_used_ship_market_buy2_pressed"]
 [connection signal="pressed" from="CanvasLayer/UsedShipMarket/UsedShip3/Buy" to="." method="_on_used_ship_market_buy3_pressed"]

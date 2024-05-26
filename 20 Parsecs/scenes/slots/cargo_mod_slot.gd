@@ -55,6 +55,9 @@ func get_card():
 	if $"%CargoCard".visible:
 		return $"%CargoCard".card
 	return $"%ModCard".card
+	
+func get_target():
+	return _target
 
 func get_armor():
 	if empty:

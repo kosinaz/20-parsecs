@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://images/ship-armor.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://images/mod.png" type="Texture" id=8]
 [ext_resource path="res://images/cargo-mod.png" type="Texture" id=9]
 [ext_resource path="res://images/person.png" type="Texture" id=10]
+[ext_resource path="res://scenes/valign.gd" type="Script" id=11]
 [ext_resource path="res://images/ship.png" type="Texture" id=17]
 [ext_resource path="res://images/buy.png" type="Texture" id=21]
 
@@ -17,6 +18,9 @@
 size = 10
 use_filter = true
 font_data = ExtResource( 1 )
+
+[sub_resource type="RichTextEffect" id=2]
+script = ExtResource( 11 )
 
 [node name="ShipCard" type="VBoxContainer"]
 unique_name_in_owner = true
@@ -71,22 +75,37 @@ margin_bottom = 120.0
 size_flags_vertical = 3
 custom_constants/margin_top = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Card"]
+[node name="Used" type="RichTextLabel" parent="Card"]
+unique_name_in_owner = true
+margin_top = 8.0
+margin_right = 85.0
+margin_bottom = 101.0
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[valign px=2]Buy any [/valign][img]res://images/ship.png[/img][valign px=2]
+Suffer 3[/valign][img]res://images/hit.png[/img]"
+text = "Buy any 
+Suffer 3"
+custom_effects = [ SubResource( 2 ) ]
+
+[node name="Data" type="VBoxContainer" parent="Card"]
+unique_name_in_owner = true
+visible = false
 margin_top = 8.0
 margin_right = 85.0
 margin_bottom = 101.0
 custom_constants/separation = 2
 
-[node name="Buy" type="HBoxContainer" parent="Card/VBoxContainer"]
+[node name="Buy" type="HBoxContainer" parent="Card/Data"]
 margin_right = 85.0
 margin_bottom = 12.0
 
-[node name="BuyIcon" type="TextureRect" parent="Card/VBoxContainer/Buy"]
+[node name="BuyIcon" type="TextureRect" parent="Card/Data/Buy"]
 margin_right = 12.0
 margin_bottom = 12.0
 texture = ExtResource( 21 )
 
-[node name="Label" type="Label" parent="Card/VBoxContainer/Buy"]
+[node name="Label" type="Label" parent="Card/Data/Buy"]
 margin_left = 16.0
 margin_right = 19.0
 margin_bottom = 12.0
@@ -94,7 +113,7 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = ":"
 
-[node name="BuyLabel" type="Label" parent="Card/VBoxContainer/Buy"]
+[node name="BuyLabel" type="Label" parent="Card/Data/Buy"]
 unique_name_in_owner = true
 margin_left = 23.0
 margin_right = 35.0
@@ -103,21 +122,21 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1K"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Card/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Card/Data"]
 margin_top = 14.0
 margin_right = 85.0
 margin_bottom = 58.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Card/Data/VBoxContainer"]
 margin_right = 85.0
 margin_bottom = 12.0
 
-[node name="Speed" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Speed" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer"]
 margin_right = 18.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="Speed" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer/Speed"]
+[node name="Speed" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer/Speed"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -125,19 +144,19 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer/Speed"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer/Speed"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
 texture = ExtResource( 4 )
 
-[node name="Attack" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Attack" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer"]
 margin_left = 22.0
 margin_right = 40.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="Attack" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer/Attack"]
+[node name="Attack" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer/Attack"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -145,19 +164,19 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer/Attack"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer/Attack"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
 texture = ExtResource( 3 )
 
-[node name="Armor" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Armor" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer"]
 margin_left = 44.0
 margin_right = 62.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="Armor" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer/Armor"]
+[node name="Armor" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer/Armor"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -165,23 +184,23 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer/Armor"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer/Armor"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
 texture = ExtResource( 2 )
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/Data/VBoxContainer"]
 margin_top = 16.0
 margin_right = 85.0
 margin_bottom = 28.0
 
-[node name="Cargo" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="Cargo" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer2"]
 margin_right = 18.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="Cargo" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2/Cargo"]
+[node name="Cargo" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer2/Cargo"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -189,20 +208,20 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2/Cargo"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer2/Cargo"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
 texture = ExtResource( 6 )
 
-[node name="CargoModContainer" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="CargoModContainer" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 margin_left = 22.0
 margin_right = 40.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="CargoMod" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2/CargoModContainer"]
+[node name="CargoMod" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer2/CargoModContainer"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -210,20 +229,20 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2/CargoModContainer"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer2/CargoModContainer"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
 texture = ExtResource( 9 )
 
-[node name="ModContainer" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="ModContainer" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 margin_left = 44.0
 margin_right = 62.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="Mod" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2/ModContainer"]
+[node name="Mod" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer2/ModContainer"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -231,23 +250,23 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer2/ModContainer"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer2/ModContainer"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
 texture = ExtResource( 8 )
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Card/Data/VBoxContainer"]
 margin_top = 32.0
 margin_right = 85.0
 margin_bottom = 44.0
 
-[node name="Crew" type="HBoxContainer" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer3"]
+[node name="Crew" type="HBoxContainer" parent="Card/Data/VBoxContainer/HBoxContainer3"]
 margin_right = 18.0
 margin_bottom = 12.0
 custom_constants/separation = 1
 
-[node name="Crew" type="Label" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer3/Crew"]
+[node name="Crew" type="Label" parent="Card/Data/VBoxContainer/HBoxContainer3/Crew"]
 unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
@@ -255,7 +274,7 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
 text = "1"
 
-[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/VBoxContainer/HBoxContainer3/Crew"]
+[node name="Icon" type="TextureRect" parent="Card/Data/VBoxContainer/HBoxContainer3/Crew"]
 margin_left = 6.0
 margin_right = 18.0
 margin_bottom = 12.0
