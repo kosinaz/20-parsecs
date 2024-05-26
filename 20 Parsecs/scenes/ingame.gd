@@ -49,7 +49,7 @@ func _ready():
 	move_to($"%PatrolC", $Spaces/Space44)
 	move_to($"%PatrolD", $Spaces/Space1)
 	randomize()
-	$"%Character".setup(character_deck[0])
+	$"%Character".set_card(character_deck[0])
 	$"%Player".increase_money(4)
 	$"%Ship".set_card(starter_ship_deck[0])
 	$"%Ship".set_player($"%Player")
@@ -119,7 +119,7 @@ func start_planning():
 		$"%Gain2K".disabled = true
 		$"%Player".decrease_money(3)
 		return
-	elif $"%Character".get_damage() > 0 or $"%Ship".damage > 0:
+	elif $"%Character".damage > 0 or $"%Ship".damage > 0:
 		$"%TurnIndicator".text += "Move or Gain 2K or Recover!"
 	else:
 		$"%TurnIndicator".text += "Move or Gain 2K!"

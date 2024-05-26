@@ -29,6 +29,13 @@ func set_player(player_to_set):
 func get_card():
 	return $"%GearCard".card
 
+func get_armor():
+	if empty:
+		return 0
+	if $"%GearCard".card.has("armor"):
+		return 1
+	return 0
+
 func set_card(card_to_set):
 	empty = false
 	if card_to_set.has("trait") and card_to_set.trait == "Armor":
