@@ -508,13 +508,13 @@ func get_speed():
 	return speed
 
 func get_ship_attack():
-	var attack = $"%Ship".get_data().attack
+	var attack = $"%Ship".get_card().attack
 	if has_mod("quad laser"):
 		attack += 1
 	return attack
 
 func get_character_attack():
-	var attack = $"%Character".get_data().attack
+	var attack = $"%Character".get_card().attack
 	if has_gear("blaster pistol"):
 		attack += 1
 	if has_gear("blaster rifle"):
