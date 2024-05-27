@@ -7,8 +7,9 @@ export var space_1 = 0
 export var space_2 = 0
 export var space_3 = 0
 export var space_4 = 0
+export var faction = ""
+export var planet_name = ""
 onready var id = int(name.right(5))
-onready var faction = $Faction.text.trim_prefix("(").left(1)
 
 func _on_button_pressed():
 	emit_signal("pressed", self)

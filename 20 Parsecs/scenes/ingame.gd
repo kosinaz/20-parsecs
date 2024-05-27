@@ -138,21 +138,17 @@ func start_planning():
 		if path.size() > get_speed() + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = true
 			get_node("Spaces/Space" + str(to_id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
-			get_node("Spaces/Space" + str(to_id)).get_node("Faction").add_color_override("font_color", Color("9a9a9a"))
 		else:
 			get_node("Spaces/Space" + str(to_id)).get_node("Button").disabled = false
 			get_node("Spaces/Space" + str(to_id)).get_node("Label").add_color_override("font_color", Color.white)
-			get_node("Spaces/Space" + str(to_id)).get_node("Faction").add_color_override("font_color", Color.white)
 	astar.set_point_disabled(13, false)
 	var path13 = astar.get_id_path($"%Player".space.id, 13)
 	if path13.size() > get_speed() + 1 or path13.size() == 0:
 		get_node("Spaces/Space13/Button").disabled = true
 		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
-		get_node("Spaces/Space" + str(13)).get_node("Faction").add_color_override("font_color", Color.white)
 	else:
 		get_node("Spaces/Space13/Button").disabled = false
 		get_node("Spaces/Space" + str(13)).get_node("Label").add_color_override("font_color", Color.white)
-		get_node("Spaces/Space" + str(13)).get_node("Faction").add_color_override("font_color", Color.white)
 	for patrol in hostile_patrols:
 		var id = patrol.space.id
 		astar.set_point_disabled(id, false)
@@ -160,12 +156,10 @@ func start_planning():
 		if path.size() > get_speed() + 1 or path.size() == 0:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = true
 			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color("9a9a9a"))
-			get_node("Spaces/Space" + str(id)).get_node("Faction").add_color_override("font_color", Color("9a9a9a"))
 			patrol.frame = 0
 		else:
 			get_node("Spaces/Space" + str(id)).get_node("Button").disabled = false
 			get_node("Spaces/Space" + str(id)).get_node("Label").add_color_override("font_color", Color.white)
-			get_node("Spaces/Space" + str(id)).get_node("Faction").add_color_override("font_color", Color.white)
 			patrol.frame = 1
 
 func stop_planning():
@@ -179,7 +173,7 @@ func stop_planning():
 
 func move_to(ship, space):
 	ship.space = space
-	ship.space_name = space.get_node("Label").text
+	ship.space_name = space.planet_name
 	ship.position = space.position
 
 func move_patrol(patrol, step):

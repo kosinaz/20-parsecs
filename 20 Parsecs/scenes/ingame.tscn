@@ -105,12 +105,17 @@ position = Vector2( 72, 535 )
 [node name="Space3" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 30, 478 )
 space_1 = 1
+planet_name = "Acan"
 
 [node name="Button" parent="Spaces/Space3" index="0"]
 texture_normal = ExtResource( 15 )
 texture_disabled = ExtResource( 17 )
 
 [node name="Label" parent="Spaces/Space3" index="1"]
+visible = true
+margin_left = -16.0
+margin_right = 15.0
+bbcode_text = "Acan"
 text = "Acan"
 
 [node name="Space4" parent="Spaces" instance=ExtResource( 2 )]
@@ -121,16 +126,15 @@ space_2 = 3
 [node name="Space5" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 136, 381 )
 space_1 = 4
+faction = "B"
+planet_name = "Bord"
 
 [node name="Button" parent="Spaces/Space5" index="0"]
 texture_normal = ExtResource( 7 )
 texture_disabled = ExtResource( 8 )
 
 [node name="Label" parent="Spaces/Space5" index="1"]
-text = "Bord"
-
-[node name="Faction" parent="Spaces/Space5" index="2"]
-text = "(Basyn)"
+visible = true
 
 [node name="Space6" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 90, 359 )
@@ -148,30 +152,36 @@ space_1 = 7
 position = Vector2( 195, 282 )
 space_1 = 5
 space_2 = 8
+faction = "C"
+planet_name = "Clot"
 
 [node name="Button" parent="Spaces/Space9" index="0"]
 texture_normal = ExtResource( 6 )
 texture_disabled = ExtResource( 5 )
 
 [node name="Label" parent="Spaces/Space9" index="1"]
-text = "Clot"
-
-[node name="Faction" parent="Spaces/Space9" index="2"]
-text = "(Cimp)"
+visible = true
+margin_left = -19.0
+margin_right = 20.0
+bbcode_text = "[img]res://images/patrol-c-icon.png[/img][valign px=2] Clot[/valign]"
+text = " Clot"
 
 [node name="Space10" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 194, 142 )
 space_1 = 8
+faction = "D"
+planet_name = "Damon"
 
 [node name="Button" parent="Spaces/Space10" index="0"]
 texture_normal = ExtResource( 16 )
 texture_disabled = ExtResource( 9 )
 
 [node name="Label" parent="Spaces/Space10" index="1"]
-text = "Damon"
-
-[node name="Faction" parent="Spaces/Space10" index="2"]
-text = "(Dreb)"
+visible = true
+margin_left = -29.0
+margin_right = 28.0
+bbcode_text = "[img]res://images/patrol-d-icon.png[/img][valign px=2] Damon[/valign]"
+text = " Damon"
 
 [node name="Space11" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 243, 109 )
@@ -189,23 +199,22 @@ space_1 = 12
 texture_normal = ExtResource( 28 )
 texture_disabled = ExtResource( 27 )
 
-[node name="Label" parent="Spaces/Space13" index="1"]
-visible = false
-text = "Planet"
-
 [node name="Space14" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 391, 76 )
 space_1 = 13
+faction = "B"
+planet_name = "Ekes"
 
 [node name="Button" parent="Spaces/Space14" index="0"]
 texture_normal = ExtResource( 12 )
 texture_disabled = ExtResource( 10 )
 
 [node name="Label" parent="Spaces/Space14" index="1"]
-text = "Ekes"
-
-[node name="Faction" parent="Spaces/Space14" index="2"]
-text = "(Basyn)"
+visible = true
+margin_left = -22.0
+margin_right = 23.0
+bbcode_text = "[img]res://images/patrol-b-icon.png[/img][valign px=2] Ekes[/valign]"
+text = " Ekes"
 
 [node name="Space15" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 261, 160 )
@@ -252,16 +261,19 @@ space_1 = 23
 [node name="Space25" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 694, 26 )
 space_1 = 24
+faction = "A"
+planet_name = "Fatat"
 
 [node name="Button" parent="Spaces/Space25" index="0"]
 texture_normal = ExtResource( 21 )
 texture_disabled = ExtResource( 23 )
 
 [node name="Label" parent="Spaces/Space25" index="1"]
-text = "Fatat"
-
-[node name="Faction" parent="Spaces/Space25" index="2"]
-text = "(Ahut)"
+visible = true
+margin_left = -26.0
+margin_right = 26.0
+bbcode_text = "[img]res://images/patrol-a-icon.png[/img][valign px=2] Fatat[/valign]"
+text = " Fatat"
 
 [node name="Space26" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 530, 115 )
@@ -271,16 +283,19 @@ space_1 = 17
 position = Vector2( 645, 134 )
 space_1 = 24
 space_2 = 26
+faction = "A"
+planet_name = "Ganal"
 
 [node name="Button" parent="Spaces/Space27" index="0"]
 texture_normal = ExtResource( 24 )
 texture_disabled = ExtResource( 22 )
 
 [node name="Label" parent="Spaces/Space27" index="1"]
-text = "Ganal"
-
-[node name="Faction" parent="Spaces/Space27" index="2"]
-text = "(Ahut)"
+visible = true
+margin_left = -25.0
+margin_right = 26.0
+bbcode_text = "[img]res://images/patrol-a-icon.png[/img][valign px=2] Ganal[/valign]"
+text = " Ganal"
 
 [node name="Space28" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 729, 82 )
@@ -297,16 +312,17 @@ space_1 = 29
 [node name="Space31" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 809, 92 )
 space_1 = 28
+faction = "D"
+planet_name = "Haryl"
 
 [node name="Button" parent="Spaces/Space31" index="0"]
 texture_normal = ExtResource( 13 )
 texture_disabled = ExtResource( 11 )
 
 [node name="Label" parent="Spaces/Space31" index="1"]
-text = "Haryl"
-
-[node name="Faction" parent="Spaces/Space31" index="2"]
-text = "(Dreb)"
+visible = true
+bbcode_text = "[img]res://images/patrol-d-icon.png[/img][valign px=2] Haryl[/valign]"
+text = " Haryl"
 
 [node name="Space32" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 841, 173 )
@@ -336,26 +352,34 @@ space_1 = 36
 [node name="Space38" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 853, 291 )
 space_1 = 37
+faction = "C"
+planet_name = "Inab"
 
 [node name="Button" parent="Spaces/Space38" index="0"]
 texture_normal = ExtResource( 19 )
 texture_disabled = ExtResource( 14 )
 
 [node name="Label" parent="Spaces/Space38" index="1"]
-text = "Inab"
-
-[node name="Faction" parent="Spaces/Space38" index="2"]
-text = "(Cimp)"
+visible = true
+margin_left = -21.0
+margin_right = 22.0
+bbcode_text = "[img]res://images/patrol-c-icon.png[/img][valign px=2] Inab[/valign]"
+text = " Inab"
 
 [node name="Space39" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 980, 336 )
 space_1 = 34
+planet_name = "Jakaf"
 
 [node name="Button" parent="Spaces/Space39" index="0"]
 texture_normal = ExtResource( 20 )
 texture_disabled = ExtResource( 25 )
 
 [node name="Label" parent="Spaces/Space39" index="1"]
+visible = true
+margin_left = -19.0
+margin_right = 20.0
+bbcode_text = "Jakaf"
 text = "Jakaf"
 
 [node name="Space40" parent="Spaces" instance=ExtResource( 2 )]
@@ -370,12 +394,17 @@ space_2 = 40
 [node name="Space42" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 919, 501 )
 space_1 = 41
+planet_name = "Katak"
 
 [node name="Button" parent="Spaces/Space42" index="0"]
 texture_normal = ExtResource( 18 )
 texture_disabled = ExtResource( 26 )
 
 [node name="Label" parent="Spaces/Space42" index="1"]
+visible = true
+margin_left = -18.0
+margin_right = 19.0
+bbcode_text = "Katak"
 text = "Katak"
 
 [node name="Space43" parent="Spaces" instance=ExtResource( 2 )]
