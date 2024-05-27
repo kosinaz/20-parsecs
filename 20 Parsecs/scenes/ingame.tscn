@@ -103,7 +103,7 @@ position = Vector2( 25, 549 )
 position = Vector2( 72, 535 )
 
 [node name="Space3" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 30, 478 )
+position = Vector2( 27, 463 )
 space_1 = 1
 planet_name = "Acan"
 
@@ -117,6 +117,12 @@ margin_left = -16.0
 margin_right = 15.0
 bbcode_text = "Acan"
 text = "Acan"
+
+[node name="Contact1" parent="Spaces/Space3" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space3" index="3"]
+visible = true
 
 [node name="Space4" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 75, 465 )
@@ -134,6 +140,12 @@ texture_normal = ExtResource( 7 )
 texture_disabled = ExtResource( 8 )
 
 [node name="Label" parent="Spaces/Space5" index="1"]
+visible = true
+
+[node name="Contact1" parent="Spaces/Space5" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space5" index="3"]
 visible = true
 
 [node name="Space6" parent="Spaces" instance=ExtResource( 2 )]
@@ -166,6 +178,12 @@ margin_right = 20.0
 bbcode_text = "[img]res://images/patrol-c-icon.png[/img][valign px=2] Clot[/valign]"
 text = " Clot"
 
+[node name="Contact1" parent="Spaces/Space9" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space9" index="3"]
+visible = true
+
 [node name="Space10" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 194, 142 )
 space_1 = 8
@@ -182,6 +200,12 @@ margin_left = -29.0
 margin_right = 28.0
 bbcode_text = "[img]res://images/patrol-d-icon.png[/img][valign px=2] Damon[/valign]"
 text = " Damon"
+
+[node name="Contact1" parent="Spaces/Space10" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space10" index="3"]
+visible = true
 
 [node name="Space11" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 243, 109 )
@@ -216,6 +240,12 @@ margin_right = 23.0
 bbcode_text = "[img]res://images/patrol-b-icon.png[/img][valign px=2] Ekes[/valign]"
 text = " Ekes"
 
+[node name="Contact1" parent="Spaces/Space14" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space14" index="3"]
+visible = true
+
 [node name="Space15" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 261, 160 )
 space_1 = 10
@@ -230,7 +260,7 @@ position = Vector2( 466, 117 )
 space_1 = 16
 
 [node name="Space18" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 383, 16 )
+position = Vector2( 383, 19 )
 space_1 = 14
 
 [node name="Space19" parent="Spaces" instance=ExtResource( 2 )]
@@ -247,7 +277,7 @@ space_1 = 17
 space_2 = 20
 
 [node name="Space22" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 530, 15 )
+position = Vector2( 528, 26 )
 space_1 = 21
 
 [node name="Space23" parent="Spaces" instance=ExtResource( 2 )]
@@ -255,11 +285,11 @@ position = Vector2( 560, 53 )
 space_1 = 22
 
 [node name="Space24" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 655, 86 )
+position = Vector2( 643, 63 )
 space_1 = 23
 
 [node name="Space25" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 694, 26 )
+position = Vector2( 694, 36 )
 space_1 = 24
 faction = "A"
 planet_name = "Fatat"
@@ -275,12 +305,18 @@ margin_right = 26.0
 bbcode_text = "[img]res://images/patrol-a-icon.png[/img][valign px=2] Fatat[/valign]"
 text = " Fatat"
 
+[node name="Contact1" parent="Spaces/Space25" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space25" index="3"]
+visible = true
+
 [node name="Space26" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 530, 115 )
 space_1 = 17
 
 [node name="Space27" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 645, 134 )
+position = Vector2( 637, 125 )
 space_1 = 24
 space_2 = 26
 faction = "A"
@@ -297,20 +333,26 @@ margin_right = 26.0
 bbcode_text = "[img]res://images/patrol-a-icon.png[/img][valign px=2] Ganal[/valign]"
 text = " Ganal"
 
+[node name="Contact1" parent="Spaces/Space27" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space27" index="3"]
+visible = true
+
 [node name="Space28" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 729, 82 )
+position = Vector2( 737, 80 )
 space_1 = 25
 
 [node name="Space29" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 697, 106 )
+position = Vector2( 695, 127 )
 space_1 = 24
 
 [node name="Space30" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 698, 153 )
+position = Vector2( 701, 166 )
 space_1 = 29
 
 [node name="Space31" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 809, 92 )
+position = Vector2( 809, 82 )
 space_1 = 28
 faction = "D"
 planet_name = "Haryl"
@@ -323,6 +365,12 @@ texture_disabled = ExtResource( 11 )
 visible = true
 bbcode_text = "[img]res://images/patrol-d-icon.png[/img][valign px=2] Haryl[/valign]"
 text = " Haryl"
+
+[node name="Contact1" parent="Spaces/Space31" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space31" index="3"]
+visible = true
 
 [node name="Space32" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 841, 173 )
@@ -350,7 +398,7 @@ position = Vector2( 829, 237 )
 space_1 = 36
 
 [node name="Space38" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 853, 291 )
+position = Vector2( 853, 298 )
 space_1 = 37
 faction = "C"
 planet_name = "Inab"
@@ -365,6 +413,12 @@ margin_left = -21.0
 margin_right = 22.0
 bbcode_text = "[img]res://images/patrol-c-icon.png[/img][valign px=2] Inab[/valign]"
 text = " Inab"
+
+[node name="Contact1" parent="Spaces/Space38" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space38" index="3"]
+visible = true
 
 [node name="Space39" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 980, 336 )
@@ -381,6 +435,12 @@ margin_left = -19.0
 margin_right = 20.0
 bbcode_text = "Jakaf"
 text = "Jakaf"
+
+[node name="Contact1" parent="Spaces/Space39" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space39" index="3"]
+visible = true
 
 [node name="Space40" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 920, 346 )
@@ -406,6 +466,12 @@ margin_left = -18.0
 margin_right = 19.0
 bbcode_text = "Katak"
 text = "Katak"
+
+[node name="Contact1" parent="Spaces/Space42" index="2"]
+visible = true
+
+[node name="Contact2" parent="Spaces/Space42" index="3"]
+visible = true
 
 [node name="Space43" parent="Spaces" instance=ExtResource( 2 )]
 position = Vector2( 961, 463 )
