@@ -1,0 +1,330 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://images/ship-attack.png" type="Texture" id=2]
+[ext_resource path="res://images/ground-attack.png" type="Texture" id=3]
+[ext_resource path="res://scenes/cards/bounty_card.gd" type="Script" id=5]
+[ext_resource path="res://images/ship-combat.png" type="Texture" id=6]
+[ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=7]
+[ext_resource path="res://images/person1.png" type="Texture" id=8]
+[ext_resource path="res://images/patrol-c-icon.png" type="Texture" id=9]
+[ext_resource path="res://images/bounty.png" type="Texture" id=10]
+[ext_resource path="res://images/yes.png" type="Texture" id=15]
+[ext_resource path="res://images/fame.png" type="Texture" id=16]
+[ext_resource path="res://images/to.png" type="Texture" id=17]
+
+[sub_resource type="DynamicFont" id=1]
+size = 10
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="BountyCard" type="VBoxContainer"]
+unique_name_in_owner = true
+margin_left = 7.0
+margin_top = 4.0
+margin_right = 92.0
+margin_bottom = 124.0
+custom_constants/separation = 0
+script = ExtResource( 5 )
+
+[node name="Top" type="HBoxContainer" parent="."]
+margin_right = 85.0
+margin_bottom = 19.0
+
+[node name="Type" type="MarginContainer" parent="Top"]
+margin_right = 63.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+custom_constants/margin_top = 4
+custom_constants/margin_left = 27
+
+[node name="Type" type="HBoxContainer" parent="Top/Type"]
+margin_left = 27.0
+margin_top = 4.0
+margin_right = 63.0
+margin_bottom = 19.0
+
+[node name="Icon" type="TextureRect" parent="Top/Type/Type"]
+margin_right = 12.0
+margin_bottom = 15.0
+texture = ExtResource( 10 )
+
+[node name="Help" type="MarginContainer" parent="Top"]
+margin_left = 67.0
+margin_right = 85.0
+margin_bottom = 19.0
+
+[node name="Help" type="Button" parent="Top/Help"]
+margin_right = 18.0
+margin_bottom = 19.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 1 )
+disabled = true
+text = "?"
+
+[node name="Card" type="MarginContainer" parent="."]
+margin_top = 19.0
+margin_right = 85.0
+margin_bottom = 120.0
+size_flags_vertical = 3
+custom_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Card"]
+margin_top = 8.0
+margin_right = 85.0
+margin_bottom = 101.0
+custom_constants/separation = 2
+
+[node name="Contact" type="HBoxContainer" parent="Card/VBoxContainer"]
+margin_right = 85.0
+margin_bottom = 12.0
+
+[node name="Level" type="TextureRect" parent="Card/VBoxContainer/Contact"]
+unique_name_in_owner = true
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 8 )
+
+[node name="Name" type="Label" parent="Card/VBoxContainer/Contact"]
+unique_name_in_owner = true
+margin_left = 16.0
+margin_right = 35.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "Dar"
+
+[node name="ShipCombat" type="TextureRect" parent="Card/VBoxContainer/Contact"]
+unique_name_in_owner = true
+visible = false
+margin_left = 16.0
+margin_top = 14.0
+margin_right = 28.0
+margin_bottom = 26.0
+texture = ExtResource( 6 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Card/VBoxContainer/Contact"]
+margin_left = 39.0
+margin_right = 57.0
+margin_bottom = 12.0
+custom_constants/separation = 1
+
+[node name="Attack" type="Label" parent="Card/VBoxContainer/Contact/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="GroundAttack" type="TextureRect" parent="Card/VBoxContainer/Contact/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 6.0
+margin_right = 18.0
+margin_bottom = 12.0
+texture = ExtResource( 3 )
+
+[node name="ShipAttack" type="TextureRect" parent="Card/VBoxContainer/Contact/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_left = 19.0
+margin_right = 31.0
+margin_bottom = 12.0
+texture = ExtResource( 2 )
+
+[node name="Combat" type="HBoxContainer" parent="Card/VBoxContainer"]
+margin_top = 14.0
+margin_right = 85.0
+margin_bottom = 14.0
+
+[node name="Kill" type="HBoxContainer" parent="Card/VBoxContainer"]
+margin_top = 16.0
+margin_right = 85.0
+margin_bottom = 28.0
+
+[node name="Success" type="TextureRect" parent="Card/VBoxContainer/Kill"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Kill"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="KillMoney" type="Label" parent="Card/VBoxContainer/Kill"]
+unique_name_in_owner = true
+margin_left = 23.0
+margin_right = 36.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "7K"
+
+[node name="Fame" type="HBoxContainer" parent="Card/VBoxContainer/Kill"]
+margin_left = 40.0
+margin_right = 57.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="KillFame" type="Label" parent="Card/VBoxContainer/Kill/Fame"]
+unique_name_in_owner = true
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="FameIcon" type="TextureRect" parent="Card/VBoxContainer/Kill/Fame"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 16 )
+
+[node name="Rep" type="HBoxContainer" parent="Card/VBoxContainer/Kill"]
+unique_name_in_owner = true
+margin_left = 61.0
+margin_right = 83.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Rep" type="Label" parent="Card/VBoxContainer/Kill/Rep"]
+margin_right = 10.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "-1"
+
+[node name="RepIcon" type="TextureRect" parent="Card/VBoxContainer/Kill/Rep"]
+unique_name_in_owner = true
+margin_left = 10.0
+margin_right = 22.0
+margin_bottom = 12.0
+texture = ExtResource( 9 )
+
+[node name="To" type="HBoxContainer" parent="Card/VBoxContainer"]
+margin_top = 30.0
+margin_right = 85.0
+margin_bottom = 42.0
+
+[node name="ToIcon" type="TextureRect" parent="Card/VBoxContainer/To"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 17 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/To"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="To" type="Label" parent="Card/VBoxContainer/To"]
+unique_name_in_owner = true
+margin_left = 23.0
+margin_right = 47.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "Ekes"
+
+[node name="Deliver" type="HBoxContainer" parent="Card/VBoxContainer"]
+margin_top = 44.0
+margin_right = 85.0
+margin_bottom = 72.0
+
+[node name="Success" type="TextureRect" parent="Card/VBoxContainer/Deliver"]
+margin_right = 12.0
+margin_bottom = 28.0
+texture = ExtResource( 15 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Deliver"]
+margin_left = 16.0
+margin_right = 19.0
+margin_bottom = 28.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Card/VBoxContainer/Deliver"]
+margin_left = 23.0
+margin_right = 78.0
+margin_bottom = 28.0
+
+[node name="Deliver" type="HBoxContainer" parent="Card/VBoxContainer/Deliver/VBoxContainer"]
+margin_right = 55.0
+margin_bottom = 12.0
+
+[node name="DeliverMoney" type="Label" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver"]
+unique_name_in_owner = true
+margin_right = 13.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "7K"
+
+[node name="Fame" type="HBoxContainer" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver"]
+margin_left = 17.0
+margin_right = 34.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="DeliverFame" type="Label" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver/Fame"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="FameIcon" type="TextureRect" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver/Fame"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 16 )
+
+[node name="Rep1" type="HBoxContainer" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver"]
+unique_name_in_owner = true
+margin_left = 38.0
+margin_right = 55.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Rep" type="Label" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver/Rep1"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="Rep1Icon" type="TextureRect" parent="Card/VBoxContainer/Deliver/VBoxContainer/Deliver/Rep1"]
+unique_name_in_owner = true
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 9 )
+
+[node name="Rep2" type="HBoxContainer" parent="Card/VBoxContainer/Deliver/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 16.0
+margin_right = 55.0
+margin_bottom = 28.0
+custom_constants/separation = 0
+
+[node name="Rep" type="Label" parent="Card/VBoxContainer/Deliver/VBoxContainer/Rep2"]
+margin_right = 10.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "-1"
+
+[node name="Rep2Icon" type="TextureRect" parent="Card/VBoxContainer/Deliver/VBoxContainer/Rep2"]
+unique_name_in_owner = true
+margin_left = 10.0
+margin_right = 22.0
+margin_bottom = 12.0
+texture = ExtResource( 9 )
