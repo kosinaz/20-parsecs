@@ -29,7 +29,7 @@ func _on_button_pressed():
 	emit_signal("pressed", self)
 
 func _on_contact1_pressed():
-	emit_signal("pressed", self)
+	emit_signal("contact1", self)
 
 func _on_contact2_pressed():
-	emit_signal("pressed", self)
+	emit_signal("contact2", self)

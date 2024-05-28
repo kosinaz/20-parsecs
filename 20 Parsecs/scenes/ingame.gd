@@ -22,7 +22,7 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
-onready var decks = [$"%CargoDeck", $"%GearModDeck", $"%ShipDeck"]
+onready var decks = [$"%BountyDeck", $"%CargoDeck", $"%GearModDeck", $"%ShipDeck"]
 onready var used_ships = [$"%UsedShip", $"%UsedShip2", $"%UsedShip3", $"%UsedShip4", $"%UsedShip5", $"%UsedShip6", $"%UsedShip7", $"%UsedShip8"]
 onready var all_cards = []
 
@@ -56,6 +56,10 @@ func _ready():
 	$"%Ship".set_card(starter_ship_deck[0])
 	start_planning()
 # warning-ignore:return_value_discarded
+	$"%BountyDeck".connect("took", self, "_on_bounty_deck_take_pressed")
+# warning-ignore:return_value_discarded
+	$"%BountyDeck".connect("skipped", self, "_on_skip_pressed")
+# warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("skipped", self, "_on_skip_pressed")
@@ -68,12 +72,9 @@ func _ready():
 # warning-ignore:return_value_discarded
 	$"%ShipDeck".connect("skipped", self, "_on_skip_pressed")
 	all_cards.append_array(decks)
-	all_cards.append_array($"%Player".gear_slots)
-	all_cards.append_array($"%Player".cargo_slots)
-	all_cards.append($"%Player".cargo_mod_slot)
-	all_cards.append($"%Player".mod_slot)
-	for deck in decks:
-		deck.set_player($"%Player")
+	all_cards.append_array($"%Player".slots)
+	for card in all_cards:
+		card.set_player($"%Player")
 	for i in range(8):
 		var ship = used_ships[i]
 		ship.set_card(i)
@@ -82,10 +83,11 @@ func _ready():
 		ship.connect("bought", self, "_on_used_ship_buy_pressed")
 	$"%ShipDeck".set_ship($"%Ship")
 	for card in $"%Player".gear_slots:
-		card.set_player($"%Player")
 		card.connect("bartered", self, "_on_barter_toggled")
+	for card in $"%Player".bounty_job_slots:
+		card.connect("delivered", self, "_on_bounty_deliver_pressed")
+		card.connect("dropped", self, "_on_drop_pressed")
 	for card in $"%Player".cargo_slots:
-		card.set_player($"%Player")
 		card.connect("moved", self, "_on_move_pressed")
 		card.connect("delivered", self, "_on_deliver_pressed")
 		card.connect("bartered", self, "_on_barter_toggled")
@@ -227,103 +229,6 @@ func update_action_buttons():
 	$"%Player".update_discount()
 	for card in all_cards:
 		card.update_buttons()
-
-func _on_deliver_pressed(cargo):
-	if cargo.has_trait("Illegal"):
-		failed_cargo = cargo
-		var result = roll()
-		failed_card = randi() % 4
-		if result == "hit" or (result == "blank" and $"%CargoSlot3".visible):
-			$"%Player".increase_fame(cargo.get_card().fame)
-			$"%Player".increase_money(cargo.get_card().sell)
-			remove_card(cargo)
-		else:
-			skip_encounter = true
-			$"%Prompt".show()
-			$"%FailedLabel".text = "Smuggling failed!\nEncounter step will be skipped!"
-			$"%FailedSell".show()
-			$"%FailedSell2".show()
-			if result == "crit":
-				if failed_card == 0:
-					$"%FailedSell".text = "Deliver -1AR"
-					$"%FailedSell2".text = "Keep Cargo"
-				if failed_card == 1:
-					$"%FailedSell".text = "Deliver -1BR"
-					$"%FailedSell2".text = "Deliver -6K"
-				if failed_card == 2:
-					$"%FailedSell".text = "Attack 3G"
-					$"%FailedSell2".text = "Drop"
-				if failed_card == 3:
-					$"%FailedSell".text = "Attack 3S"
-					$"%FailedSell2".hide()
-			elif result == "focus":
-				if failed_card == 0:
-					$"%FailedSell".text = "Deliver -1DR"
-					$"%FailedSell2".text = "Keep Cargo"
-				if failed_card == 1:
-					$"%FailedSell".text = "Deliver -1AR"
-					$"%FailedSell2".text = "Deliver -6K"
-				if failed_card == 2:
-					if skill_test("stealth"):
-						$"%FailedLabel".text += "\nStealth Test passed!"
-						$"%FailedSell".text = "Deliver"
-						$"%FailedSell2".hide()
-					else:
-						$"%FailedLabel".text += "\nStealth Test failed!"
-						var faction = $"%Player".space.faction
-						if faction == "":
-							$"%FailedSell".text = "Keep Cargo"
-						else:
-							$"%FailedSell".text = "Keep Cargo -1" + faction + "R"
-						$"%FailedSell2".hide()
-				if failed_card == 3:
-					if skill_test("influence"):
-						$"%FailedLabel".text += "\nInfluence Test passed!"
-						$"%FailedSell".text = "Deliver"
-						$"%FailedSell2".hide()
-					else:
-						$"%FailedLabel".text += "\nInfluence Test failed!"
-						$"%FailedSell".text = "Keep Cargo -1CR"
-						$"%FailedSell2".hide()
-			elif result == "blank":
-				if failed_card == 0:
-					$"%FailedSell".text = "Deliver -1BR"
-					$"%FailedSell2".text = "Keep Cargo"
-				if failed_card == 1:
-					$"%FailedSell".text = "Deliver -1DR"
-					$"%FailedSell2".text = "Deliver -6K"
-				if failed_card == 2:
-					if skill_test("piloting"):
-						$"%FailedLabel".text += "\nPiloting Test passed!"
-						$"%FailedSell".text = "Deliver"
-						$"%FailedSell2".hide()
-					else:
-						$"%FailedLabel".text += "\nPiloting Test failed!"
-						var faction = $"%Player".space.faction
-						if faction == "":
-							$"%FailedSell".text = "Keep Cargo"
-						else:
-							$"%FailedSell".text = "Keep Cargo -1" + faction + "R"
-						$"%FailedSell2".hide()
-				if failed_card == 3:
-					if $"%Player".cimp == 1:
-						$"%FailedLabel".text += "\nYour Cimp Reputation saved you!"
-						$"%FailedSell".text = "Deliver"
-						$"%FailedSell2".hide()
-					else:
-						if skill_test("stealth"):
-							$"%FailedLabel".text += "\nStealth Test passed!"
-							$"%FailedSell".text = "Deliver"
-							$"%FailedSell2".hide()
-						else:
-							$"%FailedLabel".text += "\nStealth Test failed!"
-							$"%FailedSell".text = "Keep Cargo -1CR"
-							$"%FailedSell2".hide()
-	else:
-		$"%Player".increase_money(cargo.get_card().sell)
-		if cargo.get_card().has("rep"):
-			$"%Player".increase_reputation(cargo.get_card().rep)
-		remove_card(cargo)
 
 func drop_barter_pool():
 	for slot in $"%Player".slots:
@@ -664,6 +569,14 @@ func _on_skip_pressed():
 	$"%Player".skipped = true
 	update_action_buttons()
 
+func _on_bounty_deck_take_pressed(card, target):
+	target.set_card(card)
+	var front = $"%CargoDeck".front()
+	if front.has("patrol"):
+		move_patrol(get_node("%Patrol" + front.patrol), front.move)
+	$"%Player".bought = true
+	update_action_buttons()
+	
 func _on_cargo_deck_buy_pressed(card, price, target):
 	$"%Player".decrease_money(price)
 	drop_barter_pool()
@@ -696,7 +609,110 @@ func _on_ship_deck_buy_pressed(card, price):
 
 func _on_used_ship_buy_pressed(card, price):
 	buy_used_ship(card, price)
+
+func _on_deliver_pressed(cargo):
+	if cargo.has_trait("Illegal"):
+		failed_cargo = cargo
+		var result = roll()
+		failed_card = randi() % 4
+		if result == "hit" or (result == "blank" and $"%CargoSlot3".visible):
+			$"%Player".increase_fame(cargo.get_card().fame)
+			$"%Player".increase_money(cargo.get_card().sell)
+			remove_card(cargo)
+		else:
+			skip_encounter = true
+			$"%Prompt".show()
+			$"%FailedLabel".text = "Smuggling failed!\nEncounter step will be skipped!"
+			$"%FailedSell".show()
+			$"%FailedSell2".show()
+			if result == "crit":
+				if failed_card == 0:
+					$"%FailedSell".text = "Deliver -1AR"
+					$"%FailedSell2".text = "Keep Cargo"
+				if failed_card == 1:
+					$"%FailedSell".text = "Deliver -1BR"
+					$"%FailedSell2".text = "Deliver -6K"
+				if failed_card == 2:
+					$"%FailedSell".text = "Attack 3G"
+					$"%FailedSell2".text = "Drop"
+				if failed_card == 3:
+					$"%FailedSell".text = "Attack 3S"
+					$"%FailedSell2".hide()
+			elif result == "focus":
+				if failed_card == 0:
+					$"%FailedSell".text = "Deliver -1DR"
+					$"%FailedSell2".text = "Keep Cargo"
+				if failed_card == 1:
+					$"%FailedSell".text = "Deliver -1AR"
+					$"%FailedSell2".text = "Deliver -6K"
+				if failed_card == 2:
+					if skill_test("stealth"):
+						$"%FailedLabel".text += "\nStealth Test passed!"
+						$"%FailedSell".text = "Deliver"
+						$"%FailedSell2".hide()
+					else:
+						$"%FailedLabel".text += "\nStealth Test failed!"
+						var faction = $"%Player".space.faction
+						if faction == "":
+							$"%FailedSell".text = "Keep Cargo"
+						else:
+							$"%FailedSell".text = "Keep Cargo -1" + faction + "R"
+						$"%FailedSell2".hide()
+				if failed_card == 3:
+					if skill_test("influence"):
+						$"%FailedLabel".text += "\nInfluence Test passed!"
+						$"%FailedSell".text = "Deliver"
+						$"%FailedSell2".hide()
+					else:
+						$"%FailedLabel".text += "\nInfluence Test failed!"
+						$"%FailedSell".text = "Keep Cargo -1CR"
+						$"%FailedSell2".hide()
+			elif result == "blank":
+				if failed_card == 0:
+					$"%FailedSell".text = "Deliver -1BR"
+					$"%FailedSell2".text = "Keep Cargo"
+				if failed_card == 1:
+					$"%FailedSell".text = "Deliver -1DR"
+					$"%FailedSell2".text = "Deliver -6K"
+				if failed_card == 2:
+					if skill_test("piloting"):
+						$"%FailedLabel".text += "\nPiloting Test passed!"
+						$"%FailedSell".text = "Deliver"
+						$"%FailedSell2".hide()
+					else:
+						$"%FailedLabel".text += "\nPiloting Test failed!"
+						var faction = $"%Player".space.faction
+						if faction == "":
+							$"%FailedSell".text = "Keep Cargo"
+						else:
+							$"%FailedSell".text = "Keep Cargo -1" + faction + "R"
+						$"%FailedSell2".hide()
+				if failed_card == 3:
+					if $"%Player".cimp == 1:
+						$"%FailedLabel".text += "\nYour Cimp Reputation saved you!"
+						$"%FailedSell".text = "Deliver"
+						$"%FailedSell2".hide()
+					else:
+						if skill_test("stealth"):
+							$"%FailedLabel".text += "\nStealth Test passed!"
+							$"%FailedSell".text = "Deliver"
+							$"%FailedSell2".hide()
+						else:
+							$"%FailedLabel".text += "\nStealth Test failed!"
+							$"%FailedSell".text = "Keep Cargo -1CR"
+							$"%FailedSell2".hide()
+	else:
+		$"%Player".increase_money(cargo.get_card().sell)
+		if cargo.get_card().has("rep"):
+			$"%Player".increase_reputation(cargo.get_card().rep)
+		remove_card(cargo)
+
+func _on_bounty_deliver_pressed(slot):
+	pass
 	
+func _on_drop_pressed(slot):
+	remove_card(slot)
+
 func _on_barter_toggled():
 	update_action_buttons()
 

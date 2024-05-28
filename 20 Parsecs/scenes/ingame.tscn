@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=2]
+[gd_scene load_steps=67 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -59,6 +59,7 @@
 [ext_resource path="res://scenes/slots/ship_slot.tscn" type="PackedScene" id=57]
 [ext_resource path="res://scenes/valign.gd" type="Script" id=58]
 [ext_resource path="res://scenes/decks/ship_deck.tscn" type="PackedScene" id=59]
+[ext_resource path="res://scenes/slots/bounty_job_slot.tscn" type="PackedScene" id=60]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -914,6 +915,14 @@ margin_right = 192.0
 [node name="GearSlot2" parent="CanvasLayer/Character" instance=ExtResource( 55 )]
 margin_left = 192.0
 margin_right = 288.0
+
+[node name="BountyJobSlot" parent="CanvasLayer/Character" instance=ExtResource( 60 )]
+margin_left = 288.0
+margin_right = 384.0
+
+[node name="BountyJobSlot2" parent="CanvasLayer/Character" instance=ExtResource( 60 )]
+margin_left = 384.0
+margin_right = 480.0
 
 [node name="Ship" type="HBoxContainer" parent="CanvasLayer"]
 anchor_left = 0.5
