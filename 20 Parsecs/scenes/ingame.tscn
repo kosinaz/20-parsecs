@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=2]
+[gd_scene load_steps=78 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -70,6 +70,7 @@
 [ext_resource path="res://images/fame.png" type="Texture" id=68]
 [ext_resource path="res://images/to.png" type="Texture" id=69]
 [ext_resource path="res://images/yes.png" type="Texture" id=70]
+[ext_resource path="res://images/hit.png" type="Texture" id=71]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -1297,6 +1298,7 @@ text = "Encounter"
 
 [node name="ContactPrompt2" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
+visible = false
 self_modulate = Color( 1, 1, 1, 0.784314 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1324,33 +1326,36 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -138.5
-margin_top = -51.0
-margin_right = 138.5
-margin_bottom = 51.0
+margin_left = -138.0
+margin_top = -58.0
+margin_right = 139.0
+margin_bottom = 57.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer"]
 margin_right = 277.0
 margin_bottom = 16.0
+custom_constants/separation = 0
 alignment = 1
 
 [node name="Label" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer2"]
-margin_left = 55.0
-margin_right = 168.0
+margin_left = 60.0
+margin_right = 176.0
 margin_bottom = 16.0
 custom_fonts/font = ExtResource( 39 )
-text = "You have defeated"
+text = "You have defeated "
 align = 1
 
-[node name="BountyLevel" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer2"]
-margin_left = 172.0
-margin_right = 184.0
+[node name="DefeatedBountyLevel" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+margin_left = 176.0
+margin_right = 188.0
 margin_bottom = 16.0
 texture = ExtResource( 65 )
 
-[node name="BountyNameLabel" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer2"]
+[node name="DefeatedBountyNameLabel" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 margin_left = 188.0
 margin_right = 213.0
 margin_bottom = 16.0
@@ -1358,18 +1363,80 @@ custom_fonts/font = ExtResource( 39 )
 text = "Nad"
 
 [node name="Label2" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer2"]
-margin_left = 217.0
-margin_right = 221.0
+margin_left = 213.0
+margin_right = 217.0
 margin_bottom = 16.0
 custom_fonts/font = ExtResource( 39 )
 text = "!"
 align = 1
 
-[node name="KillBounty" type="Button" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer"]
-unique_name_in_owner = true
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer"]
 margin_top = 20.0
 margin_right = 277.0
-margin_bottom = 59.0
+margin_bottom = 36.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+margin_left = 107.0
+margin_right = 111.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "("
+align = 1
+
+[node name="ContactDefenderDamage" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+margin_left = 111.0
+margin_right = 117.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "1"
+align = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+margin_left = 117.0
+margin_top = 2.0
+margin_right = 129.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 71 )
+
+[node name="Label3" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+margin_left = 129.0
+margin_right = 148.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = " vs "
+
+[node name="ContactAttackerDamage" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+margin_left = 148.0
+margin_right = 154.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "1"
+align = 1
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+margin_left = 154.0
+margin_top = 2.0
+margin_right = 166.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 71 )
+
+[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/HBoxContainer3"]
+margin_left = 166.0
+margin_right = 170.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = ")"
+
+[node name="KillBounty" type="Button" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer"]
+margin_top = 40.0
+margin_right = 277.0
+margin_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -1489,17 +1556,16 @@ margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = " Reputation"
 
-[node name="CaptureBountyContainer" type="Button" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer"]
-unique_name_in_owner = true
-margin_top = 63.0
+[node name="CaptureBounty" type="Button" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer"]
+margin_top = 79.0
 margin_right = 277.0
-margin_bottom = 102.0
+margin_bottom = 115.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 38 )
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -1512,54 +1578,55 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2"]
 margin_right = 270.0
 margin_bottom = 13.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_right = 62.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "Capture and "
 
-[node name="Texture3" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Texture3" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 62.0
 margin_right = 74.0
 margin_bottom = 12.0
 size_flags_vertical = 4
 texture = ExtResource( 70 )
 
-[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 74.0
 margin_right = 125.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "Deliver to "
 
-[node name="Texture4" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Texture4" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 125.0
 margin_right = 137.0
 margin_bottom = 12.0
 size_flags_vertical = 4
 texture = ExtResource( 69 )
 
-[node name="Label5" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="BountyDeliverTo" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
 margin_left = 137.0
 margin_right = 161.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "Ekes"
 
-[node name="Label6" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label6" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 161.0
 margin_right = 180.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = " for "
 
-[node name="BountyDeliverReward" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="BountyDeliverReward" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 180.0
 margin_right = 191.0
@@ -1567,14 +1634,14 @@ margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "17"
 
-[node name="Label3" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label3" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 191.0
 margin_right = 220.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "K and "
 
-[node name="BountyDeliverFame" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="BountyDeliverFame" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 220.0
 margin_right = 227.0
@@ -1582,43 +1649,43 @@ margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "2"
 
-[node name="Texture2" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Texture2" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 227.0
 margin_right = 239.0
 margin_bottom = 12.0
 size_flags_vertical = 4
 texture = ExtResource( 68 )
 
-[node name="Label2" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label2" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/HBoxContainer"]
 margin_left = 239.0
 margin_right = 270.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = " Fame "
 
-[node name="DeliverRepContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2"]
+[node name="DeliverRepContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2"]
 unique_name_in_owner = true
 visible = false
 margin_top = 17.0
-margin_right = 271.0
+margin_right = 270.0
 margin_bottom = 30.0
 alignment = 1
 
-[node name="DeliverPositiveRepContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer"]
+[node name="PositiveRepContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer"]
 unique_name_in_owner = true
-margin_left = 12.0
-margin_right = 131.0
+margin_left = 11.0
+margin_right = 130.0
 margin_bottom = 13.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverPositiveRepContainer"]
+[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/PositiveRepContainer"]
 margin_right = 25.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "and 1"
 
-[node name="PositiveRepTexture" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverPositiveRepContainer"]
+[node name="PositiveRepTexture" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/PositiveRepContainer"]
 unique_name_in_owner = true
 margin_left = 25.0
 margin_right = 37.0
@@ -1626,14 +1693,14 @@ margin_bottom = 12.0
 size_flags_vertical = 4
 texture = ExtResource( 66 )
 
-[node name="Label6" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverPositiveRepContainer"]
+[node name="Label6" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/PositiveRepContainer"]
 margin_left = 37.0
 margin_right = 39.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = " "
 
-[node name="PositiveRepLabel" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverPositiveRepContainer"]
+[node name="PositiveRepLabel" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/PositiveRepContainer"]
 unique_name_in_owner = true
 margin_left = 39.0
 margin_right = 63.0
@@ -1641,28 +1708,28 @@ margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "Ahut"
 
-[node name="Label5" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverPositiveRepContainer"]
+[node name="Label5" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/PositiveRepContainer"]
 margin_left = 63.0
 margin_right = 119.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = " Reputation"
 
-[node name="DeliverNegativeRepContainer" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer"]
+[node name="NegativeRepContainer2" type="HBoxContainer" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer"]
 unique_name_in_owner = true
-margin_left = 135.0
-margin_right = 259.0
+margin_left = 134.0
+margin_right = 258.0
 margin_bottom = 13.0
 custom_constants/separation = 0
 alignment = 1
 
-[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverNegativeRepContainer"]
+[node name="Label4" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/NegativeRepContainer2"]
 margin_right = 30.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "and -1"
 
-[node name="NegativeRepTexture2" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverNegativeRepContainer"]
+[node name="NegativeRepTexture2" type="TextureRect" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/NegativeRepContainer2"]
 unique_name_in_owner = true
 margin_left = 30.0
 margin_right = 42.0
@@ -1670,14 +1737,14 @@ margin_bottom = 12.0
 size_flags_vertical = 4
 texture = ExtResource( 66 )
 
-[node name="Label6" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverNegativeRepContainer"]
+[node name="Label6" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/NegativeRepContainer2"]
 margin_left = 42.0
 margin_right = 44.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = " "
 
-[node name="NegativeRepLabel2" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverNegativeRepContainer"]
+[node name="NegativeRepLabel2" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/NegativeRepContainer2"]
 unique_name_in_owner = true
 margin_left = 44.0
 margin_right = 68.0
@@ -1685,7 +1752,7 @@ margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "Ahut"
 
-[node name="Label5" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer/VBoxContainer2/DeliverRepContainer/DeliverNegativeRepContainer"]
+[node name="Label5" type="Label" parent="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty/VBoxContainer2/DeliverRepContainer/NegativeRepContainer2"]
 margin_left = 68.0
 margin_right = 124.0
 margin_bottom = 13.0
@@ -1729,20 +1796,82 @@ margin_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AlertSummary" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer"]
+[node name="ContactAlertSummary" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer"]
 margin_right = 207.0
-margin_bottom = 35.0
+margin_bottom = 16.0
 custom_fonts/font = ExtResource( 39 )
-text = "Smuggling failed!
-Encounter step will be skipped!"
+text = "Attack failed!"
 align = 1
 
-[node name="AlertButton" type="Button" parent="CanvasLayer/ContactAlert/Window/VBoxContainer"]
-margin_top = 39.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ContactAlert/Window/VBoxContainer"]
+margin_top = 20.0
 margin_right = 207.0
-margin_bottom = 58.0
+margin_bottom = 36.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+margin_left = 72.0
+margin_right = 76.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "("
+align = 1
+
+[node name="ContactAlertDefenderDamage" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 76.0
+margin_right = 82.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "1"
+align = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+margin_left = 82.0
+margin_top = 2.0
+margin_right = 94.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 71 )
+
+[node name="Label3" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+margin_left = 94.0
+margin_right = 113.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = " vs "
+
+[node name="ContactAlertAttackerDamage" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 113.0
+margin_right = 119.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "1"
+align = 1
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+margin_left = 119.0
+margin_top = 2.0
+margin_right = 131.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 71 )
+
+[node name="Label4" type="Label" parent="CanvasLayer/ContactAlert/Window/VBoxContainer/HBoxContainer"]
+margin_left = 131.0
+margin_right = 135.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = ")"
+
+[node name="ContactAlertButton" type="Button" parent="CanvasLayer/ContactAlert/Window/VBoxContainer"]
+margin_top = 40.0
+margin_right = 207.0
+margin_bottom = 59.0
 custom_fonts/font = ExtResource( 38 )
-text = "Ok"
+text = "End Turn"
 
 [node name="ContactDeck" type="Node" parent="."]
 unique_name_in_owner = true
@@ -1758,9 +1887,9 @@ script = ExtResource( 61 )
 [connection signal="pressed" from="CanvasLayer/Alert/Window/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactPrompt/Window/VBoxContainer/Attack" to="." method="_on_attack_contact_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactPrompt/Window/VBoxContainer/Encounter" to="." method="_on_encounter_contact_pressed"]
-[connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/KillBounty" to="." method="_on_attack_contact_pressed"]
-[connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBountyContainer" to="." method="_on_attack_contact_pressed"]
-[connection signal="pressed" from="CanvasLayer/ContactAlert/Window/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/KillBounty" to="." method="_on_kill_bounty_pressed"]
+[connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty" to="." method="_on_capture_bounty_pressed"]
+[connection signal="pressed" from="CanvasLayer/ContactAlert/Window/VBoxContainer/ContactAlertButton" to="." method="_on_contact_alert_button_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

@@ -15,6 +15,9 @@ var bought = false
 var skipped = false
 var smuggling_compartment = false
 var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
+var selected_contact_id = 0
+var selected_contact_space = null
+var selected_bounty_slot = null
 var failed_cargo = null
 var failed_card = 0
 onready var patrols = [$"%PatrolA", $"%PatrolB", $"%PatrolC", $"%PatrolD"]
@@ -87,6 +90,7 @@ func _ready():
 		card.connect("bartered", self, "_on_barter_toggled")
 	for card in $"%Player".bounty_job_slots:
 		card.connect("delivered", self, "_on_bounty_deliver_pressed")
+		card.connect("killed", self, "_on_bounty_kill_pressed")
 		card.connect("dropped", self, "_on_drop_pressed")
 	for card in $"%Player".cargo_slots:
 		card.connect("moved", self, "_on_move_pressed")
@@ -550,6 +554,10 @@ func attack_patrol():
 			move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 			attacking_patrol = null
 
+func remove_contact(contact_name):
+	for planet in planet_spaces:
+		planet.remove_contact(contact_name)
+
 func start_turn():
 	turn += 1
 	start_planning()
@@ -708,10 +716,31 @@ func _on_deliver_pressed(cargo):
 		remove_card(cargo)
 
 func _on_bounty_deliver_pressed(slot):
-	pass
+	var card = slot.get_card()
+	$"%Player".increase_money(card.deliver_reward)
+	$"%Player".increase_fame(card.deliver_fame)
+	if card.has("negative_rep"):
+		$"%Player".decrease_reputation(card.negative_rep)
+	if card.has("positive_rep"):
+		$"%Player".increase_reputation(card.positive_rep)
+	slot.remove_card()
+	update_action_buttons()
 	
 func _on_drop_pressed(slot):
-	remove_card(slot)
+	if slot.captured:
+		slot.remove_card()
+	else:
+		remove_card(slot)
+	update_action_buttons()
+
+func _on_bounty_kill_pressed(slot):
+	var card = slot.get_card()
+	$"%Player".increase_money(card.kill_reward)
+	$"%Player".increase_fame(card.kill_fame)
+	if card.has("negative_rep"):
+		$"%Player".decrease_reputation(card.negative_rep)
+	slot.remove_card()
+	update_action_buttons()
 
 func _on_barter_toggled():
 	update_action_buttons()
@@ -731,7 +760,7 @@ func _on_repair_pressed():
 func _on_failed_sell_pressed():
 	if $"%FailedSell".text == "Attack 3G":
 		var combat = ground_combat(get_character_attack(), 3)
-		$"%Character".damage(combat.attacker_damage)
+		$"%Character".suffer_damage(combat.attacker_damage)
 		if combat.attacker_won: 
 			if $"%Character".defeated:
 				$"%FailedLabel".text = "You would have won the combat,\nbut suffered too much damage.\nYou are defeated!"
@@ -815,12 +844,14 @@ func _on_explore_pressed():
 func _on_contact_pressed(space, id):
 	if space.contacts[id].name == "":
 		space.add_contact(id, $"%ContactDeck".deck[space.contacts[id].level - 1].pop_front())
-	var bounty = $"%Player".get_bounty(space.contacts[id].name)
-	if bounty != null:
+	selected_contact_id = id
+	selected_contact_space = space
+	selected_bounty_slot = $"%Player".get_bounty(space.contacts[id].name)
+	if selected_bounty_slot != null:
 		$"%ContactPrompt".show()
 		$"%BountyLevel".texture = load("res://images/person" + str(space.contacts[id].level) + ".png")
 		$"%BountyNameLabel".text = space.contacts[id].name
-		if bounty.get_card().attack_type == "GroundAttack":
+		if selected_bounty_slot.get_card().attack_type == "GroundAttack":
 			$"%CombatTexture".texture = load("res://images/ground-combat.png")
 			$"%CombatLabel".text = "Ground Combat"
 			$"%AttackTexture".texture = load("res://images/ground-attack.png")
@@ -830,11 +861,76 @@ func _on_contact_pressed(space, id):
 			$"%CombatLabel".text = "Ship Combat"
 			$"%AttackTexture".texture = load("res://images/ship-attack.png")
 			$"%AttackLabel".text = "Ship Attack"
-		$"%AttackValue".text = str(bounty.get_card().attack)
-	stop_encounter()
+		$"%AttackValue".text = str(selected_bounty_slot.get_card().attack)
+	else:
+		stop_encounter()
 
 func _on_attack_contact_pressed():
 	$"%ContactPrompt".hide()
+	var card = selected_bounty_slot.get_card()
+	var combat = null
+	if card.attack_type == "GroundAttack":
+		combat = ground_combat(get_character_attack(), card.attack)
+		$"%Character".suffer_damage(combat.attacker_damage)
+	else:
+		combat = ship_combat(get_ship_attack(), card.attack)
+		$"%Ship".suffer_damage(combat.attacker_damage)
+	if combat.attacker_won:
+		$"%ContactPrompt2".show()
+		$"%DefeatedBountyLevel".texture = load("res://images/person" + str(selected_contact_space.contacts[selected_contact_id].level) + ".png")
+		$"%DefeatedBountyNameLabel".text = selected_contact_space.contacts[selected_contact_id].name
+		$"%ContactDefenderDamage".text = str(combat.defender_damage)
+		$"%ContactAttackerDamage".text = str(combat.attacker_damage)
+		$"%BountyKillReward".text = str(card.kill_reward)
+		$"%BountyKillFame".text = str(card.kill_fame)
+		$"%BountyDeliverTo".text = card.to
+		$"%BountyDeliverReward".text = str(card.deliver_reward)
+		$"%BountyDeliverFame".text = str(card.deliver_fame)
+		$"%NegativeRepContainer".hide()
+		$"%NegativeRepContainer2".hide()
+		$"%PositiveRepContainer".hide()
+		$"%DeliverRepContainer".hide()
+		if card.has("negative_rep"):
+			$"%NegativeRepContainer".show()
+			$"%NegativeRepContainer2".show()
+			$"%DeliverRepContainer".show()
+			$"%NegativeRepLabel".text = selected_bounty_slot.get_negative_rep_name()
+			$"%NegativeRepLabel2".text = selected_bounty_slot.get_negative_rep_name()
+			$"%NegativeRepTexture".texture = load("res://images/patrol-" + (card.negative_rep.to_lower()) + "-icon.png")
+			$"%NegativeRepTexture2".texture = load("res://images/patrol-" + (card.negative_rep.to_lower()) + "-icon.png")
+		if card.has("positive_rep"):
+			$"%PositiveRepContainer".show()
+			$"%DeliverRepContainer".show()
+			$"%PositiveRepLabel".text = selected_bounty_slot.get_positive_rep_name()
+			$"%PositiveRepTexture".texture = load("res://images/patrol-" + (card.positive_rep.to_lower()) + "-icon.png")
+	else:
+		$"%ContactAlert".show()
+		$"%ContactAlertDefenderDamage".text = str(combat.defender_damage)
+		$"%ContactAlertAttackerDamage".text = str(combat.attacker_damage)
 
 func _on_encounter_contact_pressed():
 	$"%ContactPrompt".hide()
+	stop_encounter()
+
+func _on_contact_alert_button_pressed():
+	$"%ContactAlert".hide()
+	stop_encounter()
+
+func _on_kill_bounty_pressed():
+	$"%ContactPrompt2".hide()
+	var card = selected_bounty_slot.get_card()
+	$"%Player".increase_money(card.kill_reward)
+	$"%Player".increase_fame(card.kill_fame)
+	if card.has("negative_rep"):
+		$"%Player".decrease_reputation(card.negative_rep)
+	remove_contact(card.name)
+	selected_bounty_slot.remove_card()
+	stop_encounter()
+
+func _on_capture_bounty_pressed():
+	$"%ContactPrompt2".hide()
+	var card = selected_bounty_slot.get_card()
+	remove_contact(card.name)
+	selected_bounty_slot.capture()
+	stop_encounter()
+	

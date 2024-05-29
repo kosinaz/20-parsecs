@@ -2,6 +2,7 @@ extends TextureRect
 
 signal delivered
 signal dropped
+signal killed
 
 var player = {
 	"space": {
@@ -10,7 +11,7 @@ var player = {
 }
 
 var empty = true
-var caught = false
+var captured = false
 var bartering = false
 	
 func set_player(player_to_set):
@@ -24,6 +25,28 @@ func has_bounty(bounty_name):
 		return false
 	return $"%BountyCard".card.name == bounty_name
 
+func get_negative_rep_name():
+	var rep = $"%BountyCard".card.negative_rep
+	if rep == "A":
+		return "Ahut"
+	if rep == "B":
+		return "Basyn"
+	if rep == "C":
+		return "Cimp"
+	if rep == "D":
+		return "Dreb"
+
+func get_positive_rep_name():
+	var rep = $"%BountyCard".card.positive_rep
+	if rep == "A":
+		return "Ahut"
+	if rep == "B":
+		return "Basyn"
+	if rep == "C":
+		return "Cimp"
+	if rep == "D":
+		return "Dreb"
+
 func set_card(card_to_set):
 	empty = false
 	$"%BountyCard".card = card_to_set
@@ -31,10 +54,17 @@ func set_card(card_to_set):
 	$"%BountyCard".update_view()
 	$"%Buttons".show()
 	update_buttons()
+	
+func capture():
+	captured = true
+	$"%BountyCard".captured = true
+	$"%BountyCard".update_view()
+	update_buttons()
 
 func remove_card():
 	empty = true
-	caught = false
+	captured = false
+	$"%BountyCard".captured = false
 	$"%BountyCard".card = null
 	$"%BountyCard".hide()
 	$"%Buttons".hide()
@@ -43,16 +73,25 @@ func update_buttons():
 	if empty:
 		return
 	update_deliver()
+	update_kill()
 
 func disable_buttons():
 	$"%Deliver".disabled = true
+	$"%Kill".disabled = true
 
 func update_deliver():
-	if caught:
+	if captured:
 		$"%Deliver".show()
 		$"%Deliver".disabled = player.space_name != $"%BountyCard".card.to
 	else:
 		$"%Deliver".hide()
+
+func update_kill():
+	if captured:
+		$"%Kill".show()
+		$"%Kill".disabled = false
+	else:
+		$"%Kill".hide()
 
 func has_trait(_trait):
 	return false
@@ -62,3 +101,6 @@ func _on_deliver_pressed():
 
 func _on_drop_pressed():
 	emit_signal("dropped", self)
+
+func _on_kill_pressed():
+	emit_signal("killed", self)

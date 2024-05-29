@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/slots/bounty_job_slot.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://images/card.png" type="Texture" id=5]
 [ext_resource path="res://images/yes.png" type="Texture" id=6]
 [ext_resource path="res://images/bounty-job.png" type="Texture" id=7]
+[ext_resource path="res://images/bounty.png" type="Texture" id=8]
 [ext_resource path="res://images/cargo-bg.png" type="Texture" id=11]
 
 [sub_resource type="DynamicFont" id=1]
@@ -61,7 +62,7 @@ visible = false
 margin_left = 0.0
 margin_top = 0.0
 margin_right = 85.0
-margin_bottom = 120.0
+margin_bottom = 97.0
 size_flags_vertical = 3
 
 [node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -89,6 +90,22 @@ custom_fonts/font = SubResource( 1 )
 disabled = true
 icon = ExtResource( 6 )
 
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/Buttons"]
+margin_right = 55.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+
+[node name="Kill" type="Button" parent="MarginContainer/VBoxContainer/Buttons/MarginContainer3"]
+unique_name_in_owner = true
+visible = false
+margin_right = 24.0
+margin_bottom = 19.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 1 )
+disabled = true
+icon = ExtResource( 8 )
+
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/Buttons"]
 margin_left = 61.0
 margin_right = 85.0
@@ -104,4 +121,5 @@ custom_fonts/font = SubResource( 1 )
 icon = ExtResource( 3 )
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer/Deliver" to="." method="_on_deliver_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer3/Kill" to="." method="_on_kill_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer2/Drop" to="." method="_on_drop_pressed"]

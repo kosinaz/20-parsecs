@@ -25,6 +25,12 @@ onready var contacts = [
 func add_contact(button_id, name):
 	contacts[button_id].name = name
 	get_node("Contact" + str(button_id + 1)).text = name
+	
+func remove_contact(contact_name):
+	if contacts[0].name == contact_name:
+		$Contact1.hide()
+	if contacts[1].name == contact_name:
+		$Contact2.hide()
 
 func enable_contacts():
 	$Contact1.disabled = false

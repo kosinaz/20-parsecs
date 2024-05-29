@@ -17,10 +17,13 @@ var card = {
 	"move": 4,
 }
 
+var captured = false
+
 func _ready():
 	update_view()
 
 func update_view():
+	$"%Contact".visible = not captured
 	$"%Level".texture = load("res://images/person" + str(card.level) + ".png")
 	$"%Name".text = card.name
 	$"%Attack".text = str(card.attack)

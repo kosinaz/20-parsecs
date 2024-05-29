@@ -159,6 +159,11 @@ func set_player(player_to_set):
 
 func update_view():
 	var card = _deck.front()
+	if card == null:
+		$"%BountyCard".card = null
+		$"%BountyCard".hide()
+		$"%Buttons".hide()
+		return
 	$"%BountyCard".card = card
 	$"%BountyCard".update_view()
 	update_buttons()
