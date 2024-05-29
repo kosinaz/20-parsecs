@@ -28,6 +28,12 @@ func get_price(slot):
 		return 0
 	return slot.get_card().buy
 
+func get_bounty(bounty_name):
+	for slot in bounty_job_slots:
+		if slot.has_bounty(bounty_name):
+			return slot
+	return null
+
 func get_reputation(rep):
 	if rep == "A":
 		return ahut

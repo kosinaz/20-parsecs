@@ -815,6 +815,26 @@ func _on_explore_pressed():
 func _on_contact_pressed(space, id):
 	if space.contacts[id].name == "":
 		space.add_contact(id, $"%ContactDeck".deck[space.contacts[id].level - 1].pop_front())
+	var bounty = $"%Player".get_bounty(space.contacts[id].name)
+	if bounty != null:
+		$"%ContactPrompt".show()
+		$"%BountyLevel".texture = load("res://images/person" + str(space.contacts[id].level) + ".png")
+		$"%BountyNameLabel".text = space.contacts[id].name
+		if bounty.get_card().attack_type == "GroundAttack":
+			$"%CombatTexture".texture = load("res://images/ground-combat.png")
+			$"%CombatLabel".text = "Ground Combat"
+			$"%AttackTexture".texture = load("res://images/ground-attack.png")
+			$"%AttackLabel".text = "Ground Attack"
+		else:
+			$"%CombatTexture".texture = load("res://images/ship-combat.png")
+			$"%CombatLabel".text = "Ship Combat"
+			$"%AttackTexture".texture = load("res://images/ship-attack.png")
+			$"%AttackLabel".text = "Ship Attack"
+		$"%AttackValue".text = str(bounty.get_card().attack)
 	stop_encounter()
 
+func _on_attack_contact_pressed():
+	$"%ContactPrompt".hide()
 
+func _on_encounter_contact_pressed():
+	$"%ContactPrompt".hide()

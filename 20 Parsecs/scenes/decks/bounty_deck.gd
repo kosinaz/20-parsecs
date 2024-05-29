@@ -34,7 +34,7 @@ var _deck = [
 	},
 	{
 		"deck": "BountyDeck",
-		"level": 1,
+		"level": 2,
 		"name": "Ode",
 		"attack": 4,
 		"attack_type": "GroundAttack",
@@ -208,7 +208,6 @@ func _on_take_pressed():
 	var target = _target
 	var card = pop_front()
 	emit_signal("took", card, target)
-
 
 func _on_skip_pressed():
 	emit_signal("skipped")

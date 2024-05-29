@@ -18,6 +18,11 @@ func set_player(player_to_set):
 
 func get_card():
 	return $"%BountyCard".card
+	
+func has_bounty(bounty_name):
+	if empty:
+		return false
+	return $"%BountyCard".card.name == bounty_name
 
 func set_card(card_to_set):
 	empty = false
