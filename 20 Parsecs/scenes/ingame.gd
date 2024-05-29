@@ -9,6 +9,7 @@ var market_gearmods = []
 var market_ships = []
 var turn = 1
 var planets = [3, 5, 9, 10, 14, 25, 27, 31, 38, 39, 42]
+onready var planet_spaces = [$"%Space3", $"%Space5", $"%Space9", $"%Space10", $"%Space14", $"%Space25", $"%Space27", $"%Space31", $"%Space38", $"%Space39", $"%Space42"]
 var planet_names = []
 var bought = false
 var skipped = false
@@ -91,7 +92,6 @@ func _ready():
 		card.connect("moved", self, "_on_move_pressed")
 		card.connect("delivered", self, "_on_deliver_pressed")
 		card.connect("bartered", self, "_on_barter_toggled")
-	$"%CargoModSlot".set_player($"%Player")
 	$"%CargoModSlot".set_ship($"%Ship")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("moved", self, "_on_move_pressed")
@@ -99,7 +99,6 @@ func _ready():
 	$"%CargoModSlot".connect("bartered", self, "_on_barter_toggled")
 # warning-ignore:return_value_discarded
 	$"%CargoModSlot".connect("repaired", self, "_on_repair_pressed")
-	$"%ModSlot".set_player($"%Player")
 	$"%ModSlot".set_ship($"%Ship")
 # warning-ignore:return_value_discarded
 	$"%ModSlot".connect("moved", self, "_on_move_pressed")
@@ -107,6 +106,8 @@ func _ready():
 	$"%ModSlot".connect("repaired", self, "_on_repair_pressed")
 # warning-ignore:return_value_discarded
 	$"%ModSlot".connect("bartered", self, "_on_barter_toggled")
+	for planet in planet_spaces:
+		planet.connect("contacted", self, "_on_contact_pressed")
 	
 func _draw():
 	for id in range(1, astar.get_point_count() + 1):
@@ -490,7 +491,6 @@ func start_encounter():
 		skip_encounter = false
 	else:
 		$"%Explore".disabled = false
-		$"%Contact".disabled = false
 		$"%Attack".disabled = true
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Encounter Step\n"
 		for r in ["A", "B", "C", "D"]:
@@ -499,24 +499,24 @@ func start_encounter():
 				$"%Attack".disabled = false
 				attacking_patrol = patrol
 				if $"%Player".get_reputation(r) == -1:
-					$"%Contact".disabled = true
 					$"%Explore".disabled = true
-		if not planets.has($"%Player".space.id):
-			$"%Contact".disabled = true
-		if $"%Contact".disabled and $"%Explore".disabled:
-			$"%TurnIndicator".text += "You must Attack the hostile patrol!"
-		elif $"%Contact".disabled and $"%Attack".disabled:
-			$"%TurnIndicator".text += "Explore your space!"
-		elif $"%Contact".disabled:
-			$"%TurnIndicator".text += "Explore your space or Attack the patrol!"
-		elif $"%Attack".disabled:
-			$"%TurnIndicator".text += "Explore the planet or Contact someone on it!"
-		else:
-			$"%TurnIndicator".text += "Explore or Contact someone or Attack the patrol!"
+		if planets.has($"%Player".space.id):
+			$"%Player".space.enable_contacts()
+#		if $"%Contact".disabled and $"%Explore".disabled:
+#			$"%TurnIndicator".text += "You must Attack the hostile patrol!"
+#		elif $"%Contact".disabled and $"%Attack".disabled:
+#			$"%TurnIndicator".text += "Explore your space!"
+#		elif $"%Contact".disabled:
+#			$"%TurnIndicator".text += "Explore your space or Attack the patrol!"
+#		elif $"%Attack".disabled:
+#			$"%TurnIndicator".text += "Explore the planet or Contact someone on it!"
+#		else:
+#			$"%TurnIndicator".text += "Explore or Contact someone or Attack the patrol!"
 
 func stop_encounter():
 	$"%Explore".disabled = true
-	$"%Contact".disabled = true
+	for planet in planet_spaces:
+		planet.disable_contacts()
 	$"%Attack".disabled = true
 	start_turn()
 
@@ -812,7 +812,9 @@ func _on_attack_pressed():
 func _on_explore_pressed():
 	stop_encounter()
 
-func _on_contact_pressed():
+func _on_contact_pressed(space, id):
+	if space.contacts[id].name == "":
+		space.add_contact(id, $"%ContactDeck".deck[space.contacts[id].level - 1].pop_front())
 	stop_encounter()
 
 

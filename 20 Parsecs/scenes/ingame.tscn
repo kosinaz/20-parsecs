@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -60,6 +60,7 @@
 [ext_resource path="res://scenes/valign.gd" type="Script" id=58]
 [ext_resource path="res://scenes/decks/ship_deck.tscn" type="PackedScene" id=59]
 [ext_resource path="res://scenes/slots/bounty_job_slot.tscn" type="PackedScene" id=60]
+[ext_resource path="res://scenes/contact_deck.gd" type="Script" id=61]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -107,6 +108,7 @@ position = Vector2( 25, 549 )
 position = Vector2( 72, 535 )
 
 [node name="Space3" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 27, 463 )
 space_1 = 1
 planet_name = "Acan"
@@ -136,6 +138,7 @@ space_1 = 2
 space_2 = 3
 
 [node name="Space5" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 136, 381 )
 space_1 = 4
 faction = "B"
@@ -168,6 +171,7 @@ position = Vector2( 144, 281 )
 space_1 = 7
 
 [node name="Space9" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 195, 282 )
 space_1 = 5
 space_2 = 8
@@ -193,6 +197,7 @@ visible = true
 icon = ExtResource( 48 )
 
 [node name="Space10" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 194, 142 )
 space_1 = 8
 faction = "D"
@@ -234,6 +239,7 @@ texture_normal = ExtResource( 28 )
 texture_disabled = ExtResource( 27 )
 
 [node name="Space14" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 391, 76 )
 space_1 = 13
 faction = "B"
@@ -301,6 +307,7 @@ position = Vector2( 643, 63 )
 space_1 = 23
 
 [node name="Space25" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 694, 36 )
 space_1 = 24
 faction = "A"
@@ -329,6 +336,7 @@ position = Vector2( 530, 115 )
 space_1 = 17
 
 [node name="Space27" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 637, 125 )
 space_1 = 24
 space_2 = 26
@@ -366,6 +374,7 @@ position = Vector2( 701, 166 )
 space_1 = 29
 
 [node name="Space31" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 809, 82 )
 space_1 = 28
 faction = "D"
@@ -414,6 +423,7 @@ position = Vector2( 829, 237 )
 space_1 = 36
 
 [node name="Space38" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 853, 298 )
 space_1 = 37
 faction = "C"
@@ -438,6 +448,7 @@ visible = true
 icon = ExtResource( 48 )
 
 [node name="Space39" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 980, 336 )
 space_1 = 34
 planet_name = "Jakaf"
@@ -470,6 +481,7 @@ space_1 = 39
 space_2 = 40
 
 [node name="Space42" parent="Spaces" instance=ExtResource( 2 )]
+unique_name_in_owner = true
 position = Vector2( 919, 501 )
 space_1 = 41
 planet_name = "Katak"
@@ -602,19 +614,10 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Explore"
 
-[node name="Contact" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
-unique_name_in_owner = true
-margin_left = 211.0
-margin_right = 261.0
-margin_bottom = 19.0
-custom_fonts/font = ExtResource( 38 )
-disabled = true
-text = "Contact"
-
 [node name="Attack" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 265.0
-margin_right = 310.0
+margin_left = 211.0
+margin_right = 256.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
@@ -1114,11 +1117,14 @@ margin_bottom = 58.0
 custom_fonts/font = ExtResource( 38 )
 text = "Ok"
 
+[node name="ContactDeck" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource( 61 )
+
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Gain2K" to="." method="_on_work_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Recover" to="." method="_on_heal_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Finish" to="." method="_on_finish_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Explore" to="." method="_on_explore_pressed"]
-[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Contact" to="." method="_on_contact_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]

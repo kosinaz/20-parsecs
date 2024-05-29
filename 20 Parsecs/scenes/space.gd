@@ -2,8 +2,7 @@ extends Node2D
 class_name Space
 
 signal pressed
-signal contact1
-signal contact2
+signal contacted
 
 export var space_1 = 0
 export var space_2 = 0
@@ -12,10 +11,20 @@ export var space_4 = 0
 export var faction = ""
 export var planet_name = ""
 onready var id = int(name.right(5))
-onready var contact1level = int($Contact1.icon.resource_path.substr(19, 1))
-onready var contact2level = int($Contact1.icon.resource_path.substr(19, 1))
-var contact1 = ""
-var contact2 = ""
+onready var contacts = [
+	{
+		"name": "",
+		"level": int($Contact1.icon.resource_path.substr(19, 1)),
+	},
+	{
+		"name": "",
+		"level": int($Contact2.icon.resource_path.substr(19, 1)),
+	},
+]
+
+func add_contact(button_id, name):
+	contacts[button_id].name = name
+	get_node("Contact" + str(button_id + 1)).text = name
 
 func enable_contacts():
 	$Contact1.disabled = false
@@ -29,7 +38,7 @@ func _on_button_pressed():
 	emit_signal("pressed", self)
 
 func _on_contact1_pressed():
-	emit_signal("contact1", self)
+	emit_signal("contacted", self, 0)
 
 func _on_contact2_pressed():
-	emit_signal("contact2", self)
+	emit_signal("contacted", self, 1)
