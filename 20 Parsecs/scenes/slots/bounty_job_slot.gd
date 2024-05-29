@@ -18,12 +18,23 @@ func set_player(player_to_set):
 	player = player_to_set
 
 func get_card():
-	return $"%BountyCard".card
+	if $"%BountyCard".visible:
+		return $"%BountyCard".card
+	return $"%JobCard".card
 	
 func has_bounty(bounty_name):
 	if empty:
 		return false
+	if not $"%BountyCard".visible:
+		return false
 	return $"%BountyCard".card.name == bounty_name
+	
+func get_to():
+	if empty:
+		return null
+	if not $"%JobCard".visible:
+		return null
+	return $"%JobCard".card.to
 
 func get_negative_rep_name():
 	var rep = $"%BountyCard".card.negative_rep
@@ -37,7 +48,11 @@ func get_negative_rep_name():
 		return "Dreb"
 
 func get_positive_rep_name():
-	var rep = $"%BountyCard".card.positive_rep
+	var rep = ""
+	if $"%BountyCard".visible:
+		rep = $"%BountyCard".card.positive_rep
+	else:
+		rep = $"%JobCard".card.positive_rep
 	if rep == "A":
 		return "Ahut"
 	if rep == "B":
@@ -49,9 +64,14 @@ func get_positive_rep_name():
 
 func set_card(card_to_set):
 	empty = false
-	$"%BountyCard".card = card_to_set
-	$"%BountyCard".show()
-	$"%BountyCard".update_view()
+	if card_to_set.deck == "BountyDeck":
+		$"%BountyCard".card = card_to_set
+		$"%BountyCard".show()
+		$"%BountyCard".update_view()
+	else:
+		$"%JobCard".card = card_to_set
+		$"%JobCard".show()
+		$"%JobCard".update_view()
 	$"%Buttons".show()
 	update_buttons()
 	
@@ -67,6 +87,8 @@ func remove_card():
 	$"%BountyCard".captured = false
 	$"%BountyCard".card = null
 	$"%BountyCard".hide()
+	$"%JobCard".card = null
+	$"%JobCard".hide()
 	$"%Buttons".hide()
 
 func update_buttons():

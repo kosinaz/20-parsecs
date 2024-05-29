@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/strength.png-8a7b7656cab8ff46a5922ba694032236.stex"
+path="res://.import/skill-knowledge.png-dc33a5a8b1b0157392f1d21c8e297498.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/strength.png"
-dest_files=[ "res://.import/strength.png-8a7b7656cab8ff46a5922ba694032236.stex" ]
+source_file="res://images/skill-knowledge.png"
+dest_files=[ "res://.import/skill-knowledge.png-dc33a5a8b1b0157392f1d21c8e297498.stex" ]
 
 [params]
 

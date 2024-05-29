@@ -6,6 +6,6 @@ var deck = [
 		"name": "San",
 		"attack": 3,
 		"armor": 4,
-		'skills': ["Piloting", "Tactics"]
+		"skills": ["piloting", "tactics"]
 	}
 ]

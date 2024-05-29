@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/stealth.png-29b0697ef3489544af202bc97c11c7a4.stex"
+path="res://.import/skill-stealth.png-f0a6abb18f8207d57be7ee3743300cde.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/stealth.png"
-dest_files=[ "res://.import/stealth.png-29b0697ef3489544af202bc97c11c7a4.stex" ]
+source_file="res://images/skill-stealth.png"
+dest_files=[ "res://.import/skill-stealth.png-f0a6abb18f8207d57be7ee3743300cde.stex" ]
 
 [params]
 

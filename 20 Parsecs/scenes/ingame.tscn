@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=2]
+[gd_scene load_steps=81 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -71,6 +71,9 @@
 [ext_resource path="res://images/to.png" type="Texture" id=69]
 [ext_resource path="res://images/yes.png" type="Texture" id=70]
 [ext_resource path="res://images/hit.png" type="Texture" id=71]
+[ext_resource path="res://scenes/decks/job_deck.tscn" type="PackedScene" id=72]
+[ext_resource path="res://images/job.png" type="Texture" id=73]
+[ext_resource path="res://images/skip.png" type="Texture" id=74]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -624,10 +627,19 @@ custom_fonts/font = ExtResource( 38 )
 disabled = true
 text = "Explore"
 
-[node name="Attack" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
+[node name="Job" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 211.0
-margin_right = 256.0
+margin_right = 242.0
+margin_bottom = 19.0
+custom_fonts/font = ExtResource( 38 )
+disabled = true
+text = "Job"
+
+[node name="Attack" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 246.0
+margin_right = 291.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
@@ -749,58 +761,9 @@ margin_right = 192.0
 margin_left = 192.0
 margin_right = 288.0
 
-[node name="MarketJob" type="TextureRect" parent="CanvasLayer/Market"]
+[node name="JobDeck" parent="CanvasLayer/Market" instance=ExtResource( 72 )]
 margin_left = 288.0
 margin_right = 384.0
-margin_bottom = 128.0
-texture = ExtResource( 37 )
-
-[node name="MarketJobTitle" type="Label" parent="CanvasLayer/Market/MarketJob"]
-margin_top = 1.0
-margin_right = 96.0
-margin_bottom = 15.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 36 )
-text = "Job"
-align = 1
-
-[node name="MarketJobData" type="Label" parent="CanvasLayer/Market/MarketJob"]
-margin_left = 4.0
-margin_top = 14.0
-margin_right = 92.0
-margin_bottom = 107.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 36 )
-text = "Piloting, Strength,
-Tech, Tactics, Ship
-Combat
-To Jkaf: 5K 2F 
-1AR
-Patrol: 3B"
-
-[node name="MarketJobTake" type="Button" parent="CanvasLayer/Market/MarketJob"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
-custom_fonts/font = ExtResource( 38 )
-disabled = true
-text = "Take"
-
-[node name="MarketJobSkip" type="Button" parent="CanvasLayer/Market/MarketJob"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -38.0
-margin_top = -24.0
-margin_right = -4.0
-margin_bottom = -5.0
-custom_fonts/font = SubResource( 6 )
-disabled = true
-text = "Skip"
 
 [node name="MarketLuxury" type="TextureRect" parent="CanvasLayer/Market"]
 unique_name_in_owner = true
@@ -1873,6 +1836,247 @@ margin_bottom = 59.0
 custom_fonts/font = ExtResource( 38 )
 text = "End Turn"
 
+[node name="JobAlert" type="TextureRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color( 1, 1, 1, 0.784314 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -288.0
+margin_right = 512.0
+margin_bottom = 288.0
+texture = SubResource( 11 )
+
+[node name="Window" type="TextureRect" parent="CanvasLayer/JobAlert"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -144.0
+margin_top = -64.0
+margin_right = 144.0
+margin_bottom = 64.0
+texture = ExtResource( 34 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/JobAlert/Window"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -103.5
+margin_top = -29.0
+margin_right = 103.5
+margin_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="JobCompleted" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 207.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "You completed the job!"
+align = 1
+
+[node name="JobFailed" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 39 )
+text = "You failed the job!"
+align = 1
+
+[node name="JobInfluencePassed" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 261.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 39 )
+text = "But your Influence saved your reputation!"
+align = 1
+
+[node name="JobInfluenceFailed" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 39 )
+text = "And failed your Influence test too,
+so you lose your reputation!"
+align = 1
+
+[node name="JobInfluenceFailed2" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 39 )
+text = "Because you lack enough Influence."
+align = 1
+
+[node name="JobDiscard" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 39 )
+text = "And you can't try again due to your
+reputation with the enemy."
+align = 1
+
+[node name="JobDamage" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 39 )
+text = "But suffered some damage."
+align = 1
+
+[node name="JobDefeated" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 260.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 39 )
+text = "Because you lack enough Tech and Strength 
+and got defeated in a Ground Combat."
+align = 1
+
+[node name="JobDefeatedSkill" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 260.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 39 )
+text = "You got defeated, because
+you lack enough Piloting skill."
+align = 1
+
+[node name="JobAlertButton" type="Button" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 38 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -26.5
+margin_top = -8.0
+margin_right = 26.5
+margin_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2"]
+margin_right = 53.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "End Turn"
+align = 1
+
+[node name="JobNegativeRepButton" type="HBoxContainer" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+margin_left = 57.0
+margin_right = 186.0
+margin_bottom = 16.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobNegativeRepButton"]
+margin_right = 16.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "(-1"
+align = 1
+
+[node name="JobRepTexture" type="TextureRect" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobNegativeRepButton"]
+unique_name_in_owner = true
+margin_left = 16.0
+margin_top = 2.0
+margin_right = 28.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 71 )
+
+[node name="JobRepLabel" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobNegativeRepButton"]
+unique_name_in_owner = true
+margin_left = 28.0
+margin_right = 56.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "Ahut"
+
+[node name="Label2" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobNegativeRepButton"]
+margin_left = 56.0
+margin_right = 129.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = " Reputation)"
+align = 1
+
+[node name="JobDiscardButton" type="HBoxContainer" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2"]
+unique_name_in_owner = true
+margin_left = 57.0
+margin_right = 168.0
+margin_bottom = 16.0
+custom_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobDiscardButton"]
+margin_right = 4.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "("
+align = 1
+
+[node name="Texture" type="TextureRect" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobDiscardButton"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 16.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 74 )
+
+[node name="Label3" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobDiscardButton"]
+margin_left = 16.0
+margin_right = 68.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = " Discard "
+
+[node name="Texture2" type="TextureRect" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobDiscardButton"]
+margin_left = 68.0
+margin_top = 2.0
+margin_right = 80.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 73 )
+
+[node name="Label2" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton/HBoxContainer2/JobDiscardButton"]
+margin_left = 80.0
+margin_right = 111.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = " Job)"
+align = 1
+
 [node name="ContactDeck" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource( 61 )
@@ -1881,6 +2085,7 @@ script = ExtResource( 61 )
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Recover" to="." method="_on_heal_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Finish" to="." method="_on_finish_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Explore" to="." method="_on_explore_pressed"]
+[connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Job" to="." method="_on_job_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
@@ -1890,6 +2095,7 @@ script = ExtResource( 61 )
 [connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/KillBounty" to="." method="_on_kill_bounty_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty" to="." method="_on_capture_bounty_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactAlert/Window/VBoxContainer/ContactAlertButton" to="." method="_on_contact_alert_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton" to="." method="_on_job_alert_button_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

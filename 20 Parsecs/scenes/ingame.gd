@@ -26,7 +26,7 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
-onready var decks = [$"%BountyDeck", $"%CargoDeck", $"%GearModDeck", $"%ShipDeck"]
+onready var decks = [$"%BountyDeck", $"%CargoDeck", $"%GearModDeck", $"%JobDeck", $"%ShipDeck"]
 onready var used_ships = [$"%UsedShip", $"%UsedShip2", $"%UsedShip3", $"%UsedShip4", $"%UsedShip5", $"%UsedShip6", $"%UsedShip7", $"%UsedShip8"]
 onready var all_cards = []
 
@@ -63,6 +63,10 @@ func _ready():
 	$"%BountyDeck".connect("took", self, "_on_bounty_deck_take_pressed")
 # warning-ignore:return_value_discarded
 	$"%BountyDeck".connect("skipped", self, "_on_skip_pressed")
+# warning-ignore:return_value_discarded
+	$"%JobDeck".connect("took", self, "_on_job_deck_take_pressed")
+# warning-ignore:return_value_discarded
+	$"%JobDeck".connect("skipped", self, "_on_skip_pressed")
 # warning-ignore:return_value_discarded
 	$"%CargoDeck".connect("bought", self, "_on_cargo_deck_buy_pressed")
 # warning-ignore:return_value_discarded
@@ -238,10 +242,10 @@ func update_action_buttons():
 func drop_barter_pool():
 	for slot in $"%Player".slots:
 		if slot.bartering:
-			remove_card(slot)
+			discard(slot)
 	discount = 0
 
-func remove_card(slot):
+func discard(slot):
 	var card = slot.get_card()
 	var deck = card.deck
 	get_node("%" + deck).append(card)
@@ -495,6 +499,7 @@ func start_encounter():
 		skip_encounter = false
 	else:
 		$"%Explore".disabled = false
+		$"%Job".disabled = true
 		$"%Attack".disabled = true
 		$"%TurnIndicator".text = "Turn " + str(turn) + ", Encounter Step\n"
 		for r in ["A", "B", "C", "D"]:
@@ -506,22 +511,15 @@ func start_encounter():
 					$"%Explore".disabled = true
 		if planets.has($"%Player".space.id):
 			$"%Player".space.enable_contacts()
-#		if $"%Contact".disabled and $"%Explore".disabled:
-#			$"%TurnIndicator".text += "You must Attack the hostile patrol!"
-#		elif $"%Contact".disabled and $"%Attack".disabled:
-#			$"%TurnIndicator".text += "Explore your space!"
-#		elif $"%Contact".disabled:
-#			$"%TurnIndicator".text += "Explore your space or Attack the patrol!"
-#		elif $"%Attack".disabled:
-#			$"%TurnIndicator".text += "Explore the planet or Contact someone on it!"
-#		else:
-#			$"%TurnIndicator".text += "Explore or Contact someone or Attack the patrol!"
+		if $"%BountyJobSlot".get_to() == $"%Player".space_name or $"%BountyJobSlot2".get_to() == $"%Player".space_name:
+			$"%Job".disabled = false
 
 func stop_encounter():
 	$"%Explore".disabled = true
 	for planet in planet_spaces:
 		planet.disable_contacts()
 	$"%Attack".disabled = true
+	$"%Job".disabled = true
 	start_turn()
 
 func attack_patrol():
@@ -579,7 +577,15 @@ func _on_skip_pressed():
 
 func _on_bounty_deck_take_pressed(card, target):
 	target.set_card(card)
-	var front = $"%CargoDeck".front()
+	var front = $"%BountyDeck".front()
+	if front.has("patrol"):
+		move_patrol(get_node("%Patrol" + front.patrol), front.move)
+	$"%Player".bought = true
+	update_action_buttons()
+
+func _on_job_deck_take_pressed(card, target):
+	target.set_card(card)
+	var front = $"%JobDeck".front()
 	if front.has("patrol"):
 		move_patrol(get_node("%Patrol" + front.patrol), front.move)
 	$"%Player".bought = true
@@ -626,7 +632,7 @@ func _on_deliver_pressed(cargo):
 		if result == "hit" or (result == "blank" and $"%CargoSlot3".visible):
 			$"%Player".increase_fame(cargo.get_card().fame)
 			$"%Player".increase_money(cargo.get_card().sell)
-			remove_card(cargo)
+			discard(cargo)
 		else:
 			skip_encounter = true
 			$"%Prompt".show()
@@ -713,7 +719,7 @@ func _on_deliver_pressed(cargo):
 		$"%Player".increase_money(cargo.get_card().sell)
 		if cargo.get_card().has("rep"):
 			$"%Player".increase_reputation(cargo.get_card().rep)
-		remove_card(cargo)
+		discard(cargo)
 
 func _on_bounty_deliver_pressed(slot):
 	var card = slot.get_card()
@@ -730,7 +736,7 @@ func _on_drop_pressed(slot):
 	if slot.captured:
 		slot.remove_card()
 	else:
-		remove_card(slot)
+		discard(slot)
 	update_action_buttons()
 
 func _on_bounty_kill_pressed(slot):
@@ -817,7 +823,7 @@ func _on_failed_sell_pressed():
 			$"%Player".decrease_reputation("D")
 		$"%Player".increase_fame(failed_cargo.get_card().fame)
 		$"%Player".increase_money(failed_cargo.get_card().sell)
-		remove_card(failed_cargo)
+		discard(failed_cargo)
 	$"%Prompt".hide()
 	stop_action()
 
@@ -825,9 +831,9 @@ func _on_failed_sell2_pressed():
 	if $"%FailedSell2".text == "Deliver -6K":
 		$"%Player".increase_fame(failed_cargo.get_card().fame)
 		$"%Player".increase_money(failed_cargo.get_card().sell - 6)
-		remove_card(failed_cargo)
+		discard(failed_cargo)
 	if $"%FailedSell2".text == "Drop":
-		remove_card(failed_cargo)
+		discard(failed_cargo)
 	$"%Prompt".hide()
 	stop_action()
 
@@ -835,11 +841,123 @@ func _on_alert_button_pressed():
 	$"%Alert".hide()
 	stop_encounter()
 
-func _on_attack_pressed():
-	attack_patrol()
-
 func _on_explore_pressed():
 	stop_encounter()
+	
+func _on_job_pressed():
+	$"%JobAlert".show()
+	$"%JobCompleted".hide()
+	$"%JobFailed".hide()
+	$"%JobInfluencePassed".hide()
+	$"%JobInfluenceFailed".hide()
+	$"%JobInfluenceFailed2".hide()
+	$"%JobDiscard".hide()
+	$"%JobDamage".hide()
+	$"%JobDefeated".hide()
+	$"%JobDefeatedSkill".hide()
+	$"%JobNegativeRepButton".hide()
+	$"%JobDiscardButton".hide()
+	var slot = null
+	if $"%BountyJobSlot".get_to() == $"%Player".space_name:
+		slot = $"%BountyJobSlot"
+	else:
+		slot = $"%BountyJobSlot2"
+	var card = slot.get_card()
+	if card.name.ends_with("Favor"):
+		if skill_test(card.skills[0]):
+			$"%JobCompleted".show()
+			$"%Player".increase_money(card.reward)
+			if $"%Player".get_reputation(card.positive_rep) == 1:
+				$"%Player".decrease_reputation(card.overclock_negative_rep)
+				$"%Player".increase_fame(1)
+			else: 
+				$"%Player".increase_reputation(card.positive_rep)
+			discard(slot)
+		else:
+			$"%JobFailed".show()
+			if randi() % 2:
+				if skill_test("influence"):
+					$"%JobInfluencePassed".show()
+				else:
+					$"%JobInfluenceFailed".show()
+					$"%JobNegativeRepButton".show()
+					$"%JobRepTexture".texture = load("res://images/patrol-" + card.positive_rep.to_lower() + "-icon.png")
+					$"%JobRepLabel".text = slot.get_positive_rep_name()
+					$"%Player".decrease_reputation(card.positive_rep)
+			else:
+				if $"%Player".get_reputation(card.overclock_negative_rep) == 1:
+					$"%JobDiscard".show()
+					$"%JobDiscardButton".show()
+					discard(slot)
+	if card.name == "Casino Heist":
+		if not skill_test("influence"):
+			$"%JobFailed".show()
+			$"%JobInfluenceFailed2".show()
+		else:
+			var fight = false
+			if skill_test("tech"):
+				if skill_test("strength"):
+					$"%JobCompleted".show()
+					$"%Player".increase_money(card.reward)
+					slot.remove_card()
+				else:
+					fight = true
+			else:
+				$"%Character".suffer_damage(1)
+				fight = true
+			while fight:
+				var combat = ground_combat(get_character_attack(), 3)
+				$"%Character".suffer_damage(combat.attacker_damage)
+				if $"%Character".defeated:
+					$"%JobFailed".show()
+					$"%JobDefeated".show()
+					fight = false
+				elif combat.attacker_won:
+					$"%JobCompleted".show()
+					if $"%Character".damage > 0:
+						$"%JobDamage".show()
+					$"%Player".increase_money(card.reward)
+					slot.remove_card()
+					fight = false
+	if card.name == "Stash Raid":
+		if not skill_test("piloting"):
+			$"%Character".suffer_damage(2)
+			if $"%Character".defeated:
+				$"%JobFailed".show()
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Piloting skill."
+		if not skill_test("stealth") and not $"%Character".defeated:
+			$"%Character".suffer_damage(2)
+			if $"%Character".defeated:
+				$"%JobFailed".show()
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Stealth skill."
+		if not skill_test("knowledge") and not $"%Character".defeated:
+			$"%Character".suffer_damage(2)
+			if $"%Character".defeated:
+				$"%JobFailed".show()
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Knowledge skill."
+		if not $"%Character".defeated:
+			if not skill_test("tech"):
+				$"%Character".suffer_damage(2)
+			if $"%Character".defeated:
+				$"%JobFailed".show()
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Tech skill."
+			else:
+				$"%JobCompleted".show()
+				$"%Player".increase_money(card.reward)
+				$"%Player".increase_fame(card.fame)
+				$"%Player".decrease_reputation(card.negative_rep)
+				if $"%Character".damage > 0:
+					$"%JobDamage".show()
+				slot.remove_card()
+	stop_encounter()
+
+
+func _on_attack_pressed():
+	attack_patrol()
 
 func _on_contact_pressed(space, id):
 	if space.contacts[id].name == "":
@@ -916,6 +1034,10 @@ func _on_contact_alert_button_pressed():
 	$"%ContactAlert".hide()
 	stop_encounter()
 
+func _on_job_alert_button_pressed():
+	$"%JobAlert".hide()
+	stop_encounter()
+
 func _on_kill_bounty_pressed():
 	$"%ContactPrompt2".hide()
 	var card = selected_bounty_slot.get_card()
@@ -933,4 +1055,3 @@ func _on_capture_bounty_pressed():
 	remove_contact(card.name)
 	selected_bounty_slot.capture()
 	stop_encounter()
-	
