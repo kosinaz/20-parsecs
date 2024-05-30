@@ -1122,8 +1122,37 @@ func _on_job_pressed():
 			$"%Player".decrease_reputation(card.negative_rep)
 			slot.remove_card()
 			
-
-
+	if card.name == "Spy Hunt":
+		var step = 1
+		var damage = 0
+		if skill_test("influence"):
+			step = 3
+		else:
+			step = 2
+		if step == 2:
+			var combat = ground_combat(get_character_attack(), 3)
+			damage += combat.attacker_damage
+			if combat.attacker_won and damage > 0:
+				damage -= 1
+			step = 3
+		if step == 3:
+			while not skill_test("knowledge"):
+				damage += 1
+			step = 4
+		if step == 4:
+			while not skill_test("tactics"):
+				damage += 1
+			step = 4
+			$"%Character".suffer_damage(damage)
+			$"%JobCompleted".show()
+			if $"%Character".defeated:
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "But you are defeated,\nbecause you don't have enough skills."
+			elif damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			slot.remove_card()
 	stop_encounter()
 
 func _on_attack_pressed():
