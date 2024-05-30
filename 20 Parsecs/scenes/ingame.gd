@@ -1061,8 +1061,29 @@ func _on_job_pressed():
 			$"%Player".increase_money(card.reward)
 			$"%Player".increase_fame(card.fame)
 			slot.remove_card()
+			
+	if card.name == "Temple Raid":
+		if not skill_test("knowledge"):
+			$"%JobFailed".show()
+			$"%JobDefeatedSkill".show()
+			$"%JobDefeatedSkill".text = "Because you don't have enough Knowledge."
+		else:
+			var damage = 0
+			if not skill_test("stealth"):
+				damage += 1
+			while not skill_test("tactics"):
+				damage += 1
+			$"%Character".suffer_damage(damage)
+			$"%JobCompleted".show()
+			if $"%Character".defeated:
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "But you are defeated,\nbecause you don't have enough Tactics."
+			elif damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			slot.remove_card()
 	stop_encounter()
-
 
 func _on_attack_pressed():
 	attack_patrol()
