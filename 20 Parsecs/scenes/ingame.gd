@@ -571,7 +571,10 @@ func attack_patrol():
 
 func encounter_contact():
 	var contact_name = selected_contact_name
+	$"%Join".disabled = false
 	$"%Hire".disabled = false
+	$"%Join".hide()
+	$"%Hire".hide()
 	
 	if contact_name == "Mol":
 		crew_buy = 3
@@ -581,9 +584,19 @@ func encounter_contact():
 			crew_buy -= 1
 		$"%CrewPrompt".show()
 		$"%CrewSummary".text = "Mol is available for hire.\nProvides 1 Ground Attack and Tactics."
-		$"%HireMol".show()
-		$"%HireMolBuy".text = str(crew_buy)
+		$"%Join".show()
+		$"%JoinMol".show()
+		$"%JoinMolBuy".text = str(crew_buy)
 		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+			$"%Join".disabled = true
+	
+	if contact_name == "Anu":
+		crew_buy = 2
+		$"%CrewPrompt".show()
+		$"%CrewSummary".text = "Anu offers Ahut Repuation."
+		$"%Hire".show()
+		$"%HireAnu".show()
+		if $"%Player".money < crew_buy:
 			$"%Hire".disabled = true
 			
 func get_available_crew_slot():
@@ -1298,14 +1311,21 @@ func _on_capture_bounty_pressed():
 	stop_encounter()
 
 func _on_hire_pressed():
-	if $"%HireMol".visible:
+	if $"%HireAnu".visible:
 		$"%Player".decrease_money(crew_buy)
-	var target = get_available_crew_slot()
-	target.set_card($"%CrewDeck".deck[selected_contact_name])
-	remove_contact(selected_contact_name)
+		$"%Player".increase_reputation("A")
 	$"%CrewPrompt".hide()
 	stop_encounter()
 
 func _on_dismiss_pressed():
+	$"%CrewPrompt".hide()
+	stop_encounter()
+
+func _on_join_pressed():
+	if $"%JoinMol".visible:
+		$"%Player".decrease_money(crew_buy)
+	var target = get_available_crew_slot()
+	target.set_card($"%CrewDeck".deck[selected_contact_name])
+	remove_contact(selected_contact_name)
 	$"%CrewPrompt".hide()
 	stop_encounter()

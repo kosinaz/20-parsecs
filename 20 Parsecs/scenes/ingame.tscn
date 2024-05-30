@@ -2156,7 +2156,42 @@ margin_right = 183.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 38 )
 
-[node name="HireMol" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire"]
+[node name="HireAnu" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = -6.5
+margin_right = 14.0
+margin_bottom = 6.5
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 2
+
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireAnu"]
+margin_right = 12.0
+margin_bottom = 12.0
+size_flags_vertical = 4
+texture = ExtResource( 76 )
+
+[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireAnu"]
+margin_left = 14.0
+margin_right = 28.0
+margin_bottom = 13.0
+custom_fonts/font = ExtResource( 38 )
+text = "2K"
+align = 1
+
+[node name="Join" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 43.0
+margin_right = 183.0
+margin_bottom = 62.0
+custom_fonts/font = ExtResource( 38 )
+
+[node name="JoinMol" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
 unique_name_in_owner = true
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2170,20 +2205,20 @@ grow_horizontal = 2
 grow_vertical = 2
 custom_constants/separation = 2
 
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol"]
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol"]
 margin_top = 2.0
 margin_right = 12.0
 margin_bottom = 14.0
 size_flags_vertical = 4
 texture = ExtResource( 76 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol"]
 margin_left = 14.0
 margin_right = 26.0
 margin_bottom = 16.0
 custom_constants/separation = 0
 
-[node name="HireMolBuy" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol/HBoxContainer"]
+[node name="JoinMolBuy" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol/HBoxContainer"]
 unique_name_in_owner = true
 margin_top = 1.0
 margin_right = 5.0
@@ -2192,7 +2227,7 @@ custom_fonts/font = ExtResource( 38 )
 text = "1"
 align = 1
 
-[node name="Label2" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol/HBoxContainer"]
+[node name="Label2" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol/HBoxContainer"]
 margin_left = 5.0
 margin_top = 1.0
 margin_right = 12.0
@@ -2202,9 +2237,9 @@ text = "K"
 align = 1
 
 [node name="Dismiss" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
-margin_top = 43.0
+margin_top = 66.0
 margin_right = 183.0
-margin_bottom = 62.0
+margin_bottom = 85.0
 custom_fonts/font = ExtResource( 38 )
 text = "Dismiss"
 
@@ -2232,6 +2267,7 @@ script = ExtResource( 75 )
 [connection signal="pressed" from="CanvasLayer/ContactAlert/Window/VBoxContainer/ContactAlertButton" to="." method="_on_contact_alert_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton" to="." method="_on_job_alert_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire" to="." method="_on_hire_pressed"]
+[connection signal="pressed" from="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="CanvasLayer/CrewPrompt/Window/VBoxContainer/Dismiss" to="." method="_on_dismiss_pressed"]
 
 [editable path="Spaces/Space3"]
