@@ -1083,6 +1083,47 @@ func _on_job_pressed():
 			$"%Player".increase_money(card.reward)
 			$"%Player".increase_fame(card.fame)
 			slot.remove_card()
+			
+	if card.name == "Mine Rescue":
+		var step = 1
+		var damage = 0
+		if skill_test("knowledge"):
+			step = 2
+		else:
+			step = 3
+		if step == 2:
+			if skill_test("stealth"):
+				step = 5
+			else:
+				step = 3
+		if step == 3:
+			var combat = ground_combat(get_character_attack(), 4)
+			damage += combat.attacker_damage
+			if combat.attacker_won:
+				step = 5
+			else:
+				step = 4
+		if step == 4:
+			while not skill_test("strength"):
+				damage += 1
+			step = 5
+		if step == 5:
+			while not skill_test("strength"):
+				damage += 1
+			$"%Character".suffer_damage(damage)
+			$"%JobCompleted".show()
+			if $"%Character".defeated:
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "But you are defeated,\nbecause you don't have enough Strength."
+			elif damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			$"%Player".decrease_reputation(card.negative_rep)
+			slot.remove_card()
+			
+
+
 	stop_encounter()
 
 func _on_attack_pressed():
