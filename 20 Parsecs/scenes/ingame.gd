@@ -237,7 +237,10 @@ func stop_action():
 func update_action_buttons():
 	$"%Player".update_discount()
 	for card in all_cards:
-		card.update_buttons()
+		if planet_spaces.has($"%Player".space):
+			card.update_buttons()
+		else:
+			card.disable_buttons()
 
 func drop_barter_pool():
 	for slot in $"%Player".slots:
@@ -863,6 +866,7 @@ func _on_job_pressed():
 	else:
 		slot = $"%BountyJobSlot2"
 	var card = slot.get_card()
+	
 	if card.name.ends_with("Favor"):
 		if skill_test(card.skills[0]):
 			$"%JobCompleted".show()
@@ -889,6 +893,7 @@ func _on_job_pressed():
 					$"%JobDiscard".show()
 					$"%JobDiscardButton".show()
 					discard(slot)
+					
 	if card.name == "Casino Heist":
 		if not skill_test("influence"):
 			$"%JobFailed".show()
@@ -919,32 +924,33 @@ func _on_job_pressed():
 					$"%Player".increase_money(card.reward)
 					slot.remove_card()
 					fight = false
+					
 	if card.name == "Stash Raid":
 		if not skill_test("piloting"):
 			$"%Character".suffer_damage(2)
 			if $"%Character".defeated:
 				$"%JobFailed".show()
 				$"%JobDefeatedSkill".show()
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Piloting skill."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou lack enough Piloting skill."
 		if not skill_test("stealth") and not $"%Character".defeated:
 			$"%Character".suffer_damage(2)
 			if $"%Character".defeated:
 				$"%JobFailed".show()
 				$"%JobDefeatedSkill".show()
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Stealth skill."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou lack enough Stealth skill."
 		if not skill_test("knowledge") and not $"%Character".defeated:
 			$"%Character".suffer_damage(2)
 			if $"%Character".defeated:
 				$"%JobFailed".show()
 				$"%JobDefeatedSkill".show()
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Knowledge skill."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou lack enough Knowledge skill."
 		if not $"%Character".defeated:
 			if not skill_test("tech"):
 				$"%Character".suffer_damage(2)
 			if $"%Character".defeated:
 				$"%JobFailed".show()
 				$"%JobDefeatedSkill".show()
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lack enough Tech skill."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou lack enough Tech skill."
 			else:
 				$"%JobCompleted".show()
 				$"%Player".increase_money(card.reward)
@@ -953,6 +959,7 @@ func _on_job_pressed():
 				if $"%Character".damage > 0:
 					$"%JobDamage".show()
 				slot.remove_card()
+				
 	if card.name == "Freighter Hijack":
 		var damage = 0
 		if not skill_test("piloting"):
@@ -971,11 +978,11 @@ func _on_job_pressed():
 			$"%JobFailed".show()
 			$"%JobDefeatedSkill".show()
 			if combat.attacker_won:
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou are not skilled enough."
 			elif tests_passed:
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lost a ship combat."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou lost a ship combat."
 			else:
-				$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough,\nand you lost a ship combat."
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou are not skilled enough,\nand you lost a ship combat."
 		else:
 			$"%JobCompleted".show()
 			if $"%Character".damage > 0:
@@ -983,40 +990,34 @@ func _on_job_pressed():
 			$"%Player".increase_money(card.reward)
 			$"%Player".increase_fame(card.fame)
 			slot.remove_card()
+			
 	if card.name == "Jewel Heist":
 		var damage = 0
 		if not skill_test("knowledge"):
 			damage += 1
-			print("failed knowledge")
 		if not skill_test("tactics"):
 			if $"%Player".money >= 3:
 				$"%Player".decrease_money(3)
 				$"%JobMoney".show()
-				print("failed tactics lost money")
 			else:
 				damage += 1
-				print("failed tactics")
 		if not skill_test("influence"):
 			damage += 1
-			print("failed influence")
 		if not skill_test("stealth"):
 			damage += 2
-			print("failed stealth")
 		if not skill_test("tech"):
-			print("failed tech")
 			var combat = ground_combat(get_character_attack(), 4)
 			damage += combat.attacker_damage
 			if combat.attacker_won and damage > 0:
-				print("won combat")
 				damage -= 2
 			$"%Character".suffer_damage(damage)
 			if $"%Character".defeated:
 				$"%JobFailed".show()
 				$"%JobDefeatedSkill".show()
 				if combat.attacker_won:
-					$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough."
+					$"%JobDefeatedSkill".text = "You are defeated, because\nyou are not skilled enough."
 				else:
-					$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough,\nand you lost a ground combat."
+					$"%JobDefeatedSkill".text = "You are defeated, because\nyou are not skilled enough,\nand you lost a ground combat."
 			else:
 				$"%JobCompleted".show()
 				if $"%Character".damage > 0:
@@ -1027,6 +1028,35 @@ func _on_job_pressed():
 		else:
 			$"%JobCompleted".show()
 			if $"%Character".damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			slot.remove_card()
+			
+	if card.name == "Ekes Run":
+		if not skill_test("influence"):
+			$"%JobFailed".show()
+			$"%JobDefeatedSkill".show()
+			$"%JobDefeatedSkill".text = "Because you don't have enough Influence."
+		elif not skill_test("strength"):
+			$"%JobFailed".show()
+			$"%JobDefeatedSkill".show()
+			$"%JobDefeatedSkill".text = "Because you don't have enough Strength."
+		else:
+			var damage = 0
+			if not skill_test("tactics"):
+				damage += 2
+			if not skill_test("knowledge"):
+				damage += 2
+			move_to($"%Player", $Spaces/Space13)
+			while not skill_test("piloting"):
+				damage += 1
+			$"%Ship".suffer_damage(damage)
+			$"%JobCompleted".show()
+			if $"%Ship".defeated:
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "But your ship is defeated due to\ntoo many failed skills tests."
+			elif damage > 0:
 				$"%JobDamage".show()
 			$"%Player".increase_money(card.reward)
 			$"%Player".increase_fame(card.fame)
