@@ -575,6 +575,10 @@ func encounter_contact():
 	$"%Hire".disabled = false
 	$"%Join".hide()
 	$"%Hire".hide()
+	for button in $"%Hire".get_children():
+		button.hide()
+	for button in $"%Join".get_children():
+		button.hide()
 	
 	if contact_name == "Mol":
 		crew_buy = 3
@@ -598,6 +602,15 @@ func encounter_contact():
 		$"%HireAnu".show()
 		if $"%Player".money < crew_buy:
 			$"%Hire".disabled = true
+	
+	if contact_name == "Nat":
+		crew_buy = 1
+		$"%CrewPrompt".show()
+		$"%CrewSummary".text = "Nat is available for hire for someone,\nwho has a Job or Bounty.\nProvides Strength."
+		$"%Join".show()
+		$"%JoinNat".show()
+		if $"%Player".money < crew_buy or $"%BountyJobSlot".empty and $"%BountyJobSlot2".empty:
+			$"%Join".disabled = true
 			
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
@@ -1323,6 +1336,8 @@ func _on_dismiss_pressed():
 
 func _on_join_pressed():
 	if $"%JoinMol".visible:
+		$"%Player".decrease_money(crew_buy)
+	if $"%JoinNat".visible:
 		$"%Player".decrease_money(crew_buy)
 	var target = get_available_crew_slot()
 	target.set_card($"%CrewDeck".deck[selected_contact_name])
