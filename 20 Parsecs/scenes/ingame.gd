@@ -953,6 +953,40 @@ func _on_job_pressed():
 				if $"%Character".damage > 0:
 					$"%JobDamage".show()
 				slot.remove_card()
+	if card.name == "Freighter Hijack":
+		var damage = 0
+		if not skill_test("piloting"):
+			damage += 1
+			print("failed piloting")
+		if not skill_test("tech") or not skill_test("strength"):
+			damage += 1
+			print("failed tech and strength")
+			if not skill_test("tactics"):
+				print("failed tactics")
+				damage += 1
+		var tests_passed = damage == 0
+		var combat = ship_combat(get_ship_attack(), 3)
+		damage += combat.attacker_damage
+		if combat.attacker_won and damage > 0:
+			print("won combat")
+			damage -= 1
+		$"%Ship".suffer_damage(damage)
+		if $"%Ship".defeated:
+			$"%JobFailed".show()
+			$"%JobDefeatedSkill".show()
+			if combat.attacker_won:
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough."
+			elif tests_passed:
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lost a ship combat."
+			else:
+				$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough,\nand you lost a ship combat."
+		else:
+			$"%JobCompleted".show()
+			if $"%Character".damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			slot.remove_card()
 	stop_encounter()
 
 
