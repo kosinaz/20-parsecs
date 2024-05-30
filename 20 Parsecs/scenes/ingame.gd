@@ -957,18 +957,14 @@ func _on_job_pressed():
 		var damage = 0
 		if not skill_test("piloting"):
 			damage += 1
-			print("failed piloting")
 		if not skill_test("tech") or not skill_test("strength"):
 			damage += 1
-			print("failed tech and strength")
 			if not skill_test("tactics"):
-				print("failed tactics")
 				damage += 1
 		var tests_passed = damage == 0
 		var combat = ship_combat(get_ship_attack(), 3)
 		damage += combat.attacker_damage
 		if combat.attacker_won and damage > 0:
-			print("won combat")
 			damage -= 1
 		$"%Ship".suffer_damage(damage)
 		if $"%Ship".defeated:
@@ -980,6 +976,54 @@ func _on_job_pressed():
 				$"%JobDefeatedSkill".text = "You got defeated, because\nyou lost a ship combat."
 			else:
 				$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough,\nand you lost a ship combat."
+		else:
+			$"%JobCompleted".show()
+			if $"%Character".damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			slot.remove_card()
+	if card.name == "Jewel Heist":
+		var damage = 0
+		if not skill_test("knowledge"):
+			damage += 1
+			print("failed knowledge")
+		if not skill_test("tactics"):
+			if $"%Player".money >= 3:
+				$"%Player".decrease_money(3)
+				$"%JobMoney".show()
+				print("failed tactics lost money")
+			else:
+				damage += 1
+				print("failed tactics")
+		if not skill_test("influence"):
+			damage += 1
+			print("failed influence")
+		if not skill_test("stealth"):
+			damage += 2
+			print("failed stealth")
+		if not skill_test("tech"):
+			print("failed tech")
+			var combat = ground_combat(get_character_attack(), 4)
+			damage += combat.attacker_damage
+			if combat.attacker_won and damage > 0:
+				print("won combat")
+				damage -= 2
+			$"%Character".suffer_damage(damage)
+			if $"%Character".defeated:
+				$"%JobFailed".show()
+				$"%JobDefeatedSkill".show()
+				if combat.attacker_won:
+					$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough."
+				else:
+					$"%JobDefeatedSkill".text = "You got defeated, because\nyou are not skilled enough,\nand you lost a ground combat."
+			else:
+				$"%JobCompleted".show()
+				if $"%Character".damage > 0:
+					$"%JobDamage".show()
+				$"%Player".increase_money(card.reward)
+				$"%Player".increase_fame(card.fame)
+				slot.remove_card()
 		else:
 			$"%JobCompleted".show()
 			if $"%Character".damage > 0:

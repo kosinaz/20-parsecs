@@ -1943,6 +1943,16 @@ custom_fonts/font = ExtResource( 39 )
 text = "But suffered some damage."
 align = 1
 
+[node name="JobMoney" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 20.0
+margin_right = 207.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 39 )
+text = "You lost 3K because you lack enough Tactics."
+align = 1
+
 [node name="JobDefeated" type="Label" parent="CanvasLayer/JobAlert/Window/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
