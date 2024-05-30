@@ -18,6 +18,7 @@ var dice = ["hit", "hit", "hit", "crit", "blank", "blank", "focus", "focus"]
 var selected_contact_id = 0
 var selected_contact_space = null
 var selected_bounty_slot = null
+var selected_contact_name = ""
 var failed_cargo = null
 var failed_card = 0
 onready var patrols = [$"%PatrolA", $"%PatrolB", $"%PatrolC", $"%PatrolD"]
@@ -26,6 +27,7 @@ var reps = ["-1AR", "-1BR", "-1CR", "-1DR"]
 var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
+var crew_buy = 0
 onready var decks = [$"%BountyDeck", $"%CargoDeck", $"%GearModDeck", $"%JobDeck", $"%ShipDeck"]
 onready var used_ships = [$"%UsedShip", $"%UsedShip2", $"%UsedShip3", $"%UsedShip4", $"%UsedShip5", $"%UsedShip6", $"%UsedShip7", $"%UsedShip8"]
 onready var all_cards = []
@@ -92,6 +94,8 @@ func _ready():
 	$"%ShipDeck".set_ship($"%Ship")
 	for card in $"%Player".gear_slots:
 		card.connect("bartered", self, "_on_barter_toggled")
+	for card in $"%Player".crew_slots:
+		card.connect("dropped", self, "_on_drop_pressed")
 	for card in $"%Player".bounty_job_slots:
 		card.connect("delivered", self, "_on_bounty_deliver_pressed")
 		card.connect("killed", self, "_on_bounty_kill_pressed")
@@ -289,18 +293,22 @@ func skill_test(skill):
 	return false
 
 func is_skilled(skill_test):
-	for skill in $"%Character".get_card().skills:
-		if skill == skill_test:
-			return true
-# todo crew
+	for slot in $"%Player".skill_slots:
+		if not slot.visible:
+			continue
+		for skill in slot.skills:
+			if skill == skill_test:
+				return true
 	return false
 
 func is_highly_skilled(skill_test):
 	var count = 0
-	for skill in $"%Character".get_card().skills:
-		if skill == skill_test:
-			count += 1
-# todo crew
+	for slot in $"%Player".skill_slots:
+		if not slot.visible:
+			continue
+		for skill in slot.skills:
+			if skill == skill_test:
+				count += 1
 	return count > 1
 
 func has_mod(mod_name):
@@ -456,7 +464,7 @@ func buy_ship(card, price):
 	drop_barter_pool()
 	$"%Ship".set_card(card)
 	$"%Player".bought = true
-	update_ship_cargos_and_mods()
+	update_ship_slots()
 	update_action_buttons()
 
 func buy_used_ship(card, price):
@@ -469,13 +477,15 @@ func buy_used_ship(card, price):
 	$"%Market".show()
 	$"%Finish".disabled = false
 	$"%Player".bought = true
-	update_ship_cargos_and_mods()
+	update_ship_slots()
 	$"%Ship".suffer_damage(3)
 	update_action_buttons()
 
-func update_ship_cargos_and_mods():
+func update_ship_slots():
 	$"%CargoSlot2".visible = $"%Ship".get_card().cargo == 2
 	$"%CargoModSlot".visible = $"%Ship".get_card().has("cargomod")
+	$"%CrewSlot2".visible = $"%Ship".get_card().crew > 1
+	$"%CrewSlot3".visible = $"%Ship".get_card().crew > 2
 	$"%ModSlot".visible = $"%Ship".get_card().has("mod")
 	if not $"%CargoSlot2".empty and not $"%CargoSlot2".visible:
 		$"%CargoSlot2".update_target()
@@ -495,6 +505,10 @@ func update_ship_cargos_and_mods():
 			$"%ModSlot".remove_card()
 		else:
 			move_card($"%ModSlot", $"%ModSlot".get_target())
+	if not $"%CrewSlot2".empty and not $"%CrewSlot2".visible:
+		$"%CrewSlot2".remove_card()
+	if not $"%CrewSlot3".empty and not $"%CrewSlot3".visible:
+		$"%CrewSlot3".remove_card()
 
 func start_encounter():
 	if skip_encounter:
@@ -554,6 +568,32 @@ func attack_patrol():
 			var spaces = astar.get_point_connections($"%Player".space.id)
 			move_to(attacking_patrol, get_node("Spaces/Space" + str(spaces[randi() % spaces.size()])))
 			attacking_patrol = null
+
+func encounter_contact():
+	var contact_name = selected_contact_name
+	$"%Hire".disabled = false
+	
+	if contact_name == "Mol":
+		crew_buy = 3
+		if $"%BountyJobSlot".has_bounty():
+			crew_buy -= 1
+		if $"%BountyJobSlot2".has_bounty():
+			crew_buy -= 1
+		$"%CrewPrompt".show()
+		$"%CrewSummary".text = "Mol is available for hire.\nProvides 1 Ground Attack and Tactics."
+		$"%HireMol".show()
+		$"%HireMolBuy".text = str(crew_buy)
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+			$"%Hire".disabled = true
+			
+func get_available_crew_slot():
+	if $"%CrewSlot".empty:
+		return $"%CrewSlot"
+	if $"%CrewSlot2".empty and $"%CrewSlot2".visible:
+		return $"%CrewSlot2"
+	if $"%CrewSlot3".empty and $"%CrewSlot3".visible:
+		return $"%CrewSlot3"
+	return null
 
 func remove_contact(contact_name):
 	for planet in planet_spaces:
@@ -736,7 +776,8 @@ func _on_bounty_deliver_pressed(slot):
 	update_action_buttons()
 	
 func _on_drop_pressed(slot):
-	if slot.captured:
+	print("ja")
+	if slot.captured or $"%Player".crew_slots.has(slot):
 		slot.remove_card()
 	else:
 		discard(slot)
@@ -1163,6 +1204,7 @@ func _on_contact_pressed(space, id):
 		space.add_contact(id, $"%ContactDeck".deck[space.contacts[id].level - 1].pop_front())
 	selected_contact_id = id
 	selected_contact_space = space
+	selected_contact_name = space.contacts[id].name
 	selected_bounty_slot = $"%Player".get_bounty(space.contacts[id].name)
 	if selected_bounty_slot != null:
 		$"%ContactPrompt".show()
@@ -1180,7 +1222,7 @@ func _on_contact_pressed(space, id):
 			$"%AttackLabel".text = "Ship Attack"
 		$"%AttackValue".text = str(selected_bounty_slot.get_card().attack)
 	else:
-		stop_encounter()
+		encounter_contact()
 
 func _on_attack_contact_pressed():
 	$"%ContactPrompt".hide()
@@ -1227,7 +1269,7 @@ func _on_attack_contact_pressed():
 
 func _on_encounter_contact_pressed():
 	$"%ContactPrompt".hide()
-	stop_encounter()
+	encounter_contact()
 
 func _on_contact_alert_button_pressed():
 	$"%ContactAlert".hide()
@@ -1253,4 +1295,17 @@ func _on_capture_bounty_pressed():
 	var card = selected_bounty_slot.get_card()
 	remove_contact(card.name)
 	selected_bounty_slot.capture()
+	stop_encounter()
+
+func _on_hire_pressed():
+	if $"%HireMol".visible:
+		$"%Player".decrease_money(crew_buy)
+	var target = get_available_crew_slot()
+	target.set_card($"%CrewDeck".deck[selected_contact_name])
+	remove_contact(selected_contact_name)
+	$"%CrewPrompt".hide()
+	stop_encounter()
+
+func _on_dismiss_pressed():
+	$"%CrewPrompt".hide()
 	stop_encounter()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=2]
+[gd_scene load_steps=84 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -60,7 +60,7 @@
 [ext_resource path="res://scenes/valign.gd" type="Script" id=58]
 [ext_resource path="res://scenes/decks/ship_deck.tscn" type="PackedScene" id=59]
 [ext_resource path="res://scenes/slots/bounty_job_slot.tscn" type="PackedScene" id=60]
-[ext_resource path="res://scenes/contact_deck.gd" type="Script" id=61]
+[ext_resource path="res://scenes/decks/contact_deck.gd" type="Script" id=61]
 [ext_resource path="res://images/ground-attack.png" type="Texture" id=62]
 [ext_resource path="res://images/ground-combat.png" type="Texture" id=63]
 [ext_resource path="res://images/encounter.png" type="Texture" id=64]
@@ -74,6 +74,9 @@
 [ext_resource path="res://scenes/decks/job_deck.tscn" type="PackedScene" id=72]
 [ext_resource path="res://images/job.png" type="Texture" id=73]
 [ext_resource path="res://images/skip.png" type="Texture" id=74]
+[ext_resource path="res://scenes/decks/crew_deck.gd" type="Script" id=75]
+[ext_resource path="res://images/buy.png" type="Texture" id=76]
+[ext_resource path="res://scenes/slots/crew_slot.tscn" type="PackedScene" id=77]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -940,6 +943,20 @@ margin_right = 288.0
 [node name="ModSlot" parent="CanvasLayer/Ship" instance=ExtResource( 56 )]
 margin_left = 192.0
 margin_right = 288.0
+
+[node name="CrewSlot" parent="CanvasLayer/Ship" instance=ExtResource( 77 )]
+margin_left = 288.0
+margin_right = 384.0
+
+[node name="CrewSlot2" parent="CanvasLayer/Ship" instance=ExtResource( 77 )]
+visible = false
+margin_left = 384.0
+margin_right = 480.0
+
+[node name="CrewSlot3" parent="CanvasLayer/Ship" instance=ExtResource( 77 )]
+visible = false
+margin_left = 384.0
+margin_right = 480.0
 
 [node name="Prompt" type="TextureRect" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -2087,9 +2104,117 @@ custom_fonts/font = ExtResource( 39 )
 text = " Job)"
 align = 1
 
+[node name="CrewPrompt" type="TextureRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color( 1, 1, 1, 0.784314 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -288.0
+margin_right = 512.0
+margin_bottom = 288.0
+texture = SubResource( 11 )
+
+[node name="Window" type="TextureRect" parent="CanvasLayer/CrewPrompt"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -144.0
+margin_top = -64.0
+margin_right = 144.0
+margin_bottom = 64.0
+texture = ExtResource( 34 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CrewPrompt/Window"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -91.5
+margin_top = -40.5
+margin_right = 91.5
+margin_bottom = 40.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CrewSummary" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 183.0
+margin_bottom = 16.0
+custom_fonts/font = ExtResource( 39 )
+text = "Hire?"
+align = 1
+
+[node name="Hire" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 20.0
+margin_right = 183.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 38 )
+
+[node name="HireMol" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -13.0
+margin_top = -8.0
+margin_right = 13.0
+margin_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 2
+
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol"]
+margin_top = 2.0
+margin_right = 12.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 76 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol"]
+margin_left = 14.0
+margin_right = 26.0
+margin_bottom = 16.0
+custom_constants/separation = 0
+
+[node name="HireMolBuy" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol/HBoxContainer"]
+unique_name_in_owner = true
+margin_top = 1.0
+margin_right = 5.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 38 )
+text = "1"
+align = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireMol/HBoxContainer"]
+margin_left = 5.0
+margin_top = 1.0
+margin_right = 12.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 38 )
+text = "K"
+align = 1
+
+[node name="Dismiss" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
+margin_top = 43.0
+margin_right = 183.0
+margin_bottom = 62.0
+custom_fonts/font = ExtResource( 38 )
+text = "Dismiss"
+
 [node name="ContactDeck" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource( 61 )
+
+[node name="CrewDeck" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource( 75 )
 
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Gain2K" to="." method="_on_work_pressed"]
 [connection signal="pressed" from="CanvasLayer/TurnIndicator/HBoxContainer/Recover" to="." method="_on_heal_pressed"]
@@ -2106,6 +2231,8 @@ script = ExtResource( 61 )
 [connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/CaptureBounty" to="." method="_on_capture_bounty_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactAlert/Window/VBoxContainer/ContactAlertButton" to="." method="_on_contact_alert_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/JobAlert/Window/VBoxContainer/JobAlertButton" to="." method="_on_job_alert_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire" to="." method="_on_hire_pressed"]
+[connection signal="pressed" from="CanvasLayer/CrewPrompt/Window/VBoxContainer/Dismiss" to="." method="_on_dismiss_pressed"]
 
 [editable path="Spaces/Space3"]
 [editable path="Spaces/Space5"]

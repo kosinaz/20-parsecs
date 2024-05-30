@@ -21,13 +21,13 @@ func get_card():
 	if $"%BountyCard".visible:
 		return $"%BountyCard".card
 	return $"%JobCard".card
-	
-func has_bounty(bounty_name):
+
+func has_bounty(bounty_name = "any"):
 	if empty:
 		return false
 	if not $"%BountyCard".visible:
 		return false
-	return $"%BountyCard".card.name == bounty_name
+	return $"%BountyCard".card.name == bounty_name or bounty_name == "any"
 	
 func get_to():
 	if empty:
