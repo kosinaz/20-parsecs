@@ -19,7 +19,7 @@ onready var cargo_mod_slot = $"%CargoModSlot"
 onready var mod_slot = $"%ModSlot"
 onready var crew_slots = [$"%CrewSlot", $"%CrewSlot2", $"%CrewSlot3"]
 onready var ship_slots = [$"%CargoSlot", $"%CargoSlot2", $"%CargoSlot3", $"%CargoModSlot", $"%ModSlot"]
-onready var skills_slots = [$"%Character", $"%CrewSlot", $"%CrewSlot2", $"%CrewSlot3"]
+onready var skill_slots = [$"%Character", $"%CrewSlot", $"%CrewSlot2", $"%CrewSlot3"]
 onready var slots = [$"%GearSlot", $"%GearSlot2", $"%BountyJobSlot", $"%BountyJobSlot2", $"%CargoSlot", $"%CargoSlot2", $"%CargoSlot3", $"%CargoModSlot", $"%ModSlot", $"%CrewSlot", $"%CrewSlot2", $"%CrewSlot3"]
 
 

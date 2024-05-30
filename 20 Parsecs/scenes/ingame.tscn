@@ -2267,6 +2267,52 @@ custom_fonts/font = ExtResource( 38 )
 text = "1K"
 align = 1
 
+[node name="JoinTne" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -13.0
+margin_top = -8.0
+margin_right = 13.0
+margin_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 2
+
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne"]
+margin_top = 2.0
+margin_right = 12.0
+margin_bottom = 14.0
+size_flags_vertical = 4
+texture = ExtResource( 76 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne"]
+margin_left = 14.0
+margin_right = 26.0
+margin_bottom = 16.0
+custom_constants/separation = 0
+
+[node name="JoinTneBuy" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne/HBoxContainer"]
+unique_name_in_owner = true
+margin_top = 1.0
+margin_right = 5.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 38 )
+text = "2"
+align = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne/HBoxContainer"]
+margin_left = 5.0
+margin_top = 1.0
+margin_right = 12.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 38 )
+text = "K"
+align = 1
+
 [node name="Dismiss" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
 margin_top = 66.0
 margin_right = 183.0

@@ -296,7 +296,7 @@ func is_skilled(skill_test):
 	for slot in $"%Player".skill_slots:
 		if not slot.visible:
 			continue
-		for skill in slot.skills:
+		for skill in slot.get_card().skills:
 			if skill == skill_test:
 				return true
 	return false
@@ -306,7 +306,7 @@ func is_highly_skilled(skill_test):
 	for slot in $"%Player".skill_slots:
 		if not slot.visible:
 			continue
-		for skill in slot.skills:
+		for skill in slot.get_card().skills:
 			if skill == skill_test:
 				count += 1
 	return count > 1
@@ -611,6 +611,27 @@ func encounter_contact():
 		$"%JoinNat".show()
 		if $"%Player".money < crew_buy or $"%BountyJobSlot".empty and $"%BountyJobSlot2".empty:
 			$"%Join".disabled = true
+	
+	if contact_name == "Tne":
+		$"%CrewPrompt".show()
+		if $"%Player".get_reputation("B") == -1:
+			if not skill_test("stealth"):
+				$"%Character".suffer_damage(2)
+				$"%CrewSummary".text = "Tne attacked you, because of your low\nBasyn Reputation and Stealth."
+			else:
+				$"%CrewSummary".text = "Tne wanted to attack you, because of your low\nBasyn Reputation, but you have escaped."
+		else:
+			if skill_test("influence"):
+				crew_buy = 0
+				$"%CrewSummary".text = "You convinced Tne to join you.\nHe provides Stealth."
+			else:
+				crew_buy = 2
+				$"%CrewSummary".text = "Tne is available for hire.\nHe provides Stealth."
+				if $"%Player".money < crew_buy:
+					$"%Join".disabled = true
+			$"%Join".show()
+			$"%JoinTne".show()
+			$"%JoinTneBuy".text = str(crew_buy)
 			
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
@@ -802,7 +823,6 @@ func _on_bounty_deliver_pressed(slot):
 	update_action_buttons()
 	
 func _on_drop_pressed(slot):
-	print("ja")
 	if slot.captured or $"%Player".crew_slots.has(slot):
 		slot.remove_card()
 	else:
@@ -1338,6 +1358,8 @@ func _on_join_pressed():
 	if $"%JoinMol".visible:
 		$"%Player".decrease_money(crew_buy)
 	if $"%JoinNat".visible:
+		$"%Player".decrease_money(crew_buy)
+	if $"%JoinTne".visible:
 		$"%Player".decrease_money(crew_buy)
 	var target = get_available_crew_slot()
 	target.set_card($"%CrewDeck".deck[selected_contact_name])
