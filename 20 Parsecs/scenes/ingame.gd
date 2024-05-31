@@ -570,6 +570,7 @@ func attack_patrol():
 			attacking_patrol = null
 
 func encounter_contact():
+	crew_buy = 0
 	var contact_name = selected_contact_name
 	$"%Join".disabled = false
 	$"%Hire".disabled = false
@@ -632,6 +633,16 @@ func encounter_contact():
 			$"%Join".show()
 			$"%JoinTne".show()
 			$"%JoinTneBuy".text = str(crew_buy)
+	
+	if contact_name == "Keh":
+		crew_buy = 2
+		$"%CrewPrompt".show()
+		$"%CrewSummary".text = "Keh is available for hire.\nProvides Piloting."
+		$"%Join".show()
+		$"%JoinKeh".show()
+		if $"%Player".money < crew_buy:
+			$"%Join".disabled = true
+		
 			
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
@@ -1355,11 +1366,7 @@ func _on_dismiss_pressed():
 	stop_encounter()
 
 func _on_join_pressed():
-	if $"%JoinMol".visible:
-		$"%Player".decrease_money(crew_buy)
-	if $"%JoinNat".visible:
-		$"%Player".decrease_money(crew_buy)
-	if $"%JoinTne".visible:
+	if crew_buy > 0:
 		$"%Player".decrease_money(crew_buy)
 	var target = get_available_crew_slot()
 	target.set_card($"%CrewDeck".deck[selected_contact_name])
