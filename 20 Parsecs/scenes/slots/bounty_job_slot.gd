@@ -29,6 +29,14 @@ func has_bounty(bounty_name = "any"):
 		return false
 	return $"%BountyCard".card.name == bounty_name or bounty_name == "any"
 	
+func get_bounty_name():
+	if empty:
+		return "none"
+	if not $"%BountyCard".visible:
+		return "none"
+	return $"%BountyCard".card.name
+	
+	
 func get_to():
 	if empty:
 		return null

@@ -3,13 +3,16 @@ extends TextureRect
 var damage = 0
 var defeated = false
 var player = null
+var empty = false
 
 func get_card():
 	return $"%CharacterCard".card
 
 func get_armor():
-	return $"%CharacterCard".card.armor + player.gear_slots[0].get_armor() + player.gear_slots[1].get_armor()
-	
+	var armor = $"%CharacterCard".card.armor + player.gear_slots[0].get_armor() + player.gear_slots[1].get_armor()
+	armor += player.crew_slots[0].get_ground_armor() + player.crew_slots[1].get_ground_armor() + player.crew_slots[2].get_ground_armor()
+	return armor
+
 func get_price():
 	return $"%ShipCard".card.buy
 

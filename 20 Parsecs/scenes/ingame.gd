@@ -294,7 +294,7 @@ func skill_test(skill):
 
 func is_skilled(skill_test):
 	for slot in $"%Player".skill_slots:
-		if not slot.visible:
+		if not slot.visible or slot.empty:
 			continue
 		for skill in slot.get_card().skills:
 			if skill == skill_test:
@@ -304,7 +304,7 @@ func is_skilled(skill_test):
 func is_highly_skilled(skill_test):
 	var count = 0
 	for slot in $"%Player".skill_slots:
-		if not slot.visible:
+		if not slot.visible or slot.empty:
 			continue
 		for skill in slot.get_card().skills:
 			if skill == skill_test:
@@ -442,6 +442,8 @@ func get_character_attack():
 		attack += 2
 	if has_gear("vibroknife") and (is_skilled("Stealth") or is_skilled("Strength")):
 		attack += 1
+	if $"%CrewSlot".has_mol() or $"%CrewSlot2".has_mol() or $"%CrewSlot3".has_mol():
+		attack += 1 
 	return attack
 
 func show_used_ships():
@@ -523,6 +525,13 @@ func start_encounter():
 				attacking_patrol = patrol
 				if $"%Player".get_reputation(r) == -1:
 					$"%Explore".disabled = true
+		for slot in $"%Player".crew_slots:
+			if slot.has_crew($"%BountyJobSlot".get_bounty_name()):
+				$"%Attack".disabled = false
+				selected_bounty_slot = $"%BountyJobSlot"
+			if slot.has_crew($"%BountyJobSlot2".get_bounty_name()):
+				$"%Attack".disabled = false
+				selected_bounty_slot = $"%BountyJobSlot2"
 		if planets.has($"%Player".space.id):
 			$"%Player".space.enable_contacts()
 		if $"%BountyJobSlot".get_to() == $"%Player".space_name or $"%BountyJobSlot2".get_to() == $"%Player".space_name:
@@ -537,6 +546,48 @@ func stop_encounter():
 	$"%Attack".disabled = true
 	$"%Job".disabled = true
 	start_turn()
+
+func attack_crew():
+	var card = selected_bounty_slot.get_card()
+	var combat = null
+	if card.attack_type == "GroundAttack":
+		combat = ground_combat(get_character_attack(), card.attack)
+		$"%Character".suffer_damage(combat.attacker_damage)
+	else:
+		combat = ship_combat(get_ship_attack(), card.attack)
+		$"%Ship".suffer_damage(combat.attacker_damage)
+	if combat.attacker_won:
+		$"%ContactPrompt2".show()
+		$"%DefeatedBountyLevel".texture = load("res://images/person" + str(selected_contact_space.contacts[selected_contact_id].level) + ".png")
+		$"%DefeatedBountyNameLabel".text = selected_contact_space.contacts[selected_contact_id].name
+		$"%ContactDefenderDamage".text = str(combat.defender_damage)
+		$"%ContactAttackerDamage".text = str(combat.attacker_damage)
+		$"%BountyKillReward".text = str(card.kill_reward)
+		$"%BountyKillFame".text = str(card.kill_fame)
+		$"%BountyDeliverTo".text = card.to
+		$"%BountyDeliverReward".text = str(card.deliver_reward)
+		$"%BountyDeliverFame".text = str(card.deliver_fame)
+		$"%NegativeRepContainer".hide()
+		$"%NegativeRepContainer2".hide()
+		$"%PositiveRepContainer".hide()
+		$"%DeliverRepContainer".hide()
+		if card.has("negative_rep"):
+			$"%NegativeRepContainer".show()
+			$"%NegativeRepContainer2".show()
+			$"%DeliverRepContainer".show()
+			$"%NegativeRepLabel".text = selected_bounty_slot.get_negative_rep_name()
+			$"%NegativeRepLabel2".text = selected_bounty_slot.get_negative_rep_name()
+			$"%NegativeRepTexture".texture = load("res://images/patrol-" + (card.negative_rep.to_lower()) + "-icon.png")
+			$"%NegativeRepTexture2".texture = load("res://images/patrol-" + (card.negative_rep.to_lower()) + "-icon.png")
+		if card.has("positive_rep"):
+			$"%PositiveRepContainer".show()
+			$"%DeliverRepContainer".show()
+			$"%PositiveRepLabel".text = selected_bounty_slot.get_positive_rep_name()
+			$"%PositiveRepTexture".texture = load("res://images/patrol-" + (card.positive_rep.to_lower()) + "-icon.png")
+	else:
+		$"%ContactAlert".show()
+		$"%ContactAlertDefenderDamage".text = str(combat.defender_damage)
+		$"%ContactAlertAttackerDamage".text = str(combat.attacker_damage)
 
 func attack_patrol():
 	if attacking_patrol.data.has("invulnerable"):
@@ -652,6 +703,7 @@ func encounter_contact():
 			$"%Character".suffer_damage(combat.attacker_damage)
 			if combat.attacker_won:
 				$"%CrewSummary".text = "Rag attacked you because\nyou have some low reputation.\nYou have won and gained 1 Fame."
+				remove_contact(selected_contact_name)
 				$"%Player".increase_fame(1)
 			else:
 				$"%CrewSummary".text = "Rag attacked you because\nyou have some low reputation.\nYou have lost the combat."
@@ -760,7 +812,7 @@ func encounter_contact():
 			else:
 				$"%CrewSummary".text = "You tried to hack Dio to join,\nbut you don't have enough Tech skill."
 	
-	if contact_name == "0s2":
+	if contact_name == "Os2":
 		if skill_test("tech"):
 			crew_buy = 0
 			$"%CrewSummary".text = "You have hacked Os2 to join you.\nHe provides Strength."
@@ -812,7 +864,7 @@ func encounter_contact():
 		crew_buy = 3
 		if not skill_test("strength"):
 			$"%Character".suffer_damage(2)
-			$"%CrewSummary".text = "You have failed Aba's Strength test\nand suffered some damage.\nBut he is available for hire and provides Strength."
+			$"%CrewSummary".text = "You have failed Aba's Strength test\nand suffered some damage. But he is\navailable for hire and provides Strength."
 		else:
 			$"%CrewSummary".text = "Aba is available for hire.\nHe provides Strength."
 		$"%Join".show()
@@ -1048,7 +1100,7 @@ func _on_bounty_deliver_pressed(slot):
 	update_action_buttons()
 	
 func _on_drop_pressed(slot):
-	if slot.captured or $"%Player".crew_slots.has(slot):
+	if $"%Player".crew_slots.has(slot) or slot.captured:
 		slot.remove_card()
 	else:
 		discard(slot)
@@ -1545,7 +1597,15 @@ func _on_job_pressed():
 	stop_encounter()
 
 func _on_attack_pressed():
-	attack_patrol()
+	var is_crew = false
+	for slot in $"%Player".crew_slots:
+		if slot.has_crew($"%BountyJobSlot".get_bounty_name()) or slot.has_crew($"%BountyJobSlot2".get_bounty_name()):
+			is_crew = true
+			break
+	if is_crew:
+		attack_crew()
+	else:
+		attack_patrol()
 
 func _on_contact_pressed(space, id):
 	if space.contacts[id].name == "":
@@ -1634,6 +1694,10 @@ func _on_kill_bounty_pressed():
 	$"%Player".increase_fame(card.kill_fame)
 	if card.has("negative_rep"):
 		$"%Player".decrease_reputation(card.negative_rep)
+	for crew_slot in $"%Player".crew_slots:
+		if crew_slot.has_crew(card.name):
+			crew_slot.remove_card()
+			break
 	remove_contact(card.name)
 	selected_bounty_slot.remove_card()
 	stop_encounter()
@@ -1641,6 +1705,10 @@ func _on_kill_bounty_pressed():
 func _on_capture_bounty_pressed():
 	$"%ContactPrompt2".hide()
 	var card = selected_bounty_slot.get_card()
+	for crew_slot in $"%Player".crew_slots:
+		if crew_slot.has_crew(card.name):
+			crew_slot.remove_card()
+			break
 	remove_contact(card.name)
 	selected_bounty_slot.capture()
 	stop_encounter()
@@ -1705,6 +1773,8 @@ func _on_join_pressed():
 		$"%Player".decrease_money(crew_buy)
 	var target = get_available_crew_slot()
 	target.set_card($"%CrewDeck".deck[selected_contact_name])
+	$"%Character".update_armor()
+	$"%Ship".update_armor()
 	remove_contact(selected_contact_name)
 	$"%CrewPrompt".hide()
 	stop_encounter()

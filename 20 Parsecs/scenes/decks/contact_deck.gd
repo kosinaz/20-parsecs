@@ -3,7 +3,7 @@ extends Node
 var deck = [
 	["Tne", "Naz", "Nad", "Tob", "Aba", "El1"],
 	["Mol", "Anu", "Keh", "Ode", "Aka", "Dio", "Ana"],
-	["Nat", "Acc", "Rag", "Nwa", "All", "0s2", "Ata", "Are", "Jom"],
+	["Nat", "Acc", "Rag", "Nwa", "All", "Os2", "Ata", "Are", "Jom"],
 ]
 
 func _ready():

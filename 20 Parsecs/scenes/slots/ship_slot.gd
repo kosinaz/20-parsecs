@@ -10,8 +10,10 @@ func get_card():
 	return $"%ShipCard".card
 
 func get_armor():
-	return $"%ShipCard".card.armor + player.mod_slot.get_armor() + player.cargo_mod_slot.get_armor()
-	
+	var armor = $"%ShipCard".card.armor + player.mod_slot.get_armor() + player.cargo_mod_slot.get_armor()
+	armor += player.crew_slots[0].get_ship_armor() + player.crew_slots[1].get_ship_armor() + player.crew_slots[2].get_ship_armor()
+	return armor
+
 func get_price():
 	return $"%ShipCard".card.buy
 
