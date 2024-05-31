@@ -830,14 +830,25 @@ func encounter_contact():
 		else:
 			if skill_test("influence"):
 				crew_buy = 0
-				$"%CrewSummary".text = "You have convinced Are to join you."
+				$"%CrewSummary".text = "You have convinced Are to join you.\nHe provides Tactics."
 				$"%Join".show()
 				$"%JoinLabel".text = str(crew_buy) + "K"
 				if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 					$"%Join".disabled = true
 			else:
 				$"%CrewSummary".text = "You have failedhave convince\nAre to join you."
-		
+	
+	if contact_name == "El1":
+		if skill_test("tech"):
+			crew_buy = 0
+			$"%CrewSummary".text = "You hacked El1 to join you.\nHe provides Influence."
+		else:
+			crew_buy = 2
+			$"%CrewSummary".text = "El1 is available for hire.\nIt provides Influence."
+		$"%Join".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+			$"%Join".disabled = true
 	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
