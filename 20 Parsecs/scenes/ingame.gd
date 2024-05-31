@@ -1284,8 +1284,8 @@ func _on_job_pressed():
 		if step == 2:
 			var combat = ground_combat(get_character_attack(), 3)
 			damage += combat.attacker_damage
-			if combat.attacker_won and damage > 0:
-				damage -= 1
+			if combat.attacker_won:
+				damage = max(damage - 2, 0)
 			step = 3
 		if step == 3:
 			while not skill_test("knowledge"):
@@ -1304,6 +1304,42 @@ func _on_job_pressed():
 				$"%JobDamage".show()
 			$"%Player".increase_money(card.reward)
 			$"%Player".increase_fame(card.fame)
+			slot.remove_card()
+					
+	if card.name == "Clot Rebellion":
+		var step = 1
+		var damage = 0
+		if skill_test("influence"):
+			step = 3
+		elif $"%Player".get_reputation("D") > -1:
+			$"%Player".decrease_reputation("D")
+			step = 3
+		else:
+			step = 2
+		if step == 2:
+			var combat = ground_combat(get_character_attack(), 4)
+			damage += combat.attacker_damage
+			if combat.attacker_won:
+				step = 4
+			else:
+				step = 3
+		if step == 3:
+			if not skill_test("strength"):
+				damage += 2
+			step = 4
+		if step == 4:
+			if not skill_test("tactics"):
+				damage += 3
+			$"%Character".suffer_damage(damage)
+			$"%JobCompleted".show()
+			if $"%Character".defeated:
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "But you are defeated,\nbecause you don't have enough skills."
+			elif damage > 0:
+				$"%JobDamage".show()
+			$"%Player".increase_money(card.reward)
+			$"%Player".increase_fame(card.fame)
+			$"%Player".increase_reputation(card.positive_rep)
 			slot.remove_card()
 	stop_encounter()
 
@@ -1429,6 +1465,7 @@ func _on_hire_pressed():
 			"to": "Clot",
 			"reward": 7,
 			"fame": 1,
+			"positive_rep": "C",
 		}
 		slot.set_card(card)
 		var front = $"%JobDeck".front()
@@ -1436,7 +1473,7 @@ func _on_hire_pressed():
 			move_patrol(get_node("%Patrol" + front.patrol), front.move)
 		$"%Player".bought = true
 		update_action_buttons()
-		
+		remove_contact(selected_contact_name)
 
 func _on_dismiss_pressed():
 	$"%CrewPrompt".hide()
