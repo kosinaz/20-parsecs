@@ -642,6 +642,15 @@ func encounter_contact():
 		$"%JoinKeh".show()
 		if $"%Player".money < crew_buy:
 			$"%Join".disabled = true
+	
+	if contact_name == "Acc":
+		crew_buy = 4
+		$"%CrewPrompt".show()
+		$"%CrewSummary".text = "Acc is available for hire.\nProvides 1 Ground Armor, 2 Ship Armor,\nPiloting and Strength."
+		$"%Join".show()
+		$"%JoinAcc".show()
+		if $"%Player".money < crew_buy:
+			$"%Join".disabled = true
 		
 			
 func get_available_crew_slot():
