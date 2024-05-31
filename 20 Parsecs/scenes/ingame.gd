@@ -665,8 +665,21 @@ func encounter_contact():
 				$"%CrewSummary".text = "Rag attacked you because\nyou have some low reputation.\nYou have lost the combat."
 		else:
 			$"%CrewSummary".text = "Rag has no business with you."
-		
-			
+	
+	if contact_name == "Naz":
+		crew_buy = 2
+		$"%CrewPrompt".show()
+		if not skill_test("strength"):
+			$"%Character".suffer_damage(2)
+			$"%CrewSummary".text = "You have failed Naz's Strength test\nand suffered some damage.\nBut he is available for hire and provides Tech."
+		else:
+			$"%CrewSummary".text = "Naz is available for hire.\nHe provides Tech."
+		$"%Join".show()
+		$"%JoinNaz".show()
+		if $"%Player".money < crew_buy:
+			$"%Join".disabled = true
+
+
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
