@@ -731,6 +731,15 @@ func encounter_contact():
 			$"%HireAll".show()
 			if $"%Player".money < crew_buy:
 				$"%Hire".disabled = true
+	
+	if contact_name == "Aka":
+		crew_buy = 3
+		$"%CrewSummary".text = "Aka is available for hire.\nHe provides Influence."
+		$"%Join".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+			$"%Join".disabled = true
+		
 			
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
