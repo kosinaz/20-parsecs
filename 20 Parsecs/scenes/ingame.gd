@@ -602,7 +602,7 @@ func encounter_contact():
 		$"%CrewSummary".text = "Nat is available for hire for someone,\nwho has a Job or Bounty.\nProvides Strength."
 		$"%Join".show()
 		$"%JoinLabel".text = str(crew_buy) + "K"
-		if $"%Player".money < crew_buy or $"%BountyJobSlot".empty and $"%BountyJobSlot2".empty:
+		if $"%Player".money < crew_buy or $"%BountyJobSlot".empty and $"%BountyJobSlot2".empty or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
 	if contact_name == "Tne":
@@ -619,8 +619,8 @@ func encounter_contact():
 			else:
 				crew_buy = 2
 				$"%CrewSummary".text = "Tne is available for hire.\nHe provides Stealth."
-				if $"%Player".money < crew_buy:
-					$"%Join".disabled = true
+			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+				$"%Join".disabled = true
 			$"%Join".show()
 			$"%JoinLabel".text = str(crew_buy) + "K"
 	
@@ -629,7 +629,7 @@ func encounter_contact():
 		$"%CrewSummary".text = "Keh is available for hire.\nProvides Piloting."
 		$"%Join".show()
 		$"%JoinLabel".text = str(crew_buy) + "K"
-		if $"%Player".money < crew_buy:
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
 	if contact_name == "Acc":
@@ -637,7 +637,7 @@ func encounter_contact():
 		$"%CrewSummary".text = "Acc is available for hire.\nProvides 1 Ground Armor, 2 Ship Armor,\nPiloting and Strength."
 		$"%Join".show()
 		$"%JoinLabel".text = str(crew_buy) + "K"
-		if $"%Player".money < crew_buy:
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
 	if contact_name == "Rag":
@@ -665,7 +665,7 @@ func encounter_contact():
 			$"%CrewSummary".text = "Naz is available for hire.\nHe provides Tech."
 		$"%Join".show()
 		$"%JoinLabel".text = str(crew_buy) + "K"
-		if $"%Player".money < crew_buy:
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
 	if contact_name == "Nad":
@@ -678,7 +678,7 @@ func encounter_contact():
 			$"%CrewSummary".text = "Nad is available for hire.\nHe provides Knowledge."
 			$"%Join".show()
 			$"%JoinLabel".text = str(crew_buy) + "K"
-			if $"%Player".money < crew_buy:
+			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 				$"%Join".disabled = true
 	
 	if contact_name == "Nwa":
@@ -697,6 +697,25 @@ func encounter_contact():
 			else:
 				$"%CrewSummary".text = "Nwa attacked you, because of your\nlow Cimp reputation."
 			$"%Character".suffer_damage(damage)
+	
+	if contact_name == "Ode":
+		if $"%Player".get_reputation("A") == -1:
+			if not skill_test("stealth"):
+				$"%Character".suffer_damage(2)
+				$"%CrewSummary".text = "Ode attacked you, because of your\nlow Ahut reputation."
+			else:
+				$"%CrewSummary".text = "Ode tried to attack you, because of your\nlow Ahut reputation, but you have escaped."
+		else:
+			if skill_test("influence"):
+				crew_buy = 2
+				$"%CrewSummary".text = "Ode is available for hire.\nHe provides Stealth."
+			else:
+				crew_buy = 0
+				$"%CrewSummary".text = "You have convinced Ode to join for free.\nHe provides Stealth."
+			$"%Join".show()
+			$"%JoinLabel".text = str(crew_buy) + "K"
+			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+				$"%Join".disabled = true
 		
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
