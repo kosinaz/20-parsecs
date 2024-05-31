@@ -757,8 +757,22 @@ func encounter_contact():
 					$"%Join".disabled = true
 			else:
 				$"%CrewSummary".text = "You tried to hack Dio to join,\nbut you don't have enough Tech skill."
-			
-			
+	
+	if contact_name == "Os2":
+		if skill_test("tech"):
+			crew_buy = 0
+			$"%CrewSummary".text = "You have hacked Os2 to join you.\nHe provides Strength."
+			$"%Join".show()
+			$"%JoinLabel".text = str(crew_buy) + "K"
+			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+				$"%Join".disabled = true
+		else:
+			if $"%Player".get_reputation("C") == -1 or $"%Player".get_reputation("D") == 1:
+				$"%Character".suffer_damage(3)
+				$"%CrewSummary".text = "Os2 attacked you, because of your reputation."
+			else:
+				$"%CrewSummary".text = "You tried to hack Os2 to join,\nbut you don't have enough Tech skill."
+
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
