@@ -24,7 +24,11 @@ func update_view():
 		else:
 			skill.hide()
 	$"%To".text = card.to
-	$"%Reward".text = str(card.reward)
+	if card.has("reward"):
+		$"%Reward".show()
+		$"%RewardLabel".text = str(card.reward)
+	else:
+		$"%Reward".hide()
 	if card.has("fame"):
 		$"%Fame".show()
 		$"%FameLabel".text = str(card.fame)

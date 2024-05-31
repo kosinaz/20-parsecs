@@ -219,11 +219,12 @@ margin_bottom = 12.0
 custom_constants/separation = 1
 
 [node name="Reward" type="HBoxContainer" parent="Card/VBoxContainer/Deliver/HBoxContainer"]
+unique_name_in_owner = true
 margin_right = 21.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Reward" type="Label" parent="Card/VBoxContainer/Deliver/HBoxContainer/Reward"]
+[node name="RewardLabel" type="Label" parent="Card/VBoxContainer/Deliver/HBoxContainer/Reward"]
 unique_name_in_owner = true
 margin_right = 12.0
 margin_bottom = 12.0

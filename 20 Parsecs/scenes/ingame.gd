@@ -527,6 +527,8 @@ func start_encounter():
 			$"%Player".space.enable_contacts()
 		if $"%BountyJobSlot".get_to() == $"%Player".space_name or $"%BountyJobSlot2".get_to() == $"%Player".space_name:
 			$"%Job".disabled = false
+		if $"%Player".space == $"%PatrolC".space and ($"%BountyJobSlot".get_to() == "Cimp Patrol" or $"%BountyJobSlot2".get_to() == "Cimp Patrol"):
+			$"%Job".disabled = false
 
 func stop_encounter():
 	$"%Explore".disabled = true
@@ -773,6 +775,20 @@ func encounter_contact():
 			else:
 				$"%CrewSummary".text = "You tried to hack Os2 to join,\nbut you don't have enough Tech skill."
 
+	if contact_name == "Ana":
+		if $"%Player".get_reputation("D") > -1:
+			$"%CrewSummary".text = "Ana offers you a job on the Cimp patrol.\nIt needs Stealth, Piloting and both combat skills.\nReward is 2 Fame and Dreb reputation."
+			$"%Hire".show()
+			$"%HireAna".show()
+			if not $"%BountyJobSlot".empty and not $"%BountyJobSlot".empty:
+				$"%Hire".disabled = true
+		else:
+			$"%CrewSummary".text = "Ana offers Dreb reputation."
+			$"%Hire".show()
+			$"%HireAll".show()
+			if $"%Player".money < crew_buy:
+				$"%Hire".disabled = true
+	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
@@ -1088,10 +1104,11 @@ func _on_job_pressed():
 	$"%JobNegativeRepButton".hide()
 	$"%JobDiscardButton".hide()
 	var slot = null
-	if $"%BountyJobSlot".get_to() == $"%Player".space_name:
+	if $"%BountyJobSlot".get_to() == $"%Player".space_name or $"%BountyJobSlot".get_to() == "Cimp Patrol":
 		slot = $"%BountyJobSlot"
 	else:
 		slot = $"%BountyJobSlot2"
+		 
 	var card = slot.get_card()
 	
 	if card.name.ends_with("Favor"):
@@ -1416,6 +1433,46 @@ func _on_job_pressed():
 			$"%Player".increase_fame(card.fame)
 			$"%Player".increase_reputation(card.positive_rep)
 			slot.remove_card()
+					
+	if card.name == "Prison Break":
+		var step = 1
+		var damage = 0
+		if skill_test("stealth"):
+			step = 4
+		else:
+			step = 2
+		if step == 2:
+			var combat = ship_combat(get_ship_attack(), 3)
+			damage += combat.attacker_damage
+			if combat.attacker_won:
+				step = 4
+			else:
+				step = 3
+		if step == 3:
+			if not skill_test("piloting"):
+				damage += 2
+			step = 4
+		if step == 4:
+			var won = false
+			$"%Ship".suffer_damage(damage)
+			while not $"%Character".defeated and not won and not $"%Ship".defeated:
+				var combat = ground_combat(get_character_attack(), 3)
+				damage += combat.attacker_damage
+				$"%Character".suffer_damage(combat.attacker_damage)
+				won = combat.attacker_won
+			if $"%Character".defeated or $"%Ship".defeated:
+				$"%JobFailed".show()
+				$"%JobDefeatedSkill".show()
+				$"%JobDefeatedSkill".text = "You are defeated, because\nyou don't have enough skills."
+			else:
+				$"%JobCompleted".show()
+				if damage > 0:
+					$"%JobDamage".show()
+				$"%Player".increase_fame(card.fame)
+				$"%Player".increase_reputation(card.positive_rep)
+				$"%Player".decrease_reputation(card.negative_rep)
+				slot.remove_card()
+		
 	stop_encounter()
 
 func _on_attack_pressed():
@@ -1547,12 +1604,24 @@ func _on_hire_pressed():
 			"positive_rep": "C",
 		}
 		slot.set_card(card)
-		var front = $"%JobDeck".front()
-		if front.has("patrol"):
-			move_patrol(get_node("%Patrol" + front.patrol), front.move)
-		$"%Player".bought = true
-		update_action_buttons()
 		remove_contact(selected_contact_name)
+		stop_encounter()
+	if $"%HireAna".visible:
+		var slot = $"%BountyJobSlot"
+		if not slot.empty:
+			slot = $"%BountyJobSlot2"
+		var card = {
+			"deck": "JobDeck",
+			"name": "Prison Break",
+			"skills": ["stealth", "piloting"],
+			"to": "Cimp Patrol",
+			"fame": 2,
+			"positive_rep": "D",
+			"negative_rep": "C",
+		}
+		slot.set_card(card)
+		remove_contact(selected_contact_name)
+		stop_encounter()
 
 func _on_dismiss_pressed():
 	$"%CrewPrompt".hide()
