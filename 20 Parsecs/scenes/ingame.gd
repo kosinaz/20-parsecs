@@ -452,9 +452,6 @@ func show_used_ships():
 		$"%UsedShipMarket".get_child(i).hide()
 	var start = $"%Ship".get_price() / 2.5
 	for i in range(start, 8):
-#		if ship_deck[i] == $"%Enemy".get_data():
-#			remove enemy ship from the set
-#			continue
 		var ship = $"%UsedShipMarket".get_child(i)
 		ship.show()
 		ship.update_view()
@@ -651,6 +648,23 @@ func encounter_contact():
 		$"%JoinAcc".show()
 		if $"%Player".money < crew_buy:
 			$"%Join".disabled = true
+	
+	if contact_name == "Rag":
+		$"%CrewPrompt".show()
+		var attack = false
+		for rep in ["A", "B", "C", "D"]:
+			if $"%Player".get_reputation(rep) == -1:
+				attack = true
+		if attack:
+			var combat = ground_combat(get_character_attack(), 5)
+			$"%Character".suffer_damage(combat.attacker_damage)
+			if combat.attacker_won:
+				$"%CrewSummary".text = "Rag attacked you because\nyou have some low reputation.\nYou have won and gained 1 Fame."
+				$"%Player".increase_fame(1)
+			else:
+				$"%CrewSummary".text = "Rag attacked you because\nyou have some low reputation.\nYou have lost the combat."
+		else:
+			$"%CrewSummary".text = "Rag has no business with you."
 		
 			
 func get_available_crew_slot():
