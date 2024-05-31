@@ -808,6 +808,18 @@ func encounter_contact():
 		else:
 			$"%CrewSummary".text = "Ata doesn't like you,\nbecause your Cimp reputation."
 	
+	if contact_name == "Aba":
+		crew_buy = 3
+		if not skill_test("strength"):
+			$"%Character".suffer_damage(2)
+			$"%CrewSummary".text = "You have failed Aba's Strength test\nand suffered some damage.\nBut he is available for hire and provides Strength."
+		else:
+			$"%CrewSummary".text = "Aba is available for hire.\nHe provides Strength."
+		$"%Join".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+			$"%Join".disabled = true
+	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
