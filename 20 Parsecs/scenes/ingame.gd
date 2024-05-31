@@ -820,6 +820,25 @@ func encounter_contact():
 		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
+	if contact_name == "Are":
+		if $"%Player".get_reputation("C") == 1 or $"%Player".get_reputation("D") == -1:
+			if skill_test("stealth"):
+				$"%CrewSummary".text = "Are tried to attack you because of\nyour reputation, but you have escaped."
+			else:
+				$"%Character".suffer_damage(2)
+				$"%CrewSummary".text = "Are attacked you because of\nyour reputation."
+		else:
+			if skill_test("influence"):
+				crew_buy = 0
+				$"%CrewSummary".text = "You have convinced Are to join you."
+				$"%Join".show()
+				$"%JoinLabel".text = str(crew_buy) + "K"
+				if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+					$"%Join".disabled = true
+			else:
+				$"%CrewSummary".text = "You have failedhave convince\nAre to join you."
+		
+	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
