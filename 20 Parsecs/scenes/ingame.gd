@@ -575,8 +575,7 @@ func encounter_contact():
 	$"%Hire".hide()
 	for button in $"%Hire".get_children():
 		button.hide()
-	for button in $"%Join".get_children():
-		button.hide()
+	$"%CrewPrompt".show()
 	
 	if contact_name == "Mol":
 		crew_buy = 3
@@ -584,17 +583,14 @@ func encounter_contact():
 			crew_buy -= 1
 		if $"%BountyJobSlot2".has_bounty():
 			crew_buy -= 1
-		$"%CrewPrompt".show()
 		$"%CrewSummary".text = "Mol is available for hire.\nProvides 1 Ground Attack and Tactics."
 		$"%Join".show()
-		$"%JoinMol".show()
-		$"%JoinMolBuy".text = str(crew_buy)
+		$"%JoinLabel".text = str(crew_buy) + "K"
 		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
 	if contact_name == "Anu":
 		crew_buy = 2
-		$"%CrewPrompt".show()
 		$"%CrewSummary".text = "Anu offers Ahut Repuation."
 		$"%Hire".show()
 		$"%HireAnu".show()
@@ -603,15 +599,13 @@ func encounter_contact():
 	
 	if contact_name == "Nat":
 		crew_buy = 1
-		$"%CrewPrompt".show()
 		$"%CrewSummary".text = "Nat is available for hire for someone,\nwho has a Job or Bounty.\nProvides Strength."
 		$"%Join".show()
-		$"%JoinNat".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
 		if $"%Player".money < crew_buy or $"%BountyJobSlot".empty and $"%BountyJobSlot2".empty:
 			$"%Join".disabled = true
 	
 	if contact_name == "Tne":
-		$"%CrewPrompt".show()
 		if $"%Player".get_reputation("B") == -1:
 			if not skill_test("stealth"):
 				$"%Character".suffer_damage(2)
@@ -628,29 +622,25 @@ func encounter_contact():
 				if $"%Player".money < crew_buy:
 					$"%Join".disabled = true
 			$"%Join".show()
-			$"%JoinTne".show()
-			$"%JoinTneBuy".text = str(crew_buy)
+			$"%JoinLabel".text = str(crew_buy) + "K"
 	
 	if contact_name == "Keh":
 		crew_buy = 2
-		$"%CrewPrompt".show()
 		$"%CrewSummary".text = "Keh is available for hire.\nProvides Piloting."
 		$"%Join".show()
-		$"%JoinKeh".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
 		if $"%Player".money < crew_buy:
 			$"%Join".disabled = true
 	
 	if contact_name == "Acc":
 		crew_buy = 4
-		$"%CrewPrompt".show()
 		$"%CrewSummary".text = "Acc is available for hire.\nProvides 1 Ground Armor, 2 Ship Armor,\nPiloting and Strength."
 		$"%Join".show()
-		$"%JoinAcc".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
 		if $"%Player".money < crew_buy:
 			$"%Join".disabled = true
 	
 	if contact_name == "Rag":
-		$"%CrewPrompt".show()
 		var attack = false
 		for rep in ["A", "B", "C", "D"]:
 			if $"%Player".get_reputation(rep) == -1:
@@ -668,18 +658,46 @@ func encounter_contact():
 	
 	if contact_name == "Naz":
 		crew_buy = 2
-		$"%CrewPrompt".show()
 		if not skill_test("strength"):
 			$"%Character".suffer_damage(2)
 			$"%CrewSummary".text = "You have failed Naz's Strength test\nand suffered some damage.\nBut he is available for hire and provides Tech."
 		else:
 			$"%CrewSummary".text = "Naz is available for hire.\nHe provides Tech."
 		$"%Join".show()
-		$"%JoinNaz".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
 		if $"%Player".money < crew_buy:
 			$"%Join".disabled = true
-
-
+	
+	if contact_name == "Nad":
+		crew_buy = 2
+		if ($"%Player".get_reputation("C") == -1 or $"%Player".get_reputation("D") == 1) and not skill_test("stealth"):
+			$"%CrewSummary".text = "The Cimp patrol was looking for you\nbecause of your reputation,\nand Nad lead them to you."
+			$"%Hire".show()
+			$"%HireNad".show()
+		else:
+			$"%CrewSummary".text = "Nad is available for hire.\nHe provides Knowledge."
+			$"%Join".show()
+			$"%JoinLabel".text = str(crew_buy) + "K"
+			if $"%Player".money < crew_buy:
+				$"%Join".disabled = true
+	
+	if contact_name == "Nwa":
+		if $"%Player".get_reputation("C") > -1:
+			$"%CrewSummary".text = "Nwa offers you a job on Clot, that requires\nInfluence, Strength, Tactics.\nReward is 7K, 1 Fame, and Cimp reputation."
+			$"%Hire".show()
+			$"%HireNwa".show()
+			if not $"%BountyJobSlot".empty and not $"%BountyJobSlot".empty:
+				$"%Hire".disabled = true
+		else:
+			var combat = ground_combat(get_character_attack(), 4)
+			var damage = combat.attacker_damage
+			if combat.attacker_won:
+				$"%CrewSummary".text = "Nwa attacked you, because of your\nlow Cimp reputation, but you won."
+				damage -= 2
+			else:
+				$"%CrewSummary".text = "Nwa attacked you, because of your\nlow Cimp reputation."
+			$"%Character".suffer_damage(damage)
+		
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
@@ -1391,11 +1409,34 @@ func _on_capture_bounty_pressed():
 	stop_encounter()
 
 func _on_hire_pressed():
+	$"%CrewPrompt".hide()
 	if $"%HireAnu".visible:
 		$"%Player".decrease_money(crew_buy)
 		$"%Player".increase_reputation("A")
-	$"%CrewPrompt".hide()
-	stop_encounter()
+		stop_encounter()
+	if $"%HireNad".visible:
+		move_to($"%PatrolC", $"%Player".space)
+		attacking_patrol = $"%PatrolC"
+		attack_patrol()
+	if $"%HireNwa".visible:
+		var slot = $"%BountyJobSlot"
+		if not slot.empty:
+			slot = $"%BountyJobSlot2"
+		var card = {
+			"deck": "JobDeck",
+			"name": "Clot Rebellion",
+			"skills": ["influence", "strength", "tactics"],
+			"to": "Clot",
+			"reward": 7,
+			"fame": 1,
+		}
+		slot.set_card(card)
+		var front = $"%JobDeck".front()
+		if front.has("patrol"):
+			move_patrol(get_node("%Patrol" + front.patrol), front.move)
+		$"%Player".bought = true
+		update_action_buttons()
+		
 
 func _on_dismiss_pressed():
 	$"%CrewPrompt".hide()

@@ -2185,6 +2185,64 @@ custom_fonts/font = ExtResource( 38 )
 text = "2K"
 align = 1
 
+[node name="HireNad" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire"]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = -6.5
+margin_right = 14.0
+margin_bottom = 6.5
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 2
+
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireNad"]
+margin_right = 12.0
+margin_bottom = 12.0
+size_flags_vertical = 4
+texture = ExtResource( 76 )
+
+[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireNad"]
+margin_left = 14.0
+margin_right = 28.0
+margin_bottom = 13.0
+custom_fonts/font = ExtResource( 38 )
+text = "Attack Cimp Patrol"
+align = 1
+
+[node name="HireNwa" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire"]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -14.0
+margin_top = -6.5
+margin_right = 14.0
+margin_bottom = 6.5
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 2
+
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireNwa"]
+margin_right = 12.0
+margin_bottom = 12.0
+size_flags_vertical = 4
+texture = ExtResource( 76 )
+
+[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Hire/HireNwa"]
+margin_left = 14.0
+margin_right = 28.0
+margin_bottom = 13.0
+custom_fonts/font = ExtResource( 38 )
+text = "Take Job"
+align = 1
+
 [node name="Join" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 43.0
@@ -2192,55 +2250,7 @@ margin_right = 183.0
 margin_bottom = 62.0
 custom_fonts/font = ExtResource( 38 )
 
-[node name="JoinMol" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
-unique_name_in_owner = true
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -13.0
-margin_top = -8.0
-margin_right = 13.0
-margin_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
-custom_constants/separation = 2
-
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol"]
-margin_top = 2.0
-margin_right = 12.0
-margin_bottom = 14.0
-size_flags_vertical = 4
-texture = ExtResource( 76 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol"]
-margin_left = 14.0
-margin_right = 26.0
-margin_bottom = 16.0
-custom_constants/separation = 0
-
-[node name="JoinMolBuy" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol/HBoxContainer"]
-unique_name_in_owner = true
-margin_top = 1.0
-margin_right = 5.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 38 )
-text = "1"
-align = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinMol/HBoxContainer"]
-margin_left = 5.0
-margin_top = 1.0
-margin_right = 12.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 38 )
-text = "K"
-align = 1
-
-[node name="JoinNat" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
-unique_name_in_owner = true
-visible = false
+[node name="JoinContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -2253,151 +2263,19 @@ grow_horizontal = 2
 grow_vertical = 2
 custom_constants/separation = 2
 
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinNat"]
+[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinContainer"]
 margin_right = 12.0
 margin_bottom = 12.0
 size_flags_vertical = 4
 texture = ExtResource( 76 )
 
-[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinNat"]
+[node name="JoinLabel" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinContainer"]
+unique_name_in_owner = true
 margin_left = 14.0
 margin_right = 26.0
 margin_bottom = 13.0
 custom_fonts/font = ExtResource( 38 )
 text = "1K"
-align = 1
-
-[node name="JoinTne" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
-unique_name_in_owner = true
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -13.0
-margin_top = -8.0
-margin_right = 13.0
-margin_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
-custom_constants/separation = 2
-
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne"]
-margin_top = 2.0
-margin_right = 12.0
-margin_bottom = 14.0
-size_flags_vertical = 4
-texture = ExtResource( 76 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne"]
-margin_left = 14.0
-margin_right = 26.0
-margin_bottom = 16.0
-custom_constants/separation = 0
-
-[node name="JoinTneBuy" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne/HBoxContainer"]
-unique_name_in_owner = true
-margin_top = 1.0
-margin_right = 5.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 38 )
-text = "2"
-align = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinTne/HBoxContainer"]
-margin_left = 5.0
-margin_top = 1.0
-margin_right = 12.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 38 )
-text = "K"
-align = 1
-
-[node name="JoinKeh" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
-unique_name_in_owner = true
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -14.0
-margin_top = -6.5
-margin_right = 14.0
-margin_bottom = 6.5
-grow_horizontal = 2
-grow_vertical = 2
-custom_constants/separation = 2
-
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinKeh"]
-margin_right = 12.0
-margin_bottom = 12.0
-size_flags_vertical = 4
-texture = ExtResource( 76 )
-
-[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinKeh"]
-margin_left = 14.0
-margin_right = 26.0
-margin_bottom = 13.0
-custom_fonts/font = ExtResource( 38 )
-text = "2K"
-align = 1
-
-[node name="JoinAcc" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
-unique_name_in_owner = true
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -14.0
-margin_top = -6.5
-margin_right = 14.0
-margin_bottom = 6.5
-grow_horizontal = 2
-grow_vertical = 2
-custom_constants/separation = 2
-
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinAcc"]
-margin_right = 12.0
-margin_bottom = 12.0
-size_flags_vertical = 4
-texture = ExtResource( 76 )
-
-[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinAcc"]
-margin_left = 14.0
-margin_right = 26.0
-margin_bottom = 13.0
-custom_fonts/font = ExtResource( 38 )
-text = "4K"
-align = 1
-
-[node name="JoinNaz" type="HBoxContainer" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join"]
-unique_name_in_owner = true
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -14.0
-margin_top = -6.5
-margin_right = 14.0
-margin_bottom = 6.5
-grow_horizontal = 2
-grow_vertical = 2
-custom_constants/separation = 2
-
-[node name="Texture" type="TextureRect" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinNaz"]
-margin_right = 12.0
-margin_bottom = 12.0
-size_flags_vertical = 4
-texture = ExtResource( 76 )
-
-[node name="Label" type="Label" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer/Join/JoinNaz"]
-margin_left = 14.0
-margin_right = 26.0
-margin_bottom = 13.0
-custom_fonts/font = ExtResource( 38 )
-text = "2K"
 align = 1
 
 [node name="Dismiss" type="Button" parent="CanvasLayer/CrewPrompt/Window/VBoxContainer"]
