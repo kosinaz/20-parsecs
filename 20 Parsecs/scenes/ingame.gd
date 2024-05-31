@@ -760,7 +760,7 @@ func encounter_contact():
 			else:
 				$"%CrewSummary".text = "You tried to hack Dio to join,\nbut you don't have enough Tech skill."
 	
-	if contact_name == "Os2":
+	if contact_name == "0s2":
 		if skill_test("tech"):
 			crew_buy = 0
 			$"%CrewSummary".text = "You have hacked Os2 to join you.\nHe provides Strength."
@@ -774,7 +774,7 @@ func encounter_contact():
 				$"%CrewSummary".text = "Os2 attacked you, because of your reputation."
 			else:
 				$"%CrewSummary".text = "You tried to hack Os2 to join,\nbut you don't have enough Tech skill."
-
+	
 	if contact_name == "Ana":
 		if $"%Player".get_reputation("D") > -1:
 			$"%CrewSummary".text = "Ana offers you a job on the Cimp patrol.\nIt needs Stealth, Piloting and both combat skills.\nReward is 2 Fame and Dreb reputation."
@@ -788,6 +788,14 @@ func encounter_contact():
 			$"%HireAll".show()
 			if $"%Player".money < crew_buy:
 				$"%Hire".disabled = true
+	
+	if contact_name == "Tob":
+		crew_buy = 2
+		$"%CrewSummary".text = "Tob is available for hire.\nProvides Tech."
+		$"%Join".show()
+		$"%JoinLabel".text = str(crew_buy) + "K"
+		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+			$"%Join".disabled = true
 	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
