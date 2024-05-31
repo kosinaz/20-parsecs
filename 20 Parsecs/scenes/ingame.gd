@@ -716,7 +716,22 @@ func encounter_contact():
 			$"%JoinLabel".text = str(crew_buy) + "K"
 			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 				$"%Join".disabled = true
-		
+	
+	if contact_name == "All":
+		crew_buy = 2
+		if $"%Player".get_reputation("C") == -1 or $"%Player".get_reputation("D") == 1:
+			$"%CrewSummary".text = "All is available for hire.\nHe provides Piloting."
+			$"%Join".show()
+			$"%JoinLabel".text = str(crew_buy) + "K"
+			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+				$"%Join".disabled = true
+		else:
+			$"%CrewSummary".text = "All offers Dreb reputation."
+			$"%Hire".show()
+			$"%HireAll".show()
+			if $"%Player".money < crew_buy:
+				$"%Hire".disabled = true
+			
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
@@ -1468,6 +1483,10 @@ func _on_hire_pressed():
 	if $"%HireAnu".visible:
 		$"%Player".decrease_money(crew_buy)
 		$"%Player".increase_reputation("A")
+		stop_encounter()
+	if $"%HireAll".visible:
+		$"%Player".decrease_money(crew_buy)
+		$"%Player".increase_reputation("D")
 		stop_encounter()
 	if $"%HireNad".visible:
 		move_to($"%PatrolC", $"%Player".space)
