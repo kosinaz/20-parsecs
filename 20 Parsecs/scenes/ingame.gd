@@ -706,7 +706,7 @@ func encounter_contact():
 			else:
 				$"%CrewSummary".text = "Ode tried to attack you, because of your\nlow Ahut reputation, but you have escaped."
 		else:
-			if skill_test("influence"):
+			if not skill_test("influence"):
 				crew_buy = 2
 				$"%CrewSummary".text = "Ode is available for hire.\nHe provides Stealth."
 			else:
@@ -739,7 +739,25 @@ func encounter_contact():
 		$"%JoinLabel".text = str(crew_buy) + "K"
 		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
-		
+	
+	if contact_name == "Dio":
+		if $"%Player".get_reputation("B") == -1:
+			if not skill_test("stealth"):
+				$"%Character".suffer_damage(2)
+				$"%CrewSummary".text = "Dio attacked you, because of your\nlow Basyn reputation."
+			else:
+				$"%CrewSummary".text = "Dio tried to attack you, because of your\nlow Basyn reputation, but you have escaped."
+		else:
+			if skill_test("tech"):
+				crew_buy = 0
+				$"%CrewSummary".text = "You have hacked Dio to join you.\nHe provides Strength."
+				$"%Join".show()
+				$"%JoinLabel".text = str(crew_buy) + "K"
+				if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+					$"%Join".disabled = true
+			else:
+				$"%CrewSummary".text = "You tried to hack Dio to join,\nbut you don't have enough Tech skill."
+			
 			
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
