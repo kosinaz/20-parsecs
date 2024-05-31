@@ -797,6 +797,17 @@ func encounter_contact():
 		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
+	if contact_name == "Ata":
+		if $"%Player".get_reputation("C") < 1:
+			crew_buy = 4
+			$"%CrewSummary".text = "Ata is available for hire.\nProvides Influence and Knowledge."
+			$"%Join".show()
+			$"%JoinLabel".text = str(crew_buy) + "K"
+			if $"%Player".money < crew_buy or get_available_crew_slot() == null:
+				$"%Join".disabled = true
+		else:
+			$"%CrewSummary".text = "Ata doesn't like you,\nbecause your Cimp reputation."
+	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
