@@ -850,6 +850,14 @@ func encounter_contact():
 		if $"%Player".money < crew_buy or get_available_crew_slot() == null:
 			$"%Join".disabled = true
 	
+	if contact_name == "Jom":
+		if $"%Player".get_reputation("B") == -1:
+			$"%CrewSummary".text = "You need Basyn reputation,\nto talk with Jom."
+		else:
+			$"%CrewSummary".text = "Jom gives you 5K in exchange\nof your Basyn reputation."
+			$"%Hire".show()
+			$"%HireJom".show()
+	
 func get_available_crew_slot():
 	if $"%CrewSlot".empty:
 		return $"%CrewSlot"
@@ -1682,6 +1690,10 @@ func _on_hire_pressed():
 		}
 		slot.set_card(card)
 		remove_contact(selected_contact_name)
+		stop_encounter()
+	if $"%HireJom".visible:
+		$"%Player".increase_money(5)
+		$"%Player".decrease_reputation("B")
 		stop_encounter()
 
 func _on_dismiss_pressed():
