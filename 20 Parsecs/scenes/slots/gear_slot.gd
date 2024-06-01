@@ -33,7 +33,7 @@ func get_armor():
 	if empty:
 		return 0
 	if $"%GearCard".card.has("armor"):
-		return 2
+		return $"%GearCard".card.armor
 	return 0
 
 func has_gear(gear_name):

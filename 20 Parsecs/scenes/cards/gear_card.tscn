@@ -164,7 +164,8 @@ margin_right = 63.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Label" type="Label" parent="Card/VBoxContainer/Buff/Armor"]
+[node name="ArmorLabel" type="Label" parent="Card/VBoxContainer/Buff/Armor"]
+unique_name_in_owner = true
 margin_right = 7.0
 margin_bottom = 12.0
 size_flags_vertical = 1

@@ -5,6 +5,7 @@ var card = {
 	"trait": "Armor",
 	"buy": 3,
 	"name": "armored vest",
+	"armor": 2,
 	"patrol": "C",
 	"move": 3,
 }
@@ -19,6 +20,7 @@ func update_view():
 		armor = true
 		$"%Trait".show()
 		$"%Armor".show()
+		$"%ArmorLabel".text = str(card.armor)
 		$"%Info".show()
 		$"%ArmorInfo".show()
 	else:
