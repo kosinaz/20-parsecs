@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://images/convert.png" type="Texture" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://images/yes.png" type="Texture" id=15]
 [ext_resource path="res://images/fame.png" type="Texture" id=16]
 [ext_resource path="res://images/to.png" type="Texture" id=17]
+[ext_resource path="res://images/person.png" type="Texture" id=18]
 [ext_resource path="res://images/patrol-b-icon.png" type="Texture" id=20]
 [ext_resource path="res://images/buy.png" type="Texture" id=21]
 [ext_resource path="res://images/no.png" type="Texture" id=22]
@@ -176,6 +177,7 @@ text = "Acan "
 
 [node name="RollContainer" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 margin_top = 14.0
 margin_right = 85.0
 margin_bottom = 26.0
@@ -214,10 +216,9 @@ texture = ExtResource( 12 )
 
 [node name="SuccessContainer" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
-margin_top = 42.0
+margin_top = 14.0
 margin_right = 85.0
-margin_bottom = 54.0
+margin_bottom = 26.0
 
 [node name="Success" type="TextureRect" parent="Card/VBoxContainer/SuccessContainer"]
 margin_right = 12.0
@@ -245,7 +246,7 @@ text = "7K"
 unique_name_in_owner = true
 visible = false
 margin_left = 40.0
-margin_right = 93.0
+margin_right = 45.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
@@ -295,7 +296,8 @@ margin_right = 57.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Fame" type="Label" parent="Card/VBoxContainer/SuccessContainer/Fame"]
+[node name="FameLabel" type="Label" parent="Card/VBoxContainer/SuccessContainer/Fame"]
+unique_name_in_owner = true
 margin_right = 5.0
 margin_bottom = 12.0
 size_flags_vertical = 1
@@ -427,3 +429,54 @@ margin_left = 24.0
 margin_right = 36.0
 margin_bottom = 12.0
 texture = ExtResource( 12 )
+
+[node name="Holotable" type="HBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 56.0
+margin_right = 85.0
+margin_bottom = 68.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/Holotable"]
+margin_right = 19.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label2" type="Label" parent="Card/VBoxContainer/Holotable/HBoxContainer2"]
+margin_right = 7.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "2"
+
+[node name="Illegal" type="TextureRect" parent="Card/VBoxContainer/Holotable/HBoxContainer2"]
+margin_left = 7.0
+margin_right = 19.0
+margin_bottom = 12.0
+texture = ExtResource( 18 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Holotable"]
+margin_left = 23.0
+margin_right = 26.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Card/VBoxContainer/Holotable"]
+margin_left = 30.0
+margin_right = 47.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label3" type="Label" parent="Card/VBoxContainer/Holotable/HBoxContainer3"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="Blank" type="TextureRect" parent="Card/VBoxContainer/Holotable/HBoxContainer3"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 16 )

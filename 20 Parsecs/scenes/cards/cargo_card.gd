@@ -11,6 +11,10 @@ var card = {
 }
 
 func update_view():
+	if card.has("trait") and card.trait == "Holotable":
+		$"%Holotable".show()
+	else:
+		$"%Holotable".hide()
 	if card.has("trait") and card.trait == "Illegal":
 		$"%Trait".show()
 		$"%RollContainer".show()
@@ -37,7 +41,11 @@ func update_view():
 		$"%ToContainer".hide()
 	if card.has("sell"):
 		$"%SuccessContainer".show()
-		$"%Sell".text = str(card.sell) + "K"
+		if card.sell > 0:
+			$"%Sell".show()
+			$"%Sell".text = str(card.sell) + "K"
+		else:
+			$"%Sell".hide()
 	else:
 		$"%SuccessContainer".hide()
 	if card.has("rep"):
@@ -51,5 +59,6 @@ func update_view():
 		$"%Rep".hide()
 	if card.has("fame"):
 		$"%Fame".show()
+		$"%FameLabel".text = str(card.fame)
 	else:
 		$"%Fame".hide()

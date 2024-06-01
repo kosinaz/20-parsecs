@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=2]
+[gd_scene load_steps=83 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -35,8 +35,7 @@
 [ext_resource path="res://images/hud-center.png" type="Texture" id=33]
 [ext_resource path="res://images/prompt.png" type="Texture" id=34]
 [ext_resource path="res://bg.png" type="Texture" id=35]
-[ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=36]
-[ext_resource path="res://images/card.png" type="Texture" id=37]
+[ext_resource path="res://scenes/decks/luxury_deck.tscn" type="PackedScene" id=36]
 [ext_resource path="res://scenes/buttonfont.tres" type="DynamicFont" id=38]
 [ext_resource path="res://scenes/panelfont.tres" type="DynamicFont" id=39]
 [ext_resource path="res://images/person3.png" type="Texture" id=40]
@@ -91,11 +90,6 @@ font_data = ExtResource( 29 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 14
-use_filter = true
-font_data = ExtResource( 29 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 10
 use_filter = true
 font_data = ExtResource( 29 )
 
@@ -156,7 +150,7 @@ space_2 = 3
 
 [node name="Space5" parent="Spaces" instance=ExtResource( 2 )]
 unique_name_in_owner = true
-position = Vector2( 136, 381 )
+position = Vector2( 136, 372 )
 space_1 = 4
 faction = "B"
 planet_name = "Bord"
@@ -354,7 +348,7 @@ space_1 = 17
 
 [node name="Space27" parent="Spaces" instance=ExtResource( 2 )]
 unique_name_in_owner = true
-position = Vector2( 637, 125 )
+position = Vector2( 637, 120 )
 space_1 = 24
 space_2 = 26
 faction = "A"
@@ -499,7 +493,7 @@ space_2 = 40
 
 [node name="Space42" parent="Spaces" instance=ExtResource( 2 )]
 unique_name_in_owner = true
-position = Vector2( 919, 501 )
+position = Vector2( 926, 501 )
 space_1 = 41
 planet_name = "Katak"
 
@@ -523,11 +517,11 @@ visible = true
 icon = ExtResource( 40 )
 
 [node name="Space43" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 961, 463 )
+position = Vector2( 968, 463 )
 space_1 = 41
 
 [node name="Space44" parent="Spaces" instance=ExtResource( 2 )]
-position = Vector2( 959, 521 )
+position = Vector2( 966, 521 )
 space_1 = 43
 
 [node name="Space45" parent="Spaces" instance=ExtResource( 2 )]
@@ -769,60 +763,9 @@ margin_right = 288.0
 margin_left = 288.0
 margin_right = 384.0
 
-[node name="MarketLuxury" type="TextureRect" parent="CanvasLayer/Market"]
-unique_name_in_owner = true
+[node name="LuxuryDeck" parent="CanvasLayer/Market" instance=ExtResource( 36 )]
 margin_left = 384.0
 margin_right = 480.0
-margin_bottom = 128.0
-texture = ExtResource( 37 )
-
-[node name="Title" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
-margin_top = 1.0
-margin_right = 96.0
-margin_bottom = 15.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 36 )
-text = "Luxury"
-align = 1
-
-[node name="Data" type="Label" parent="CanvasLayer/Market/MarketLuxury"]
-margin_left = 4.0
-margin_top = 14.0
-margin_right = 92.0
-margin_bottom = 107.0
-custom_colors/font_color = Color( 0.603922, 0.603922, 0.603922, 1 )
-custom_fonts/font = ExtResource( 36 )
-text = "Mod
-+1F for F rewards
-Discard if lost a
-Ship Combat
-Others can attack
-your ship
-Patrol: 4C"
-
-[node name="Buy" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = -24.0
-margin_right = 35.0
-margin_bottom = -5.0
-custom_fonts/font = ExtResource( 38 )
-disabled = true
-text = "Buy 20K"
-
-[node name="Skip" type="Button" parent="CanvasLayer/Market/MarketLuxury"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -38.0
-margin_top = -24.0
-margin_right = -4.0
-margin_bottom = -5.0
-custom_fonts/font = SubResource( 6 )
-disabled = true
-text = "Skip"
 
 [node name="ShipDeck" parent="CanvasLayer/Market" instance=ExtResource( 59 )]
 margin_left = 480.0

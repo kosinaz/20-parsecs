@@ -28,7 +28,7 @@ var attacking_patrol = null
 var discount = 0
 var skip_encounter = false
 var crew_buy = 0
-onready var decks = [$"%BountyDeck", $"%CargoDeck", $"%GearModDeck", $"%JobDeck", $"%ShipDeck"]
+onready var decks = [$"%BountyDeck", $"%CargoDeck", $"%GearModDeck", $"%JobDeck", $"%LuxuryDeck", $"%ShipDeck"]
 onready var used_ships = [$"%UsedShip", $"%UsedShip2", $"%UsedShip3", $"%UsedShip4", $"%UsedShip5", $"%UsedShip6", $"%UsedShip7", $"%UsedShip8"]
 onready var all_cards = []
 
@@ -77,6 +77,10 @@ func _ready():
 	$"%GearModDeck".connect("bought", self, "_on_gear_mod_deck_buy_pressed")
 # warning-ignore:return_value_discarded
 	$"%GearModDeck".connect("skipped", self, "_on_skip_pressed")
+# warning-ignore:return_value_discarded
+	$"%LuxuryDeck".connect("bought", self, "_on_luxury_deck_buy_pressed")
+# warning-ignore:return_value_discarded
+	$"%LuxuryDeck".connect("skipped", self, "_on_skip_pressed")
 # warning-ignore:return_value_discarded
 	$"%ShipDeck".connect("bought", self, "_on_ship_deck_buy_pressed")
 # warning-ignore:return_value_discarded
@@ -981,7 +985,19 @@ func _on_gear_mod_deck_buy_pressed(card, price, target):
 	update_action_buttons()
 	$"%Character".update_armor()
 	$"%Ship".update_armor()
-	
+
+func _on_luxury_deck_buy_pressed(card, price, target):
+	$"%Player".decrease_money(price)
+	drop_barter_pool()
+	target.set_card(card)
+	var front = $"%LuxuryDeck".front()
+	if front.has("patrol"):
+		move_patrol(get_node("%Patrol" + front.patrol), front.move)
+	$"%Player".bought = true
+	update_action_buttons()
+	$"%Character".update_armor()
+	$"%Ship".update_armor()
+
 func _on_ship_deck_buy_pressed(card, price):
 	if card.has("used"):
 		show_used_ships()
@@ -1086,6 +1102,8 @@ func _on_deliver_pressed(cargo):
 		$"%Player".increase_money(cargo.get_card().sell)
 		if cargo.get_card().has("rep"):
 			$"%Player".increase_reputation(cargo.get_card().rep)
+		if cargo.get_card().has("fame"):
+			$"%Player".increase_fame(cargo.get_card().fame)
 		discard(cargo)
 
 func _on_bounty_deliver_pressed(slot):

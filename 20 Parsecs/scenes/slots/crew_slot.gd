@@ -42,12 +42,14 @@ func set_card(card_to_set):
 	$"%CrewCard".show()
 	$"%CrewCard".update_view()
 	$"%Buttons".show()
+	player.update_fame_text()
 
 func remove_card():
 	empty = true
 	$"%CrewCard".card = null
 	$"%CrewCard".hide()
 	$"%Buttons".hide()
+	player.update_fame_text()
 	
 func has_trait(_trait):
 	return false

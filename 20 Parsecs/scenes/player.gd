@@ -64,12 +64,23 @@ func decrease_money(amount):
 	
 func increase_fame(amount):
 	fame += amount
-	$"%Fame".text = "Fame: " + str(fame) + "F"
+	update_fame_text()
 	
 func decrease_fame(amount):
 	fame -= amount
 	fame = max(fame, 0)
-	$"%Fame".text = "Fame: " + str(fame) + "F"
+	update_fame_text()
+
+func update_fame_text():
+	var fame_buff = 0
+	var crew = 0
+	for slot in crew_slots:
+		if not slot.empty:
+			crew += 1
+	for slot in cargo_slots:
+		if slot.has_trait("Holotable") and crew > 1:
+			fame_buff = 1
+	$"%Fame".text = "Fame: " + str(fame + fame_buff) + "F"
 
 func increase_reputation(reputation):
 	if reputation == "A" and ahut < 1:
