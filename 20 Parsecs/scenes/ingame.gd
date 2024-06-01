@@ -614,6 +614,8 @@ func attack_patrol():
 				$"%Player".increase_money(attacking_patrol.data.money)
 			if attacking_patrol.data.has("fame"):
 				$"%Player".increase_fame(attacking_patrol.data.fame)
+				if $"%CargoModSlot".has_mod("torpedo") or $"%ModSlot".has_mod("torpedo"):
+					$"%Player".increase_fame(1)
 			$"%Player".decrease_reputation(attacking_patrol.name.right(6))
 			upgrade_patrol(attacking_patrol)
 			attacking_patrol = null

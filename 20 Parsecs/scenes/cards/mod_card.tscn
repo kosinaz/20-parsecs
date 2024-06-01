@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://images/action.png" type="Texture" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://scenes/cardfont.tres" type="DynamicFont" id=7]
 [ext_resource path="res://images/focus.png" type="Texture" id=8]
 [ext_resource path="res://images/convert.png" type="Texture" id=9]
+[ext_resource path="res://images/patrol.png" type="Texture" id=10]
+[ext_resource path="res://images/fame.png" type="Texture" id=11]
 [ext_resource path="res://images/hit.png" type="Texture" id=12]
 [ext_resource path="res://images/cirt.png" type="Texture" id=13]
 [ext_resource path="res://images/skill-tactics.png" type="Texture" id=14]
@@ -226,11 +228,60 @@ margin_right = 22.0
 margin_bottom = 12.0
 texture = ExtResource( 12 )
 
-[node name="Combat" type="HBoxContainer" parent="Card/VBoxContainer"]
+[node name="Torpedo" type="HBoxContainer" parent="Card/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 42.0
 margin_right = 85.0
-margin_bottom = 68.0
+margin_bottom = 54.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Card/VBoxContainer/Torpedo"]
+margin_right = 24.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Icon3" type="TextureRect" parent="Card/VBoxContainer/Torpedo/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 12.0
+texture = ExtResource( 10 )
+
+[node name="Icon4" type="TextureRect" parent="Card/VBoxContainer/Torpedo/HBoxContainer"]
+margin_left = 12.0
+margin_right = 24.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Torpedo"]
+margin_left = 28.0
+margin_right = 31.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/Torpedo"]
+margin_left = 35.0
+margin_right = 57.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Torpedo/HBoxContainer2"]
+margin_right = 10.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "+1"
+
+[node name="Icon2" type="TextureRect" parent="Card/VBoxContainer/Torpedo/HBoxContainer2"]
+margin_left = 10.0
+margin_right = 22.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+
+[node name="Combat" type="HBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 56.0
+margin_right = 85.0
+margin_bottom = 82.0
 
 [node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Combat"]
 margin_right = 12.0
