@@ -34,6 +34,10 @@ func update_view():
 	else:
 		$"%Buff".hide()
 	$"%Combat".hide()
+	if card.name == "robe":
+		$"%Robe".show()
+	else:
+		$"%Robe".hide()
 	if card.name == "vibroknife":
 		$"%Combat".show()
 		$"%Knife".show()

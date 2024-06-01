@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Nexa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://images/ground-attack.png" type="Texture" id=2]
@@ -16,7 +16,9 @@
 [ext_resource path="res://images/skill-tactics.png" type="Texture" id=14]
 [ext_resource path="res://images/yes.png" type="Texture" id=15]
 [ext_resource path="res://images/roll.png" type="Texture" id=16]
+[ext_resource path="res://images/positive_rep.png" type="Texture" id=17]
 [ext_resource path="res://images/armor.png" type="Texture" id=18]
+[ext_resource path="res://images/fame.png" type="Texture" id=19]
 [ext_resource path="res://images/buy.png" type="Texture" id=21]
 [ext_resource path="res://images/buff.png" type="Texture" id=23]
 
@@ -504,3 +506,117 @@ margin_left = 29.0
 margin_right = 41.0
 margin_bottom = 12.0
 texture = ExtResource( 16 )
+
+[node name="Robe" type="VBoxContainer" parent="Card/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 56.0
+margin_right = 85.0
+margin_bottom = 82.0
+custom_constants/separation = 2
+
+[node name="Robe2" type="HBoxContainer" parent="Card/VBoxContainer/Robe"]
+margin_right = 85.0
+margin_bottom = 12.0
+
+[node name="Robe" type="HBoxContainer" parent="Card/VBoxContainer/Robe/Robe2"]
+margin_right = 19.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label2" type="Label" parent="Card/VBoxContainer/Robe/Robe2/Robe"]
+margin_right = 7.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "2"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Robe/Robe2/Robe"]
+margin_left = 7.0
+margin_right = 19.0
+margin_bottom = 12.0
+texture = ExtResource( 17 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Robe/Robe2"]
+margin_left = 23.0
+margin_right = 26.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/Robe/Robe2"]
+margin_left = 30.0
+margin_right = 47.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label2" type="Label" parent="Card/VBoxContainer/Robe/Robe2/HBoxContainer2"]
+margin_right = 5.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "1"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Robe/Robe2/HBoxContainer2"]
+margin_left = 5.0
+margin_right = 17.0
+margin_bottom = 12.0
+texture = ExtResource( 19 )
+
+[node name="Label3" type="Label" parent="Card/VBoxContainer/Robe/Robe2"]
+margin_left = 51.0
+margin_right = 56.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "/"
+
+[node name="Robe3" type="HBoxContainer" parent="Card/VBoxContainer/Robe"]
+margin_top = 14.0
+margin_right = 85.0
+margin_bottom = 26.0
+
+[node name="Robe" type="HBoxContainer" parent="Card/VBoxContainer/Robe/Robe3"]
+margin_right = 19.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label2" type="Label" parent="Card/VBoxContainer/Robe/Robe3/Robe"]
+margin_right = 7.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "4"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Robe/Robe3/Robe"]
+margin_left = 7.0
+margin_right = 19.0
+margin_bottom = 12.0
+texture = ExtResource( 17 )
+
+[node name="Label" type="Label" parent="Card/VBoxContainer/Robe/Robe3"]
+margin_left = 23.0
+margin_right = 26.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = ":"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Card/VBoxContainer/Robe/Robe3"]
+margin_left = 30.0
+margin_right = 49.0
+margin_bottom = 12.0
+custom_constants/separation = 0
+
+[node name="Label2" type="Label" parent="Card/VBoxContainer/Robe/Robe3/HBoxContainer2"]
+margin_right = 7.0
+margin_bottom = 12.0
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 7 )
+text = "3"
+
+[node name="Icon" type="TextureRect" parent="Card/VBoxContainer/Robe/Robe3/HBoxContainer2"]
+margin_left = 7.0
+margin_right = 19.0
+margin_bottom = 12.0
+texture = ExtResource( 19 )

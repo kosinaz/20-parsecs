@@ -52,6 +52,7 @@ func set_card(card_to_set):
 	$"%GearCard".update_view()
 	$"%Buttons".show()
 	update_buttons()
+	player.update_fame_text()
 
 func remove_card():
 	empty = true
@@ -60,6 +61,7 @@ func remove_card():
 	$"%GearCard".hide()
 	$"%Buttons".hide()
 	$"%Barter".pressed = false
+	player.update_fame_text()
 	
 func has_trait(trait):
 	if empty:

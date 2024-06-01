@@ -79,7 +79,24 @@ func update_fame_text():
 			crew += 1
 	for slot in cargo_slots:
 		if slot.has_trait("Holotable") and crew > 1:
-			fame_buff = 1
+			fame_buff += 1
+			break
+	var fans = 0
+	if ahut == 1:
+		fans += 1
+	if basyn == 1:
+		fans += 1
+	if cimp == 1:
+		fans += 1
+	if dreb == 1:
+		fans += 1
+	for slot in gear_slots:
+		if slot.has_gear("robe"):
+			if fans > 1:
+				fame_buff += 1
+			if fans == 4:
+				fame_buff += 2
+			break
 	$"%Fame".text = "Fame: " + str(fame + fame_buff) + "F"
 
 func increase_reputation(reputation):
@@ -103,4 +120,4 @@ func decrease_reputation(reputation):
 	if reputation == "D" and dreb > -1:
 		dreb -= 1
 	$"%Reputations".text = "Reputations:\nAhut: " + str(ahut) + "AR\nBasyn: " + str(basyn) + "BR\nCimp: " + str(cimp) + "CR\nDreb: " + str(dreb) + "DR"
-
+	update_fame_text()
