@@ -239,7 +239,8 @@ margin_right = 24.0
 margin_bottom = 12.0
 custom_constants/separation = 0
 
-[node name="Icon3" type="TextureRect" parent="Card/VBoxContainer/Torpedo/HBoxContainer"]
+[node name="Patrol" type="TextureRect" parent="Card/VBoxContainer/Torpedo/HBoxContainer"]
+unique_name_in_owner = true
 margin_right = 12.0
 margin_bottom = 12.0
 texture = ExtResource( 10 )

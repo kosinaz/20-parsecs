@@ -64,6 +64,8 @@ func decrease_money(amount):
 	
 func increase_fame(amount):
 	fame += amount
+	if mod_slot.has_mod("chrome") or cargo_mod_slot.has_mod("chrome"):
+		fame += 1
 	update_fame_text()
 	
 func decrease_fame(amount):

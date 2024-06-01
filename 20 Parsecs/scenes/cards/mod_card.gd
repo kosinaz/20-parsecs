@@ -44,10 +44,13 @@ func update_view():
 		$"%Thruster".show()
 	else:
 		$"%Thruster".hide()
+	$"%Torpedo".hide()
 	if card.name == "torpedo":
 		$"%Torpedo".show()
-	else:
-		$"%Torpedo".hide()
+		$"%Patrol".show()
+	if card.name == "chrome":
+		$"%Torpedo".show()
+		$"%Patrol".hide()
 	if card.name == "ion cannon":
 		$"%Combat".show()
 		$"%Cannon".show()

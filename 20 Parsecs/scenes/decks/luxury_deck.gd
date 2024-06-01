@@ -103,16 +103,35 @@ var player = {
 		"empty": true,
 		"bartering": false,
 	},
-	"gear_slots": [{
-		"visible": true,
-		"empty": true,
-		"bartering": false,
-	}],
-	"crew_slots": [{
-		"visible": true,
-		"empty": true,
-		"bartering": false,
-	}],
+	"gear_slots": [
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+		},
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+		}
+	],
+	"crew_slots": [
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+		},
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+		},
+		{
+			"visible": true,
+			"empty": true,
+			"bartering": false,
+		},
+	],
 }
 
 
