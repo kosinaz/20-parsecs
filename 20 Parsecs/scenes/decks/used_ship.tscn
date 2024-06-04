@@ -77,4 +77,5 @@ disabled = true
 text = "1K"
 icon = ExtResource( 6 )
 
+[connection signal="helped" from="MarginContainer/VBoxContainer/ShipCard" to="." method="_on_help_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Bottom/MarginContainer/Buy" to="." method="_on_buy_pressed"]

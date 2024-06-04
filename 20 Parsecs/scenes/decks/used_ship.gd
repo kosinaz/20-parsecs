@@ -1,6 +1,7 @@
 extends TextureRect
 
 signal bought
+signal helped
 
 var _card = null
 var _deck = [
@@ -138,3 +139,7 @@ func update_buy():
 
 func _on_buy_pressed():
 	emit_signal("bought", _card, _price)
+
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)
