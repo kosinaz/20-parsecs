@@ -2,6 +2,7 @@ extends TextureRect
 
 signal took
 signal skipped
+signal helped
 
 var _deck = [
 	{
@@ -218,3 +219,6 @@ func _on_take_pressed():
 func _on_skip_pressed():
 	emit_signal("skipped")
 	append(pop_front())
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)

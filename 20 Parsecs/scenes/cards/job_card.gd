@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"deck": "JobDeck",
 	"name": "Dreb Favor",
@@ -50,3 +52,41 @@ func update_view():
 		$"%OCNegativeRepTexture".texture = load("res://images/patrol-" + card.overclock_negative_rep.to_lower() + "-icon.png")
 	else:
 		$"%Overclock".hide()
+
+func _on_help_pressed():
+	var reps = {
+		"A": "Ahut",
+		"B": "Basyn",
+		"C": "Clot",
+		"D": "Dreb",
+	}
+	var text = "Job\n"
+	text += card.name + "\n"
+	text += "You will need: " + card.skills[0]
+	if card.skills.size() > 1:
+		for i in card.skills.size() - 1:
+			text += ", " + card.skills[i + 1]
+	text += ".\nGo to " + card.to
+	text += " and complete the job to gain"
+	if card.has("reward"):
+		text += " " + str(card.reward) + "K"
+	if card.has("fame"):
+		if card.has("reward"):
+			if not card.has("positive_rep") and not card.has("negative_rep"):
+				text += " and"
+			else:
+				text += ", "
+		text += " " + str(card.fame) + " fame"
+	if card.has("positive_rep"):
+		if card.has("reward") or card.has("fame"):
+			if not card.has("negative_rep"):
+				text += " and"
+			else:
+				text += ","
+		text += " 1 " + reps[card.positive_rep] + " reputation"
+	if card.has("negative_rep"):
+		text += " and -1 " + reps[card.negative_rep] + " reputation"
+	text += "."
+	if card.has("overclock_fame"):
+		text += " If you already have 1 " + reps[card.positive_rep] + " reputation, lose 1 " + reps[card.overclock_negative_rep] + " reputation instead and gain 1 fame."
+	emit_signal("helped", text)

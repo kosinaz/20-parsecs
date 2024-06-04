@@ -2449,6 +2449,7 @@ script = ExtResource( 75 )
 [connection signal="helped" from="CanvasLayer/Market/BountyDeck" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/Market/CargoDeck" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/Market/GearModDeck" to="." method="_on_help_pressed"]
+[connection signal="helped" from="CanvasLayer/Market/JobDeck" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/CharacterSlots/GearSlot" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/CharacterSlots/GearSlot2" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/CharacterSlots/BountyJobSlot" to="." method="_on_help_pressed"]
