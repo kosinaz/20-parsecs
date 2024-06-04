@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=2]
+[gd_scene load_steps=85 format=2]
 
 [ext_resource path="res://images/player.png" type="Texture" id=1]
 [ext_resource path="res://scenes/space.tscn" type="PackedScene" id=2]
@@ -78,6 +78,7 @@
 [ext_resource path="res://images/buy.png" type="Texture" id=76]
 [ext_resource path="res://scenes/slots/crew_slot.tscn" type="PackedScene" id=77]
 [ext_resource path="res://images/patrol-b-icon.png" type="Texture" id=78]
+[ext_resource path="res://images/deck.png" type="Texture" id=79]
 
 [sub_resource type="DynamicFont" id=10]
 size = 12
@@ -751,18 +752,22 @@ margin_bottom = 32.0
 custom_constants/separation = 0
 
 [node name="BountyDeck" parent="CanvasLayer/Market" instance=ExtResource( 49 )]
+texture = ExtResource( 79 )
 
 [node name="CargoDeck" parent="CanvasLayer/Market" instance=ExtResource( 52 )]
 margin_left = 96.0
 margin_right = 192.0
+texture = ExtResource( 79 )
 
 [node name="GearModDeck" parent="CanvasLayer/Market" instance=ExtResource( 50 )]
 margin_left = 192.0
 margin_right = 288.0
+texture = ExtResource( 79 )
 
 [node name="JobDeck" parent="CanvasLayer/Market" instance=ExtResource( 72 )]
 margin_left = 288.0
 margin_right = 384.0
+texture = ExtResource( 79 )
 
 [node name="LuxuryDeck" parent="CanvasLayer/Market" instance=ExtResource( 36 )]
 margin_left = 384.0
@@ -771,6 +776,7 @@ margin_right = 480.0
 [node name="ShipDeck" parent="CanvasLayer/Market" instance=ExtResource( 59 )]
 margin_left = 480.0
 margin_right = 576.0
+texture = ExtResource( 79 )
 
 [node name="UsedShipMarket" type="HBoxContainer" parent="CanvasLayer"]
 unique_name_in_owner = true
