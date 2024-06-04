@@ -99,5 +99,6 @@ custom_fonts/font = SubResource( 1 )
 disabled = true
 icon = ExtResource( 7 )
 
+[connection signal="helped" from="MarginContainer/VBoxContainer/CargoCard" to="." method="_on_help_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Bottom/MarginContainer/Buy" to="." method="_on_buy_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Bottom/MarginContainer2/Skip" to="." method="_on_skip_pressed"]

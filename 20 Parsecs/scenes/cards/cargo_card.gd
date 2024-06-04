@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"type": "Cargo",
 	"to": "Ganal",
@@ -62,3 +64,33 @@ func update_view():
 		$"%FameLabel".text = str(card.fame)
 	else:
 		$"%Fame".hide()
+
+func _on_help_pressed():
+	var reps = {
+		"A": "Ahut",
+		"B": "Basyn",
+		"C": "Clot",
+		"D": "Dreb",
+	}
+	var text = ""
+	if card.has("trait") and card.trait == "Illegal":
+		text += "Illegal "
+	text += card.type + "\n"
+	if $"%Holotable".visible:
+		text += "As long as you have at least 2 crews, gain 1 fame"
+	if card.has("trait") and card.trait == "Smuggling Compartment":
+		text += "Gain an extra cargo slot. When delivering illegal cargo, if you roll blank, you successfully deliver the cargo"
+	if card.has("to"):
+		text += "Deliver it to " + card.to + " to gain "
+	if card.has("fame"):
+		text += str(card.fame) + " fame, "
+		if not card.has("rep"):
+			text += " and "
+	if card.has("sell"):
+		text += str(card.sell) + "K"
+	if card.has("rep"):
+		text += " and 1 " + reps[card.rep] + " reputation"
+	text += "."
+	if card.has("trait") and card.trait == "Illegal":
+		text += " To succesfully deliver it, roll a hit. Otherwise face a random encounter."
+	emit_signal("helped", text)

@@ -4,6 +4,7 @@ signal delivered
 signal bartered
 signal moved
 signal repaired
+signal helped
 
 var player = {
 	"bought": false,
@@ -196,3 +197,6 @@ func _on_move_pressed():
 func _on_repair_pressed():
 	$"%Repair".disabled = true
 	emit_signal("repaired")
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)

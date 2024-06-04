@@ -1806,10 +1806,8 @@ func _on_join_pressed():
 	$"%CrewPrompt".hide()
 	stop_encounter()
 
-
 func _on_intro_ok_pressed():
 	$"%Intro".hide()
-
 
 func _on_help_pressed(text):
 	$"%Help".show()

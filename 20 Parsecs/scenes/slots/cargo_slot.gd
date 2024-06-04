@@ -3,6 +3,7 @@ extends TextureRect
 signal delivered
 signal bartered
 signal moved
+signal helped
 
 var player = {
 	"bought": false,
@@ -133,3 +134,6 @@ func _on_barter_toggled(pressed):
 
 func _on_move_pressed():
 	emit_signal("moved", self, _target)
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)
