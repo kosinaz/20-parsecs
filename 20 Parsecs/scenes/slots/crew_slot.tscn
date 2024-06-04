@@ -81,4 +81,5 @@ size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 icon = ExtResource( 4 )
 
+[connection signal="helped" from="MarginContainer/VBoxContainer/CrewCard" to="." method="_on_help_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/Drop" to="." method="_on_drop_pressed"]

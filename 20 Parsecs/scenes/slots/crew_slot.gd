@@ -1,6 +1,7 @@
 extends TextureRect
 
 signal dropped
+signal helped
 
 var player = {}
 var empty = true
@@ -62,3 +63,6 @@ func disable_buttons():
 
 func _on_drop_pressed():
 	emit_signal("dropped", self)
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)

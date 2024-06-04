@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"name": "Mol",
 	"skills": ["tactics"],
@@ -19,3 +21,13 @@ func update_view():
 			skill.show()
 		else:
 			skill.hide()
+
+func _on_help_pressed():
+	var text = "Crew\n" + card.name + "\n"
+	text += "Skills: " + card.skills[0]
+	if card.skills.size() > 1:
+		for i in card.skills.size() - 1:
+			text += ", " + card.skills[i + 1]
+	if card.has("help"):
+		text += "\n" + card.help
+	emit_signal("helped", text)

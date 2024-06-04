@@ -77,7 +77,7 @@ func _on_help_pressed():
 		text += "Illegal "
 	text += card.type + "\n"
 	if $"%Holotable".visible:
-		text += "As long as you have at least 2 crews, gain 1 fame"
+		text += "As long as you have at least 2 crews, have 1 more fame"
 	if card.has("trait") and card.trait == "Smuggling Compartment":
 		text += "Gain an extra cargo slot. When delivering illegal cargo, if you roll blank, you successfully deliver the cargo"
 	if card.has("to"):

@@ -5,6 +5,7 @@ var deck = {
 		"name": "Mol",
 		"skills": ["tactics"],
 		"attack": 1,
+		"help": "Provides 1 ground attack."
 	},
 	"Nat": {
 		"name": "Nat",
@@ -24,6 +25,7 @@ var deck = {
 		"skills": ["piloting", "strength"],
 		"ship_armor": 2,
 		"ground_armor": 1,
+		"help": "Provides 1 ground armor and 2 ship armor."
 	},
 	"Naz": {
 		"name": "Naz",
@@ -50,6 +52,7 @@ var deck = {
 		"name": "Dio",
 		"skills": ["strength"],
 		"ground_armor": 2,
+		"help": "Provides 2 ground armor."
 	},
 	"Os2": {
 		"name": "Os2",

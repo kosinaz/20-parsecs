@@ -2,6 +2,7 @@ extends TextureRect
 
 signal bought
 signal skipped
+signal helped
 
 var _deck = [
 	{
@@ -30,6 +31,7 @@ var _deck = [
 		"armor": 3,
 		"patrol": "A",
 		"move": 3,
+		"help": "Gear\nGain 3 ground armor.",
 	},
 	{
 		"deck": "LuxuryDeck",
@@ -38,6 +40,7 @@ var _deck = [
 		"name": "robe",
 		"patrol": "B",
 		"move": 4,
+		"help": "Gear\nAs long as you have at least 2 positive reputations, have 1 more fame. If you have 4 positive reputations, have 2 additional fame.",
 	},
 	{
 		"deck": "LuxuryDeck",
@@ -47,6 +50,7 @@ var _deck = [
 		"name": "torpedo",
 		"patrol": "D",
 		"move": 4,
+		"help": "Gear\nGain 1 ship attack. If you defeat a patrol that has a fame reward, gain 1 more fame.",
 	},
 	{
 		"deck": "LuxuryDeck",
@@ -55,6 +59,7 @@ var _deck = [
 		"name": "chrome",
 		"patrol": "C",
 		"move": 4,
+		"help": "Gear\nWhen you gain fame, gain 1 additional fame.",
 	},
 	{
 		"deck": "LuxuryDeck",
@@ -260,3 +265,6 @@ func _on_buy_pressed():
 func _on_skip_pressed():
 	emit_signal("skipped")
 	append(pop_front())
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)
