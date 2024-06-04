@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"name": "San",
 	"attack": 3,
@@ -19,3 +21,5 @@ func update_view():
 		else:
 			skill.hide()
 
+func _on_help_pressed():
+	emit_signal("helped", "Character\nSan\n3 ground attack\n4 ground armor\nSkills: piloting, tactics")

@@ -2460,6 +2460,7 @@ script = ExtResource( 75 )
 [connection signal="helped" from="CanvasLayer/UsedShipMarket/UsedShip6" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/UsedShipMarket/UsedShip7" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/UsedShipMarket/UsedShip8" to="." method="_on_help_pressed"]
+[connection signal="helped" from="CanvasLayer/CharacterSlots/Character" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/CharacterSlots/GearSlot" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/CharacterSlots/GearSlot2" to="." method="_on_help_pressed"]
 [connection signal="helped" from="CanvasLayer/CharacterSlots/BountyJobSlot" to="." method="_on_help_pressed"]

@@ -1,5 +1,7 @@
 extends TextureRect
 
+signal helped
+
 var damage = 0
 var defeated = false
 var player = null
@@ -47,3 +49,6 @@ func update_armor():
 	if damage >= get_armor():
 		defeated = true
 		damage = get_armor()
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)

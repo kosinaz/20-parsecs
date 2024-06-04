@@ -82,3 +82,5 @@ grow_horizontal = 2
 grow_vertical = 2
 custom_fonts/font = ExtResource( 9 )
 text = "4/4"
+
+[connection signal="helped" from="MarginContainer/VBoxContainer/CharacterCard" to="." method="_on_help_pressed"]
