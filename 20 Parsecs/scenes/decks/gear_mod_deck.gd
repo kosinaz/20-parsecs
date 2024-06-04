@@ -2,6 +2,7 @@ extends TextureRect
 
 signal bought
 signal skipped
+signal helped
 
 var _deck = [
 	{
@@ -11,6 +12,7 @@ var _deck = [
 		"name": "targeting computer",
 		"patrol": "D",
 		"move": 3,
+		"help": "Mod\nOnce per ship combat, reroll your blanks.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -20,6 +22,7 @@ var _deck = [
 		"attack": 1,
 		"patrol": "C",
 		"move": 3,
+		"help": "Mod\nGain 1 ship attack.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -27,6 +30,7 @@ var _deck = [
 		"buy": 3,
 		"name": "nav computer",
 		"speed": 1,
+		"help": "Mod\nGain 1 speed.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -34,6 +38,7 @@ var _deck = [
 		"buy": 3,
 		"name": "shield upgrade",
 		"armor": 1,
+		"help": "Mod\nGain 1 ship armor. Recover 1 ship damage during the action step.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -41,6 +46,7 @@ var _deck = [
 		"buy": 5,
 		"name": "maneuvering thrusters",
 		"armor": 1,
+		"help": "Mod\nGain 1 ship armor. In ship combat, if you have tactics, your enemy will have -1 ship attack.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -49,6 +55,7 @@ var _deck = [
 		"name": "ion cannon",
 		"patrol": "A",
 		"move": 3,
+		"help": "Mod\nIn ship combat, cancel an enemy hit. If you have tactics, cancel an enemy crit instead.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -57,6 +64,7 @@ var _deck = [
 		"name": "autoblaster",
 		"patrol": "B",
 		"move": 3,
+		"help": "Mod\nIn ship combat, turn 2 focus to hit. If you have tactics, turn 1 focus to crit instead.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -66,6 +74,7 @@ var _deck = [
 		"attack": 1,
 		"patrol": "B",
 		"move": 3,
+		"help": "Gear\nGain 1 ground attack.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -76,6 +85,7 @@ var _deck = [
 		"patrol": "C",
 		"armor": 2,
 		"move": 3,
+		"help": "Gear\nGain 2 ground armor. You can wear only 1 armor item.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -84,6 +94,7 @@ var _deck = [
 		"name": "vibroknife",
 		"patrol": "B",
 		"move": 4,
+		"help": "Gear\nIn ground combat, turn 1 focus to hit. If you have stealth or strength, gain 1 ground attack.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -93,6 +104,7 @@ var _deck = [
 		"attack": 1,
 		"patrol": "D",
 		"move": 4,
+		"help": "Gear\nGain 1 ground attack. If you win a ground combat, suffer at most 2 damage.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -102,6 +114,7 @@ var _deck = [
 		"attack": 1,
 		"patrol": "A",
 		"move": 3,
+		"help": "Gear\nGain 1 ground attack. In ground combat, if you have strength, turn 1 focus to crit.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -110,6 +123,7 @@ var _deck = [
 		"name": "jetpack",
 		"patrol": "A",
 		"move": 4,
+		"help": "Gear\nIn ground combat, cancel 1 enemy hit. If you have tactics, cancel 1 enemy crit instead.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -119,6 +133,7 @@ var _deck = [
 		"attack": 2,
 		"patrol": "D",
 		"move": 3,
+		"help": "Gear\nGain 2 ground attack.",
 	},
 	{
 		"deck": "GearModDeck",
@@ -129,6 +144,7 @@ var _deck = [
 		"patrol": "C",
 		"armor": 2,
 		"move": 4,
+		"help": "Gear\nGain 2 ground armor. In ground combat, if you have strength, your enemy will have -1 ground attack.",
 	},
 ]
 var _target = null
@@ -261,3 +277,6 @@ func _on_buy_pressed():
 func _on_skip_pressed():
 	emit_signal("skipped")
 	append(pop_front())
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)

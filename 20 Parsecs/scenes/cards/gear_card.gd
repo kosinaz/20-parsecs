@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"type": "Gear",
 	"trait": "Armor",
@@ -71,3 +73,6 @@ func update_view():
 		$"%AttackLabel".text = str(card.attack)
 	else:
 		$"%Attack".hide()
+
+func _on_help_pressed():
+	emit_signal("helped", card.help)

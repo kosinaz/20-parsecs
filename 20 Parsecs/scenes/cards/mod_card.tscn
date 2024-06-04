@@ -69,7 +69,6 @@ margin_bottom = 19.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
-disabled = true
 text = "?"
 
 [node name="Card" type="MarginContainer" parent="."]
@@ -498,3 +497,5 @@ margin_left = 48.0
 margin_right = 60.0
 margin_bottom = 12.0
 texture = ExtResource( 13 )
+
+[connection signal="pressed" from="Top/Help/Help" to="." method="_on_help_pressed"]

@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"type": "Mod",
 	"buy": 2,
@@ -62,3 +64,6 @@ func update_view():
 	else:
 		$"%Blaster".hide()
 	$"%BuyLabel".text = str(card.buy) + "K"
+
+func _on_help_pressed():
+	emit_signal("helped", card.help)

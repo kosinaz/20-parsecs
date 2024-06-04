@@ -83,4 +83,5 @@ disabled = true
 toggle_mode = true
 icon = ExtResource( 3 )
 
+[connection signal="helped" from="MarginContainer/VBoxContainer/GearCard" to="." method="_on_help_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Buttons/Barter" to="." method="_on_barter_toggled"]

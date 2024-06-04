@@ -1,6 +1,7 @@
 extends TextureRect
 
 signal bartered
+signal helped
 
 var player = {
 	"bought": false,
@@ -84,3 +85,7 @@ func update_barter():
 func _on_barter_toggled(pressed):
 	bartering = pressed
 	emit_signal("bartered")
+
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)
