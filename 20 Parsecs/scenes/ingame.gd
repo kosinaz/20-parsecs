@@ -33,6 +33,7 @@ onready var used_ships = [$"%UsedShip", $"%UsedShip2", $"%UsedShip3", $"%UsedShi
 onready var all_cards = []
 
 func _ready():
+	$"%Intro".show()
 	for space in $Spaces.get_children():
 		space.connect("pressed", self, "_on_space_pressed")
 		if space.get_node("Label").text != "":
@@ -228,6 +229,9 @@ func upgrade_patrol(patrol):
 			$"%Patrols".text += reps[i]
 
 func start_action():
+	$"%Market".modulate = Color.white
+	$"%CharacterSlots".modulate = Color.white
+	$"%ShipSlots".modulate = Color.white
 	$"%Finish".disabled = false
 	$"%TurnIndicator".text = "Turn " + str(turn) + ", Action Step\n"
 	$"%TurnIndicator".text += "Perform any number or no actions, then press Finish!"
@@ -237,6 +241,9 @@ func start_action():
 	update_action_buttons()
 
 func stop_action():
+	$"%Market".modulate = Color.dimgray
+	$"%CharacterSlots".modulate = Color.dimgray
+	$"%ShipSlots".modulate = Color.dimgray
 	for card in all_cards:
 		card.disable_buttons()
 	$"%Finish".disabled = true
@@ -1798,3 +1805,7 @@ func _on_join_pressed():
 	remove_contact(selected_contact_name)
 	$"%CrewPrompt".hide()
 	stop_encounter()
+
+
+func _on_intro_ok_pressed():
+	$"%Intro".hide()

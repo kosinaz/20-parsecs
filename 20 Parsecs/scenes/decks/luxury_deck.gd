@@ -108,11 +108,13 @@ var player = {
 			"visible": true,
 			"empty": true,
 			"bartering": false,
+			"armor": false,
 		},
 		{
 			"visible": true,
 			"empty": true,
 			"bartering": false,
+			"armor": false,
 		}
 	],
 	"crew_slots": [

@@ -739,6 +739,7 @@ text = "Money: 0K"
 
 [node name="Market" type="HBoxContainer" parent="CanvasLayer"]
 unique_name_in_owner = true
+modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -816,7 +817,9 @@ margin_right = 672.0
 margin_left = 672.0
 margin_right = 768.0
 
-[node name="Character" type="HBoxContainer" parent="CanvasLayer"]
+[node name="CharacterSlots" type="HBoxContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
+modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -829,25 +832,27 @@ grow_horizontal = 2
 grow_vertical = 2
 custom_constants/separation = 0
 
-[node name="Character" parent="CanvasLayer/Character" instance=ExtResource( 30 )]
+[node name="Character" parent="CanvasLayer/CharacterSlots" instance=ExtResource( 30 )]
 
-[node name="GearSlot" parent="CanvasLayer/Character" instance=ExtResource( 55 )]
+[node name="GearSlot" parent="CanvasLayer/CharacterSlots" instance=ExtResource( 55 )]
 margin_left = 96.0
 margin_right = 192.0
 
-[node name="GearSlot2" parent="CanvasLayer/Character" instance=ExtResource( 55 )]
+[node name="GearSlot2" parent="CanvasLayer/CharacterSlots" instance=ExtResource( 55 )]
 margin_left = 192.0
 margin_right = 288.0
 
-[node name="BountyJobSlot" parent="CanvasLayer/Character" instance=ExtResource( 60 )]
+[node name="BountyJobSlot" parent="CanvasLayer/CharacterSlots" instance=ExtResource( 60 )]
 margin_left = 288.0
 margin_right = 384.0
 
-[node name="BountyJobSlot2" parent="CanvasLayer/Character" instance=ExtResource( 60 )]
+[node name="BountyJobSlot2" parent="CanvasLayer/CharacterSlots" instance=ExtResource( 60 )]
 margin_left = 384.0
 margin_right = 480.0
 
-[node name="Ship" type="HBoxContainer" parent="CanvasLayer"]
+[node name="ShipSlots" type="HBoxContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
+modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -860,44 +865,44 @@ grow_horizontal = 2
 grow_vertical = 2
 custom_constants/separation = 0
 
-[node name="Ship" parent="CanvasLayer/Ship" instance=ExtResource( 57 )]
+[node name="Ship" parent="CanvasLayer/ShipSlots" instance=ExtResource( 57 )]
 
-[node name="CargoSlot" parent="CanvasLayer/Ship" instance=ExtResource( 53 )]
+[node name="CargoSlot" parent="CanvasLayer/ShipSlots" instance=ExtResource( 53 )]
 margin_left = 96.0
 margin_right = 192.0
 
-[node name="CargoSlot2" parent="CanvasLayer/Ship" instance=ExtResource( 53 )]
+[node name="CargoSlot2" parent="CanvasLayer/ShipSlots" instance=ExtResource( 53 )]
 visible = false
 margin_left = 192.0
 margin_right = 288.0
 
-[node name="CargoSlot3" parent="CanvasLayer/Ship" instance=ExtResource( 53 )]
+[node name="CargoSlot3" parent="CanvasLayer/ShipSlots" instance=ExtResource( 53 )]
 visible = false
 margin_left = 288.0
 margin_right = 384.0
 
-[node name="DeckType" parent="CanvasLayer/Ship/CargoSlot3" index="1"]
+[node name="DeckType" parent="CanvasLayer/ShipSlots/CargoSlot3" index="1"]
 texture = ExtResource( 54 )
 
-[node name="CargoModSlot" parent="CanvasLayer/Ship" instance=ExtResource( 51 )]
+[node name="CargoModSlot" parent="CanvasLayer/ShipSlots" instance=ExtResource( 51 )]
 visible = false
 margin_left = 192.0
 margin_right = 288.0
 
-[node name="ModSlot" parent="CanvasLayer/Ship" instance=ExtResource( 56 )]
+[node name="ModSlot" parent="CanvasLayer/ShipSlots" instance=ExtResource( 56 )]
 margin_left = 192.0
 margin_right = 288.0
 
-[node name="CrewSlot" parent="CanvasLayer/Ship" instance=ExtResource( 77 )]
+[node name="CrewSlot" parent="CanvasLayer/ShipSlots" instance=ExtResource( 77 )]
 margin_left = 288.0
 margin_right = 384.0
 
-[node name="CrewSlot2" parent="CanvasLayer/Ship" instance=ExtResource( 77 )]
+[node name="CrewSlot2" parent="CanvasLayer/ShipSlots" instance=ExtResource( 77 )]
 visible = false
 margin_left = 384.0
 margin_right = 480.0
 
-[node name="CrewSlot3" parent="CanvasLayer/Ship" instance=ExtResource( 77 )]
+[node name="CrewSlot3" parent="CanvasLayer/ShipSlots" instance=ExtResource( 77 )]
 visible = false
 margin_left = 384.0
 margin_right = 480.0
@@ -1048,6 +1053,61 @@ align = 1
 margin_top = 39.0
 margin_right = 207.0
 margin_bottom = 58.0
+custom_fonts/font = ExtResource( 38 )
+text = "Ok"
+
+[node name="Intro" type="TextureRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color( 1, 1, 1, 0.784314 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -288.0
+margin_right = 512.0
+margin_bottom = 288.0
+texture = SubResource( 11 )
+
+[node name="Window" type="TextureRect" parent="CanvasLayer/Intro"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -144.0
+margin_top = -64.0
+margin_right = 144.0
+margin_bottom = 64.0
+texture = ExtResource( 34 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Intro/Window"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -103.5
+margin_top = -29.0
+margin_right = 103.5
+margin_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AlertSummary" type="Label" parent="CanvasLayer/Intro/Window/VBoxContainer"]
+margin_right = 237.0
+margin_bottom = 92.0
+custom_fonts/font = ExtResource( 39 )
+text = "Become the most famous pilot within the
+20 parsecs perimeter of the galaxy,
+from Acan to Katak,
+by capturing fugitives, smuggling goods,
+and participating in legendary jobs!"
+align = 1
+
+[node name="IntoOk" type="Button" parent="CanvasLayer/Intro/Window/VBoxContainer"]
+margin_top = 96.0
+margin_right = 237.0
+margin_bottom = 115.0
 custom_fonts/font = ExtResource( 38 )
 text = "Ok"
 
@@ -2333,6 +2393,7 @@ script = ExtResource( 75 )
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell" to="." method="_on_failed_sell_pressed"]
 [connection signal="pressed" from="CanvasLayer/Prompt/Window/VBoxContainer/FailedSell2" to="." method="_on_failed_sell2_pressed"]
 [connection signal="pressed" from="CanvasLayer/Alert/Window/VBoxContainer/AlertButton" to="." method="_on_alert_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Intro/Window/VBoxContainer/IntoOk" to="." method="_on_intro_ok_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactPrompt/Window/VBoxContainer/Attack" to="." method="_on_attack_contact_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactPrompt/Window/VBoxContainer/Encounter" to="." method="_on_encounter_contact_pressed"]
 [connection signal="pressed" from="CanvasLayer/ContactPrompt2/Window/VBoxContainer/KillBounty" to="." method="_on_kill_bounty_pressed"]
@@ -2355,5 +2416,5 @@ script = ExtResource( 75 )
 [editable path="Spaces/Space38"]
 [editable path="Spaces/Space39"]
 [editable path="Spaces/Space42"]
-[editable path="CanvasLayer/Ship/CargoSlot3"]
-[editable path="CanvasLayer/Ship/CargoSlot3/MarginContainer/VBoxContainer/CargoCard"]
+[editable path="CanvasLayer/ShipSlots/CargoSlot3"]
+[editable path="CanvasLayer/ShipSlots/CargoSlot3/MarginContainer/VBoxContainer/CargoCard"]
