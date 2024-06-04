@@ -143,7 +143,7 @@ func start_planning():
 	elif $"%Character".damage > 0 or $"%Ship".damage > 0:
 		$"%TurnIndicator".text += "Move or Gain 2K or Recover!"
 	else:
-		$"%TurnIndicator".text += "Move or Gain 2K!"
+		$"%TurnIndicator".text += "Move to a highlighted space or planet or Gain 2K!"
 		$"%Recover".disabled = true
 	astar.set_point_disabled(13)
 	var hostile_patrols = []
@@ -1809,3 +1809,11 @@ func _on_join_pressed():
 
 func _on_intro_ok_pressed():
 	$"%Intro".hide()
+
+
+func _on_help_pressed(text):
+	$"%Help".show()
+	$"%HelpLabel".text = text
+
+func _on_help_ok_pressed():
+	$"%Help".hide()

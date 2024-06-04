@@ -129,6 +129,7 @@ size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 icon = ExtResource( 3 )
 
+[connection signal="helped" from="MarginContainer/VBoxContainer/BountyCard" to="." method="_on_help_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer/Deliver" to="." method="_on_deliver_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer3/Kill" to="." method="_on_kill_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/MarginContainer2/Drop" to="." method="_on_drop_pressed"]

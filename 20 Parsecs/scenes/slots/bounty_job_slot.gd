@@ -3,6 +3,7 @@ extends TextureRect
 signal delivered
 signal dropped
 signal killed
+signal helped
 
 var player = {
 	"space": {
@@ -134,3 +135,6 @@ func _on_drop_pressed():
 
 func _on_kill_pressed():
 	emit_signal("killed", self)
+
+func _on_help_pressed(text):
+	emit_signal("helped", text)

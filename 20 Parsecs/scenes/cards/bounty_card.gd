@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal helped
+
 var card = {
 	"deck": "BountyDeck",
 	"level": 1,
@@ -48,3 +50,32 @@ func update_view():
 		$"%DeliverRep1Icon".texture = load("res://images/patrol-" + (card.positive_rep.to_lower()) + "-icon.png")
 	else:
 		$"%DeliverRep1".hide()
+
+func _on_help_pressed():
+	var reps = {
+		"A": "Ahut",
+		"B": "Basyn",
+		"C": "Clot",
+		"D": "Dreb",
+	}
+	var text = "Bounty\nFind " + card.name
+	text += "! He is a level " + str(card.level)
+	text += " contact. He has " + str(card.attack)
+	if $"%GroundAttack".visible:
+		text += " ground attack. "
+	else:
+		text += " ship attack. "
+	text += "Eliminate him and gain " + str(card.kill_reward) + "K, "
+	text += str(card.kill_fame) + " fame"
+	if $"%KillRep".visible:
+		text += ", and -1 " + reps[card.negative_rep] + " reputation"
+	text += ". "
+	text += "Or deliver him to " + card.to
+	text += ", and gain " + str(card.deliver_reward) + "K, "
+	text += str(card.deliver_fame) + " fame"
+	if $"%DeliverRep1".visible:
+		text += ", 1 " + reps[card.positive_rep] + " reputation"
+	if $"%DeliverRep2".visible:
+		text += ", and -1 " + reps[card.negative_rep] + " reputation"
+	text += "."
+	emit_signal("helped", text)
