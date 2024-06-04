@@ -1837,3 +1837,7 @@ func _on_help_pressed(text):
 
 func _on_help_ok_pressed():
 	$"%Help".hide()
+
+func _on_restart_pressed():
+# warning-ignore:return_value_discarded
+	get_tree().reload_current_scene()

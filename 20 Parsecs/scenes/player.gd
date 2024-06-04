@@ -100,6 +100,9 @@ func update_fame_text():
 				fame_buff += 2
 			break
 	$"%Fame".text = "Fame: " + str(fame + fame_buff) + "F"
+	if fame + fame_buff >= 10:
+		$"%End".show()
+		$"%WonTurns".text = str(get_parent().turn)
 
 func increase_reputation(reputation):
 	if reputation == "A" and ahut < 1:
