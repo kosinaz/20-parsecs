@@ -620,16 +620,16 @@ text = "Finish"
 [node name="Explore" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
 unique_name_in_owner = true
 margin_left = 157.0
-margin_right = 207.0
+margin_right = 191.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
-text = "Explore"
+text = "Skip"
 
 [node name="Job" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 211.0
-margin_right = 242.0
+margin_left = 195.0
+margin_right = 226.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true
@@ -637,8 +637,8 @@ text = "Job"
 
 [node name="Attack" type="Button" parent="CanvasLayer/TurnIndicator/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 246.0
-margin_right = 291.0
+margin_left = 230.0
+margin_right = 275.0
 margin_bottom = 19.0
 custom_fonts/font = ExtResource( 38 )
 disabled = true

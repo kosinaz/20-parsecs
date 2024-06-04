@@ -525,6 +525,8 @@ func start_encounter():
 		stop_encounter()
 		skip_encounter = false
 	else:
+		attacking_patrol = null
+		var contacts = false
 		$"%Explore".disabled = false
 		$"%Job".disabled = true
 		$"%Attack".disabled = true
@@ -543,12 +545,32 @@ func start_encounter():
 			if slot.has_crew($"%BountyJobSlot2".get_bounty_name()):
 				$"%Attack".disabled = false
 				selected_bounty_slot = $"%BountyJobSlot2"
-		if planets.has($"%Player".space.id):
+		if planets.has($"%Player".space.id) and not $"%Explore".disabled:
 			$"%Player".space.enable_contacts()
-		if $"%BountyJobSlot".get_to() == $"%Player".space_name or $"%BountyJobSlot2".get_to() == $"%Player".space_name:
+			contacts = true
+		if $"%BountyJobSlot".get_to() == $"%Player".space_name or $"%BountyJobSlot2".get_to() == $"%Player".space_name and not $"%Explore".disabled:
 			$"%Job".disabled = false
 		if $"%Player".space == $"%PatrolC".space and ($"%BountyJobSlot".get_to() == "Cimp Patrol" or $"%BountyJobSlot2".get_to() == "Cimp Patrol"):
 			$"%Job".disabled = false
+		var options = []
+		if not $"%Explore".disabled:
+			options.append("Skip")
+		if not $"%Attack".disabled and attacking_patrol != null:
+			options.append("Attack the patrol")
+		if not $"%Attack".disabled and attacking_patrol == null:
+			options.append("Attack your target")
+		if not $"%Job".disabled:
+			options.append("Start your job")
+		if contacts:
+			options.append("Interact with a contact")
+		var text = options[0]
+		if options.size() > 2:
+			for i in range(options.size() - 2):
+				text += ", " + options[i + 1]
+		if options.size() > 1:
+			text += " or " + options[options.size() - 1]
+		$"%TurnIndicator".text += text + "."
+		
 
 func stop_encounter():
 	$"%Explore".disabled = true
